@@ -1,16 +1,16 @@
 import math_h
 
-let s2 = Double(2.0).squareRoot()
-let s3 = Double(3.0).squareRoot()
-
 public struct Hex: Hashable {
-	public var q: Int
-	public var r: Int
+	private var _q: Int16
+	private var _r: Int16
+
+	public var q: Int { Int(_q) }
+	public var r: Int { Int(_r) }
 	public var s: Int { -(q + r) }
 
 	public init(_ q: Int, _ r: Int) {
-		self.q = q
-		self.r = r
+		_q = Int16(q)
+		_r = Int16(r)
 	}
 }
 
@@ -47,7 +47,7 @@ public extension Hex {
 	}
 
 	var cartesian: Point {
-		Point(1.5 * Double(q), s3 * 0.5 * Double(q) + s3 * Double(r))
+		Point(1.5 * Double(q), .s3 * 0.5 * Double(q) + .s3 * Double(r))
 	}
 
 	var corners: [Point] {
@@ -62,9 +62,9 @@ public struct Map {
 		self.cells = cells
 	}
 
-	public init(hex: Int) {
-		self = Map(cells: (-hex..<hex).flatMap { q in
-			(max(-hex, -q - hex)..<min(hex, -q + hex)).map { r in
+	public init(hex radii: Int) {
+		self = Map(cells: (-radii...radii).flatMap { q in
+			(max(-radii, -q - radii)...min(radii, -q + radii)).map { r in
 				Hex(q, r)
 			}
 		})
@@ -103,4 +103,9 @@ public extension Point {
 		let a = 2.0 * .pi * Double(corner) / 6
 		return Point(cos(a), sin(a))
 	}
+}
+
+extension Double {
+	static var s2: Double { sqrt(2.0) }
+	static var s3: Double { sqrt(3.0) }
 }

@@ -7,12 +7,33 @@ final class GameViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		let scene = GameScene(size: CGSize(width: 1024.0, height: 768.0))
+		guard let view = view as? SKView else { return }
 
-		let skView = self.view as! SKView
-		skView.presentScene(scene)
-		skView.ignoresSiblingOrder = true
-		skView.showsFPS = true
-		skView.showsNodeCount = true
+		view.presentScene(GameScene(size: sceneSize))
+		view.ignoresSiblingOrder = true
+		view.showsFPS = true
+		view.showsNodeCount = true
+	}
+
+	override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+		if UIDevice.current.userInterfaceIdiom == .phone {
+			.allButUpsideDown
+		} else {
+			.all
+		}
+	}
+
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		(view as? SKView)?.scene?.size = sceneSize
+	}
+
+	override var prefersStatusBarHidden: Bool { true }
+
+	private var sceneSize: CGSize {
+		CGSize(
+			width: view.frame.width / 2.0,
+			height: view.frame.height / 2.0
+		)
 	}
 }

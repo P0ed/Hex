@@ -7,7 +7,7 @@ final class GameViewController: NSViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		guard let view = self.view as? SKView else { return }
+		guard let view = view as? SKView else { return }
 		view.presentScene(GameScene(size: sceneSize))
 		view.ignoresSiblingOrder = true
 		view.showsFPS = true
