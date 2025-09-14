@@ -26,6 +26,10 @@ public extension Hex {
 		[Hex(1, 0), Hex(1, -1), Hex(0, -1), Hex(-1, 0), Hex(-1, 1), Hex(0, 1)]
 	}
 
+	var neighbors: [Hex] {
+		Self.directions.map { self + $0 }
+	}
+
 	func neighbor(_ d: Int) -> Hex {
 		self + Self.directions[((d % 6) + 6) % 6]
 	}
@@ -53,6 +57,18 @@ public extension Hex {
 
 public struct Map {
 	public var cells: [Hex]
+
+	public init(cells: [Hex]) {
+		self.cells = cells
+	}
+
+	public init(hex: Int) {
+		self = Map(cells: (-hex..<hex).flatMap { q in
+			(max(-hex, -q - hex)..<min(hex, -q + hex)).map { r in
+				Hex(q, r)
+			}
+		})
+	}
 }
 
 public struct Point: Hashable {

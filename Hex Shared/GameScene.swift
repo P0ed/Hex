@@ -3,9 +3,7 @@ import SpriteKit
 
 final class GameScene: SKScene {
 	private var dirty = false
-	private var state: State = .init() {
-		didSet { dirty = true }
-	}
+	private var state = State() { didSet { dirty = true } }
 
 	private var cursor: SKShapeNode?
 
@@ -14,17 +12,32 @@ final class GameScene: SKScene {
 		scaleMode = .aspectFill
 		anchorPoint = CGPoint(x: 0.5, y: 0.5)
 
-		let cursor = SKShapeNode(hex: .zero, size: .hexSize)
-		cursor.strokeColor = .lineCursor
-		cursor.fillColor = .baseCursor
-		addChild(cursor)
-		self.cursor = cursor
+		addMap(Map(hex: 8))
+		addCursor()
 	}
 
 	override func update(_ currentTime: TimeInterval) {
 		guard dirty else { return }
 		dirty = false
 		cursor?.position = (state.cursor.cartesian * .hexSize).cg
+	}
+
+	func addMap(_ map: Map) {
+		map.cells.forEach { hex in
+			let cell = SKShapeNode(hex: hex, size: .hexSize)
+			cell.strokeColor = .lineCell
+			cell.fillColor = .baseCell
+			addChild(cell)
+		}
+	}
+
+	func addCursor() {
+		let cursor = SKShapeNode(hex: .zero, size: .hexSize)
+		cursor.strokeColor = .lineCursor
+		cursor.fillColor = .baseCursor
+		cursor.zPosition = 1.0
+		addChild(cursor)
+		self.cursor = cursor
 	}
 }
 

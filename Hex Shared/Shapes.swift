@@ -16,9 +16,9 @@ extension SKShapeNode {
 
 extension CGPath {
 
-	static func make(_ tfm: (CGMutablePath) -> Void) -> CGPath {
+	static func make(_ transform: (CGMutablePath) -> Void) -> CGPath {
 		let path = CGMutablePath()
-		tfm(path)
+		transform(path)
 		return path
 	}
 }
@@ -28,6 +28,5 @@ extension Point {
 }
 
 extension Double {
-
 	static var hexSize: Double { 24.0 }
 }
