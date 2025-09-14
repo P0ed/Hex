@@ -89,8 +89,8 @@
 				Assets.xcassets,
 				Colors.swift,
 				GameScene.swift,
-				GameState.swift,
 				Shapes.swift,
+				State.swift,
 			);
 			target = 5FCB86342E77041800C2C69E /* Hex iOS */;
 		};
@@ -100,8 +100,8 @@
 				Assets.xcassets,
 				Colors.swift,
 				GameScene.swift,
-				GameState.swift,
 				Shapes.swift,
+				State.swift,
 			);
 			target = 5FCB86452E77041800C2C69E /* Hex tvOS */;
 		};
@@ -111,8 +111,8 @@
 				Assets.xcassets,
 				Colors.swift,
 				GameScene.swift,
-				GameState.swift,
 				Shapes.swift,
+				State.swift,
 			);
 			target = 5FCB86552E77041800C2C69E /* Hex macOS */;
 		};

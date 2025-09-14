@@ -1,25 +1,16 @@
-//
-//  GameViewController.swift
-//  Hex iOS
-//
-//  Created by Konstantin Sukharev on 14.09.2025.
-//
-
 import UIKit
 import SpriteKit
 import GameplayKit
 
-class GameViewController: UIViewController {
+final class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let scene = GameScene.newGameScene()
+        let scene = GameScene(size: CGSize(width: 1024.0, height: 768.0))
 
-        // Present the scene
         let skView = self.view as! SKView
         skView.presentScene(scene)
-        
         skView.ignoresSiblingOrder = true
         skView.showsFPS = true
         skView.showsNodeCount = true
@@ -27,13 +18,11 @@ class GameViewController: UIViewController {
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
+            .allButUpsideDown
         } else {
-            return .all
+            .all
         }
     }
 
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
+    override var prefersStatusBarHidden: Bool { true }
 }
