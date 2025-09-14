@@ -1,3 +1,5 @@
+import math_h
+
 let s2 = Double(2.0).squareRoot()
 let s3 = Double(3.0).squareRoot()
 
@@ -13,6 +15,8 @@ public struct Hex: Hashable {
 }
 
 public extension Hex {
+
+	static var zero: Hex { Hex(0, 0) }
 
 	var length: Int { (abs(q) + abs(r) + abs(s)) / 2 }
 
@@ -41,10 +45,14 @@ public extension Hex {
 	var cartesian: Point {
 		Point(1.5 * Double(q), s3 * 0.5 * Double(q) + s3 * Double(r))
 	}
+
+	var corners: [Point] {
+		(0..<6).map { [cartesian] in cartesian + .hexCorner($0) }
+	}
 }
 
 public struct Map {
-	var grid: [Hex]
+	public var cells: [Hex]
 }
 
 public struct Point: Hashable {
@@ -59,6 +67,10 @@ public struct Point: Hashable {
 
 public extension Point {
 
+	static var zero: Point { Point(0, 0) }
+
+	var length: Double { (x * x + y * y).squareRoot() }
+
 	static func + (lhs: Point, rhs: Point) -> Point {
 		Point(lhs.x + rhs.x, lhs.y + rhs.y)
 	}
@@ -69,5 +81,10 @@ public extension Point {
 
 	static func * (lhs: Point, rhs: Double) -> Point {
 		Point(lhs.x * rhs, lhs.y * rhs)
+	}
+
+	static func hexCorner(_ corner: Int) -> Point {
+		let a = 2.0 * .pi * Double(corner) / 6
+		return Point(cos(a), sin(a))
 	}
 }

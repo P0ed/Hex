@@ -1,3 +1,4 @@
+import HexKit
 import SpriteKit
 
 final class GameScene: SKScene {
@@ -11,7 +12,7 @@ final class GameScene: SKScene {
 
 	func setUpScene() {
 		let w = (self.size.width + self.size.height) * 0.05
-		self.spinnyNode = SKShapeNode(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+		self.spinnyNode = SKShapeNode(hex: .zero, size: w)
 
 		if let spinnyNode = self.spinnyNode {
 			spinnyNode.lineWidth = 4.0
@@ -102,3 +103,29 @@ extension GameScene {
 	}
 }
 #endif
+
+extension SKShapeNode {
+
+	convenience init(hex: Hex, size: Double) {
+		self.init(path: .make { path in
+			let corners = hex.corners
+			path.move(to: (corners[5] * size).cg)
+			corners.forEach { corner in
+				path.addLine(to: (corner * size).cg)
+			}
+		})
+	}
+}
+
+extension CGPath {
+
+	static func make(_ tfm: (CGMutablePath) -> Void) -> CGPath {
+		let path = CGMutablePath()
+		tfm(path)
+		return path
+	}
+}
+
+extension Point {
+	var cg: CGPoint { .init(x: x, y: y) }
+}
