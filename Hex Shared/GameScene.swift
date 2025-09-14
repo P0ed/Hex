@@ -11,7 +11,7 @@ final class GameScene: SKScene {
 
 	func setUpScene() {
 		let w = (self.size.width + self.size.height) * 0.05
-		self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+		self.spinnyNode = SKShapeNode(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
 
 		if let spinnyNode = self.spinnyNode {
 			spinnyNode.lineWidth = 4.0
@@ -82,15 +82,23 @@ extension GameScene {
 extension GameScene {
 
 	override func mouseDown(with event: NSEvent) {
-		self.makeSpinny(at: event.location(in: self), color: SKColor.green)
+		self.makeSpinny(at: event.location(in: self), color: .green)
 	}
 
 	override func mouseDragged(with event: NSEvent) {
-		self.makeSpinny(at: event.location(in: self), color: SKColor.blue)
+		self.makeSpinny(at: event.location(in: self), color: .blue)
 	}
 
 	override func mouseUp(with event: NSEvent) {
-		self.makeSpinny(at: event.location(in: self), color: SKColor.red)
+		self.makeSpinny(at: event.location(in: self), color: .red)
+	}
+
+	override func keyDown(with event: NSEvent) {
+		
+	}
+
+	override func keyUp(with event: NSEvent) {
+
 	}
 }
 #endif
