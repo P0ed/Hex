@@ -85,7 +85,7 @@ public extension Point {
 
 	static var zero: Point { Point(0, 0) }
 
-	var length: Double { (x * x + y * y).squareRoot() }
+	var length: Double { sqrt(x * x + y * y) }
 
 	static func + (lhs: Point, rhs: Point) -> Point {
 		Point(lhs.x + rhs.x, lhs.y + rhs.y)
@@ -100,7 +100,7 @@ public extension Point {
 	}
 
 	static func hexCorner(_ corner: Int) -> Point {
-		let a = 2.0 * .pi * Double(corner) / 6
+		let a = .pi * Double(corner) / 3.0
 		return Point(cos(a), sin(a))
 	}
 }
