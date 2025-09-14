@@ -2,7 +2,11 @@ import HexKit
 import SpriteKit
 
 final class GameScene: SKScene {
-	fileprivate var spinnyNode: SKShapeNode?
+	private var dirty = false
+	private var state: State = .init() {
+		didSet { dirty = true }
+	}
+	private var cursor: SKShapeNode?
 
 	static func newGameScene() -> GameScene {
 		let scene = GameScene(size: CGSize(width: 1280, height: 800))
@@ -11,48 +15,30 @@ final class GameScene: SKScene {
 	}
 
 	func setUpScene() {
-		let w = (self.size.width + self.size.height) * 0.05
-		self.spinnyNode = SKShapeNode(hex: .zero, size: w)
-
-		if let spinnyNode = self.spinnyNode {
-			spinnyNode.lineWidth = 4.0
-			spinnyNode.run(.repeatForever(
-				.rotate(byAngle: .pi, duration: 1)
-			))
-			spinnyNode.run(.sequence([
-				.wait(forDuration: 0.5),
-				.fadeOut(withDuration: 0.5),
-				.removeFromParent()
-			]))
-		}
+		let cursor = SKShapeNode(hex: .zero, size: .hexSize)
+		cursor.lineWidth = 2.0
+		cursor.strokeColor = .lineCursor
+		cursor.fillColor = .baseCursor
+		addChild(cursor)
+		self.cursor = cursor
 	}
 
 	override func didMove(to view: SKView) {
 		self.setUpScene()
 	}
 
-	func makeSpinny(at pos: CGPoint, color: SKColor) {
-		if let spinny = self.spinnyNode?.copy() as? SKShapeNode {
-			spinny.position = pos
-			spinny.strokeColor = color
-			self.addChild(spinny)
-		}
-	}
-
 	override func update(_ currentTime: TimeInterval) {
-
+		if dirty {
+			dirty = false
+			cursor?.position = (state.cursor.cartesian * .hexSize).cg
+		}
 	}
 }
 
 #if os(iOS) || os(tvOS)
-// Touch-based event handling
 extension GameScene {
 
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-		if let label = self.label {
-			label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-		}
-
 		for t in touches {
 			self.makeSpinny(at: t.location(in: self), color: SKColor.green)
 		}
@@ -79,53 +65,18 @@ extension GameScene {
 #endif
 
 #if os(OSX)
-// Mouse-based event handling
 extension GameScene {
 
-	override func mouseDown(with event: NSEvent) {
-		self.makeSpinny(at: event.location(in: self), color: .green)
-	}
-
-	override func mouseDragged(with event: NSEvent) {
-		self.makeSpinny(at: event.location(in: self), color: .blue)
-	}
-
-	override func mouseUp(with event: NSEvent) {
-		self.makeSpinny(at: event.location(in: self), color: .red)
-	}
-
 	override func keyDown(with event: NSEvent) {
-		
+		switch event.specialKey {
+		case .leftArrow: state.apply(.direction(.left))
+		case .rightArrow: state.apply(.direction(.right))
+		case .downArrow: state.apply(.direction(.down))
+		case .upArrow: state.apply(.direction(.up))
+		default: break
+		}
 	}
 
-	override func keyUp(with event: NSEvent) {
-
-	}
+	override func keyUp(with event: NSEvent) {}
 }
 #endif
-
-extension SKShapeNode {
-
-	convenience init(hex: Hex, size: Double) {
-		self.init(path: .make { path in
-			let corners = hex.corners
-			path.move(to: (corners[5] * size).cg)
-			corners.forEach { corner in
-				path.addLine(to: (corner * size).cg)
-			}
-		})
-	}
-}
-
-extension CGPath {
-
-	static func make(_ tfm: (CGMutablePath) -> Void) -> CGPath {
-		let path = CGMutablePath()
-		tfm(path)
-		return path
-	}
-}
-
-extension Point {
-	var cg: CGPoint { .init(x: x, y: y) }
-}

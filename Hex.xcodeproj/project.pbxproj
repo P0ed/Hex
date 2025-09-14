@@ -87,7 +87,10 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
+				Colors.swift,
 				GameScene.swift,
+				GameState.swift,
+				Shapes.swift,
 			);
 			target = 5FCB86342E77041800C2C69E /* Hex iOS */;
 		};
@@ -95,7 +98,10 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
+				Colors.swift,
 				GameScene.swift,
+				GameState.swift,
+				Shapes.swift,
 			);
 			target = 5FCB86452E77041800C2C69E /* Hex tvOS */;
 		};
@@ -103,7 +109,10 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
+				Colors.swift,
 				GameScene.swift,
+				GameState.swift,
+				Shapes.swift,
 			);
 			target = 5FCB86552E77041800C2C69E /* Hex macOS */;
 		};
