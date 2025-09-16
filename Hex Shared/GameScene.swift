@@ -10,7 +10,6 @@ final class GameScene: SKScene {
 	override func sceneDidLoad() {
 		backgroundColor = .black
 		scaleMode = .aspectFill
-		anchorPoint = CGPoint(x: 0.5, y: 0.5)
 
 		addCamera()
 		addMap(Map(hex: state.bounds))
@@ -45,6 +44,8 @@ final class GameScene: SKScene {
 		cursor.zPosition = 1.0
 		addChild(cursor)
 		self.cursor = cursor
+
+		camera?.constraints = [.distance(.init(upperLimit: 200), to: cursor)]
 	}
 }
 
