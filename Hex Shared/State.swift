@@ -15,9 +15,9 @@ extension State {
 		}
 	}
 
-	mutating func apply(_ action: Action) {
-		switch action {
-		case .direction(let dir): moveCursor(dir)
+	mutating func apply(_ input: Input) {
+		switch input {
+		case let .direction(direction): moveCursor(direction)
 		default: break
 		}
 	}
@@ -25,7 +25,7 @@ extension State {
 
 enum DPad { case left, right, down, up }
 enum Target { case prev, next }
-enum Verb { case a, b, c, d }
+enum Action { case a, b, c, d }
 enum Menu { case no, yes }
 
-enum Action { case direction(DPad), target(Target), verb(Verb), menu(Menu) }
+enum Input { case direction(DPad), target(Target), action(Action), menu(Menu) }

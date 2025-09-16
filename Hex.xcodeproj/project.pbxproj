@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5FB297492E79A39300FA039B /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 5FB297482E79A39000FA039B /* README.md */; };
 		5FCB86862E7714E300C2C69E /* HexKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FCB86802E7714E300C2C69E /* HexKit.framework */; };
 		5FCB86872E7714E300C2C69E /* HexKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5FCB86802E7714E300C2C69E /* HexKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FCB868D2E77243D00C2C69E /* HexKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FCB86802E7714E300C2C69E /* HexKit.framework */; };
@@ -76,6 +77,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5FB297482E79A39000FA039B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5FCB86352E77041800C2C69E /* Hex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FCB86462E77041800C2C69E /* Hex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FCB86562E77041800C2C69E /* Hex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hex.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,6 +91,7 @@
 				Assets.xcassets,
 				Colors.swift,
 				GameScene.swift,
+				HIDController.swift,
 				Shapes.swift,
 				State.swift,
 			);
@@ -100,6 +103,7 @@
 				Assets.xcassets,
 				Colors.swift,
 				GameScene.swift,
+				HIDController.swift,
 				Shapes.swift,
 				State.swift,
 			);
@@ -111,6 +115,7 @@
 				Assets.xcassets,
 				Colors.swift,
 				GameScene.swift,
+				HIDController.swift,
 				Shapes.swift,
 				State.swift,
 			);
@@ -189,6 +194,7 @@
 		5FCB86272E77041300C2C69E = {
 			isa = PBXGroup;
 			children = (
+				5FB297482E79A39000FA039B /* README.md */,
 				5FCB862C2E77041400C2C69E /* Hex Shared */,
 				5FCB86372E77041800C2C69E /* Hex iOS */,
 				5FCB86472E77041800C2C69E /* Hex tvOS */,
@@ -407,6 +413,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FB297492E79A39300FA039B /* README.md in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
