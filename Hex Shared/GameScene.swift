@@ -12,17 +12,17 @@ final class GameScene: SKScene {
 		scaleMode = .aspectFill
 		anchorPoint = CGPoint(x: 0.5, y: 0.5)
 
-		addMap(Map(hex: 8))
+		addMap(Map(hex: state.bounds))
 		addCursor()
 	}
 
 	override func update(_ currentTime: TimeInterval) {
 		guard dirty else { return }
-		dirty = false
+		defer { dirty = false }
 		cursor?.position = (state.cursor.cartesian * .hexSize).cg
 	}
 
-	func addMap(_ map: Map) {
+	private func addMap(_ map: Map) {
 		map.cells.forEach { hex in
 			let cell = SKShapeNode(hex: hex, size: .hexSize)
 			cell.strokeColor = .lineCell
@@ -31,7 +31,7 @@ final class GameScene: SKScene {
 		}
 	}
 
-	func addCursor() {
+	private func addCursor() {
 		let cursor = SKShapeNode(hex: .zero, size: .hexSize)
 		cursor.strokeColor = .lineCursor
 		cursor.fillColor = .baseCursor

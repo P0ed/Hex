@@ -1,9 +1,9 @@
 import SpriteKit
 
 extension SKColor {
-	static var baseCell: SKColor { .init(white: 1, alpha: 0.01) }
-	static var baseCursor: SKColor { .init(white: 1, alpha: 0.04) }
+	static var baseCell: SKColor { .init(white: 0.02, alpha: 1.0) }
+	static var baseCursor: SKColor { .init(white: 0.16, alpha: 0.5) }
 
-	static var lineCell: SKColor { .init(white: 1, alpha: 0.08) }
-	static var lineCursor: SKColor { .init(white: 1, alpha: 0.16) }
+	static var lineCell: SKColor { .init(white: 0.12, alpha: 1.0) }
+	static var lineCursor: SKColor { .init(white: 0.32, alpha: 0.5) }
 }
