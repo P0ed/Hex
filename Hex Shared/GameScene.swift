@@ -12,6 +12,7 @@ final class GameScene: SKScene {
 		scaleMode = .aspectFill
 		anchorPoint = CGPoint(x: 0.5, y: 0.5)
 
+		addCamera()
 		addMap(Map(hex: state.bounds))
 		addCursor()
 	}
@@ -20,6 +21,12 @@ final class GameScene: SKScene {
 		guard dirty else { return }
 		defer { dirty = false }
 		cursor?.position = (state.cursor.cartesian * .hexSize).cg
+	}
+
+	private func addCamera() {
+		let camera = SKCameraNode()
+		addChild(camera)
+		self.camera = camera
 	}
 
 	private func addMap(_ map: Map) {
@@ -52,8 +59,17 @@ extension GameScene {
 		case .upArrow: state.apply(.direction(.up))
 		default: break
 		}
+		switch event.characters {
+		case "m": camera?.run(.scale(to: 4.0, duration: 0.33))
+		default: break
+		}
 	}
 
-	override func keyUp(with event: NSEvent) {}
+	override func keyUp(with event: NSEvent) {
+		switch event.characters {
+		case "m": camera?.run(.scale(to: 1.0, duration: 0.33))
+		default: break
+		}
+	}
 }
 #endif

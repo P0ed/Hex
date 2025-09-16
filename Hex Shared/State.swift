@@ -2,7 +2,7 @@ import HexKit
 
 struct State {
 	var cursor: Hex = .zero
-	var bounds: Int = 4
+	var bounds: Int = 8
 }
 
 extension State {
