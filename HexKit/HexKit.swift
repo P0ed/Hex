@@ -22,12 +22,12 @@ public extension Hex {
 
 	func distance(to hex: Hex) -> Int { (self - hex).length }
 
-	static var directions: [Hex] {
+	static var directions: [6 of Hex] {
 		[Hex(1, 0), Hex(1, -1), Hex(0, -1), Hex(-1, 0), Hex(-1, 1), Hex(0, 1)]
 	}
 
-	var neighbors: [Hex] {
-		Self.directions.map { self + $0 }
+	var neighbors: [6 of Hex] {
+		Self.directions.map { $0 + self }
 	}
 
 	func neighbor(_ d: Int) -> Hex {
@@ -108,4 +108,19 @@ public extension Point {
 extension Double {
 	static var s2: Double { sqrt(2.0) }
 	static var s3: Double { sqrt(3.0) }
+}
+
+public extension InlineArray {
+
+	func map(_ transform: (Element) -> Element) -> Self {
+		var arr = self
+		for i in self.indices { arr[i] = transform(arr[i]) }
+		return arr
+	}
+
+	func mapInPlace(_ transform: (inout Element) -> Void) -> Self {
+		var arr = self
+		for i in self.indices { transform(&arr[i]) }
+		return arr
+	}
 }

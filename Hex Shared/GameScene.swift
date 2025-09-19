@@ -62,6 +62,7 @@ extension GameScene {
 		}
 		switch event.characters {
 		case "m": camera?.run(.scale(to: 4.0, duration: 0.33))
+		case "z": camera?.run(.scale(to: (camera?.xScale ?? 1.0) > 2.0 ? 1.0 : 4.0, duration: 0.33))
 		default: break
 		}
 	}
