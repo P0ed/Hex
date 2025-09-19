@@ -3,7 +3,7 @@ import SpriteKit
 
 final class GameScene: SKScene {
 	private var dirty = false
-	private var state = State() { didSet { dirty = true } }
+	private var state: State = .initial { didSet { dirty = true } }
 
 	private var cursor: SKShapeNode?
 
@@ -46,6 +46,20 @@ final class GameScene: SKScene {
 		self.cursor = cursor
 
 		camera?.constraints = [.distance(.init(upperLimit: 200), to: cursor)]
+	}
+}
+
+extension State {
+
+	@MainActor
+	static var initial: State {
+		.init(
+			players: [.init(id: 0, team: .left, money: 100), .init(id: 1, team: .right, money: 100)],
+			currentPlayer: 0,
+			units: [
+				.infantry(player: 0, position: .zero)
+			]
+		)
 	}
 }
 

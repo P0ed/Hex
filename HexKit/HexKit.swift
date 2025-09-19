@@ -1,6 +1,6 @@
 import math_h
 
-public struct Hex: Hashable {
+public struct Hex: Hashable, Codable {
 	private var _q: Int16
 	private var _r: Int16
 
