@@ -1,24 +1,28 @@
-import HexKit
+@MainActor
+private extension UnitID {
+
+	private static var id = 0 as UnitID
+
+	static func next() -> UnitID {
+		defer { id.value += 1 }
+		return id
+	}
+}
 
 @MainActor
 extension Unit {
 
-	private static var id = 0 as UnitID
-
-	private static func nextID() -> UnitID {
-		defer { id += 1 }
-		return id
-	}
-
 	static func infantry(player: PlayerID, position: Hex) -> Self {
 		.init(
-			id: nextID(),
+			id: .next(),
 			player: player,
 			position: position,
 			hp: HP(10),
-			atk: 4,
-			def: 6,
-			mov: 3
+			stats: Stats(
+				atk: 4,
+				def: 6,
+				mov: 3
+			)
 		)
 	}
 }

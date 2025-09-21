@@ -1,4 +1,3 @@
-import HexKit
 import SpriteKit
 
 extension SKShapeNode {

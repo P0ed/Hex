@@ -1,20 +1,20 @@
 import math_h
 
-public struct Hex: Hashable, Codable {
+struct Hex: Hashable, Codable {
 	private var _q: Int16
 	private var _r: Int16
 
-	public var q: Int { Int(_q) }
-	public var r: Int { Int(_r) }
-	public var s: Int { -(q + r) }
+	var q: Int { Int(_q) }
+	var r: Int { Int(_r) }
+	var s: Int { -(q + r) }
 
-	public init(_ q: Int, _ r: Int) {
+	init(_ q: Int, _ r: Int) {
 		_q = Int16(q)
 		_r = Int16(r)
 	}
 }
 
-public extension Hex {
+extension Hex {
 
 	static var zero: Hex { Hex(0, 0) }
 
@@ -31,7 +31,7 @@ public extension Hex {
 	}
 
 	func neighbor(_ d: Int) -> Hex {
-		self + Self.directions[((d % 6) + 6) % 6]
+		self + Self.directions[d % 6]
 	}
 
 	static func + (lhs: Hex, rhs: Hex) -> Hex {
@@ -55,33 +55,17 @@ public extension Hex {
 	}
 }
 
-public struct Map {
-	public var cells: [Hex]
+struct Point: Hashable {
+	var x: Double
+	var y: Double
 
-	public init(cells: [Hex]) {
-		self.cells = cells
-	}
-
-	public init(hex radii: Int) {
-		self = Map(cells: (-radii...radii).flatMap { q in
-			(max(-radii, -q - radii)...min(radii, -q + radii)).map { r in
-				Hex(q, r)
-			}
-		})
-	}
-}
-
-public struct Point: Hashable {
-	public var x: Double
-	public var y: Double
-
-	public init(_ x: Double, _ y: Double) {
+	init(_ x: Double, _ y: Double) {
 		self.x = x
 		self.y = y
 	}
 }
 
-public extension Point {
+extension Point {
 
 	static var zero: Point { Point(0, 0) }
 
@@ -110,7 +94,7 @@ extension Double {
 	static var s3: Double { sqrt(3.0) }
 }
 
-public extension InlineArray {
+extension InlineArray {
 
 	func map(_ transform: (Element) -> Element) -> Self {
 		var arr = self
