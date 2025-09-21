@@ -37,10 +37,13 @@ extension State {
 	}
 
 	mutating func primaryAction() {
+		let cursor = cursor
+
 		if let selectedUnit {
 			if let u = self[cursor] {
 				events.append(.attack(selectedUnit, u.id))
 			} else {
+				self[selectedUnit]?.position = cursor
 				events.append(.move(selectedUnit, cursor))
 			}
 		} else {

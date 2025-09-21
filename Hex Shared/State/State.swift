@@ -53,7 +53,18 @@ enum Event: Hashable, Codable {
 extension State {
 
 	subscript(_ pid: PlayerID) -> Player? {
-		players.first(where: { $0.id == pid })
+		get {
+			players.first(where: { $0.id == pid })
+		}
+		set {
+			if let idx = players.firstIndex(where: { $0.id == pid }) {
+				if let newValue {
+					players[idx] = newValue
+				} else {
+					players.remove(at: idx)
+				}
+			}
+		}
 	}
 
 	subscript(_ hex: Hex) -> Unit? {
@@ -61,6 +72,17 @@ extension State {
 	}
 
 	subscript(_ uid: UnitID) -> Unit? {
-		units.first(where: { $0.id == uid })
+		get {
+			units.first(where: { $0.id == uid })
+		}
+		set {
+			if let idx = units.firstIndex(where: { $0.id == uid }) {
+				if let newValue {
+					units[idx] = newValue
+				} else {
+					units.remove(at: idx)
+				}
+			}
+		}
 	}
 }

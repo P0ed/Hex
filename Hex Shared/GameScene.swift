@@ -5,8 +5,9 @@ final class GameScene: SKScene {
 		didSet { didSetState() }
 	}
 
-	private var cursor: SKShapeNode?
-	private var units: [UnitID: SKSpriteNode] = [:]
+	private var cursor: SKNode?
+	private var selected: SKNode?
+	private var units: [UnitID: SKNode] = [:]
 
 	override func sceneDidLoad() {
 		backgroundColor = .black
@@ -15,12 +16,18 @@ final class GameScene: SKScene {
 		addCamera()
 		addMap()
 		addCursor()
+		addSelected()
 
 		state.events = state.units.map { .spawn($0.id) }
 	}
 
 	func didSetState() {
 		cursor?.position = (state.cursor.cartesian * .hexSize).cg
+		let selectedHex = state.selectedUnit.flatMap { uid in
+			state[uid]?.position
+		}
+		selected?.isHidden = selectedHex == nil
+		selected?.position = selectedHex.map { hex in (hex.cartesian * .hexSize).cg } ?? .zero
 
 		if state.events.isEmpty { return }
 		state.events.forEach(processEvent)
@@ -31,12 +38,14 @@ final class GameScene: SKScene {
 		switch event {
 		case let .spawn(uid):
 			if let unit = state[uid] {
-				addChild(unit.sprite)
+				let sprite = unit.sprite
+				units[uid] = sprite
+				addChild(sprite)
 			}
 		case let .move(src, pos):
 			units[src]?.run(.move(to: (pos.cartesian * .hexSize).cg, duration: 0.1))
 		case let .attack(src, dst):
-			units[src]?.run(.hit(), completion: { [units] in units[dst]?.run(.hit()) })
+			units[src]?.run(.hit()) { [dst = units[dst]] in dst?.run(.hit()) }
 		}
 	}
 
@@ -59,18 +68,27 @@ final class GameScene: SKScene {
 		let cursor = SKShapeNode(hex: .zero, size: .hexSize)
 		cursor.strokeColor = .lineCursor
 		cursor.fillColor = .baseCursor
-		cursor.zPosition = 1.0
+		cursor.zPosition = 2.0
 		addChild(cursor)
 		self.cursor = cursor
 
 		camera?.constraints = [.distance(.init(upperLimit: 200), to: cursor)]
+	}
+
+	private func addSelected() {
+		let selected = SKShapeNode(hex: .zero, size: .hexSize)
+		selected.strokeColor = .lineSelection
+		selected.fillColor = .baseSelection
+		selected.zPosition = 1.0
+		addChild(selected)
+		self.selected = selected
 	}
 }
 
 extension SKAction {
 
 	static func hit() -> SKAction {
-		.group([
+		.sequence([
 			.scale(to: 0.9, duration: 0.1),
 			.scale(to: 1.0, duration: 0.1)
 		])
@@ -80,18 +98,21 @@ extension SKAction {
 @MainActor
 extension Unit {
 
-	var sprite: SKSpriteNode {
+	var sprite: SKNode {
+		let node = SKNode()
 		let sprite = SKSpriteNode(imageNamed: "Inf")
-		sprite.xScale = player.team == .axis ? 1 : -1
-		sprite.position = (position.cartesian * .hexSize).cg
-		sprite.zPosition = 1.0
-		return sprite
+		sprite.xScale = player.team == .axis ? 0.5 : -0.5
+		sprite.yScale = 0.5
+		node.addChild(sprite)
+		node.position = (position.cartesian * .hexSize).cg
+		node.zPosition = 3.0
+		return node
 	}
 }
 
+@MainActor
 extension State {
 
-	@MainActor
 	static var initial: State {
 		.init(
 			map: Map(),
