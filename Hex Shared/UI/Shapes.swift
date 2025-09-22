@@ -26,6 +26,10 @@ extension Point {
 	var cg: CGPoint { .init(x: x, y: y) }
 }
 
+extension Hex {
+	var point: CGPoint { (cartesian * .hexSize).cg }
+}
+
 extension Double {
 	static var hexSize: Double { 24.0 }
 }

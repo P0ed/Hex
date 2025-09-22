@@ -7,53 +7,79 @@ enum Input { case direction(Direction), target(Target), action(Action), menu(Men
 
 extension State {
 
-	mutating func moveCursor(_ direction: Direction) {
-		let c = switch direction {
-		case .left: cursor.neighbor(cursor.q % 2 == 0 ? 3 : 4)
-		case .right: cursor.neighbor(cursor.q % 2 == 0 ? 1 : 0)
-		case .down: cursor.neighbor(2)
-		case .up: cursor.neighbor(5)
-		}
-
-		if c.distance(to: .zero) <= map.radii { cursor = c }
-	}
-
-	mutating func endTurn() {
-		guard let idx = players.firstIndex(where: { $0.id == currentPlayer }) else { return }
-
-		let nextIdx = (idx + 1) % players.count
-		currentPlayer = players[nextIdx].id
-		turn = nextIdx == 0 ? turn + 1 : turn
-	}
-
 	mutating func apply(_ input: Input) {
 		switch input {
 		case let .direction(direction): moveCursor(direction)
 		case .menu(.yes): endTurn()
 		case .action(.a): primaryAction()
 		case .action(.b): secondaryAction()
+		case .target(.prev): prevUnit()
+		case .target(.next): nextUnit()
 		default: break
 		}
+	}
+
+	mutating func moveCursor(_ direction: Direction) {
+		let c = switch direction {
+		case .left: cursor.neighbor(cursor.q % 2 == 0 ? .southWest : .northWest)
+		case .right: cursor.neighbor(cursor.q % 2 == 0 ? .southEast : .northEast)
+		case .down: cursor.neighbor(.south)
+		case .up: cursor.neighbor(.north)
+		}
+
+		if c.distance(to: .zero) <= map.radii { cursor = c }
 	}
 
 	mutating func primaryAction() {
 		let cursor = cursor
 
-		if let selectedUnit {
-			if let u = self[cursor] {
-				events.append(.attack(selectedUnit, u.id))
+		if let selectedID = selectedUnit, let unit = self[selectedID] {
+			if let dst = self[cursor] {
+				if dst.player.team != unit.player.team {
+					attack(src: unit, dst: dst)
+				} else {
+					selectedUnit = dst.id
+				}
 			} else {
-				self[selectedUnit]?.position = cursor
-				events.append(.move(selectedUnit, cursor))
+				move(unit: unit, to: cursor)
 			}
 		} else {
-			if let u = self[cursor] {
+			if let u = self[cursor], u.player == currentPlayer {
 				selectedUnit = u.id
 			}
 		}
 	}
 
 	mutating func secondaryAction() {
-		selectedUnit = nil
+		selectedUnit = .none
+	}
+
+	mutating func prevUnit() {
+		nextUnit(reversed: true)
+	}
+
+	mutating func nextUnit(reversed: Bool = false) {
+		let player = currentPlayer
+
+		let units: AnyRandomAccessCollection<Unit> = reversed
+			? .init(units.reversed())
+			: .init(units)
+
+		let idx = selectedUnit.flatMap { uid in
+			units.enumerated().first { i, u in u.id == uid }?.offset
+		}
+
+		let validUnit: (Unit) -> Bool = { u in
+			u.player == player && u.hasActions
+		}
+
+		let nextUnit = idx.flatMap { idx in
+			units.dropFirst(idx + 1).first(where: validUnit)
+		} ?? units.first(where: validUnit)
+
+		if let nextUnit {
+			selectedUnit = nextUnit.id
+			cursor = nextUnit.position
+		}
 	}
 }

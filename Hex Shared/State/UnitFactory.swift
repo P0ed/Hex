@@ -17,11 +17,31 @@ extension Unit {
 			id: .next(),
 			player: player,
 			position: position,
-			hp: HP(10),
+			hp: Cap(10),
+			mp: Cap(1),
+			ammo: Cap(7),
 			stats: Stats(
+				typ: .inf,
 				atk: 4,
 				def: 6,
 				mov: 3
+			)
+		)
+	}
+
+	static func tank(player: PlayerID, position: Hex) -> Self {
+		.init(
+			id: .next(),
+			player: player,
+			position: position,
+			hp: Cap(10),
+			mp: Cap(1),
+			ammo: Cap(7),
+			stats: Stats(
+				typ: .tank,
+				atk: 7,
+				def: 10,
+				mov: 5
 			)
 		)
 	}

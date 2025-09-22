@@ -2,22 +2,50 @@ struct Unit: Hashable, Codable {
 	var id: UnitID
 	var player: PlayerID
 	var position: Hex
-	var hp: HP
+	var hp: Cap
+	var mp: Cap
+	var ammo: Cap
+	var exp: UInt8 = 0
+	var fired: Bool = false
 	var stats: Stats
 }
 
-struct HP: Hashable, Codable {
-	var value: UInt8
-	var max: UInt8
-
-	init(_ hp: UInt8) {
-		value = hp
-		max = hp
-	}
-}
-
 struct Stats: Hashable, Codable {
+	var typ: UnitType
 	var atk: UInt8
 	var def: UInt8
 	var mov: UInt8
+}
+
+enum UnitType: Hashable, Codable {
+	case inf, recon, tank, art, antiAir, air
+}
+
+struct Cap: Hashable, Codable {
+	var value: UInt8
+	var max: UInt8
+
+	init(_ cap: UInt8) {
+		value = cap
+		max = cap
+	}
+}
+
+extension Unit {
+	var hasActions: Bool { canMove || canFire }
+	var canMove: Bool { !mp.isEmpty }
+	var canFire: Bool { !fired && !ammo.isEmpty }
+}
+
+extension Cap {
+
+	var isEmpty: Bool { value == 0 }
+
+	mutating func refill(amount: UInt8? = .none) {
+		value = amount.map { dv in min(max, value + dv) } ?? max
+	}
+
+	mutating func decrement(amount: UInt8 = 1) {
+		value -= value < amount ? value : amount
+	}
 }

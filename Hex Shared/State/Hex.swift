@@ -30,8 +30,8 @@ extension Hex {
 		Self.directions.map { $0 + self }
 	}
 
-	func neighbor(_ d: Int) -> Hex {
-		self + Self.directions[d % 6]
+	func neighbor(_ neighbor: HexNeighbor) -> Hex {
+		self + Self.directions[Int(neighbor.rawValue % 6)]
 	}
 
 	static func + (lhs: Hex, rhs: Hex) -> Hex {
@@ -53,6 +53,10 @@ extension Hex {
 	var corners: [Point] {
 		(0..<6).map { [cartesian] in cartesian + .hexCorner($0) }
 	}
+}
+
+enum HexNeighbor: UInt8, Hashable {
+	case northEast, southEast, south, southWest, northWest, north
 }
 
 struct Point: Hashable {
@@ -92,19 +96,4 @@ extension Point {
 extension Double {
 	static var s2: Double { sqrt(2.0) }
 	static var s3: Double { sqrt(3.0) }
-}
-
-extension InlineArray {
-
-	func map(_ transform: (Element) -> Element) -> Self {
-		var arr = self
-		for i in self.indices { arr[i] = transform(arr[i]) }
-		return arr
-	}
-
-	func mapInPlace(_ transform: (inout Element) -> Void) -> Self {
-		var arr = self
-		for i in self.indices { transform(&arr[i]) }
-		return arr
-	}
 }

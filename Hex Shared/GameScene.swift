@@ -5,9 +5,14 @@ final class GameScene: SKScene {
 		didSet { didSetState() }
 	}
 
+	private var hid: HIDController?
 	private var cursor: SKNode?
 	private var selected: SKNode?
 	private var units: [UnitID: SKNode] = [:]
+
+	func applyInput(_ input: Input) {
+		state.apply(input)
+	}
 
 	override func sceneDidLoad() {
 		backgroundColor = .black
@@ -18,16 +23,16 @@ final class GameScene: SKScene {
 		addCursor()
 		addSelected()
 
-		state.events = state.units.map { .spawn($0.id) }
+		state.events = state.units.map { u in .spawn(u.id) }
 	}
 
-	func didSetState() {
-		cursor?.position = (state.cursor.cartesian * .hexSize).cg
+	private func didSetState() {
+		cursor?.position = state.cursor.point
 		let selectedHex = state.selectedUnit.flatMap { uid in
 			state[uid]?.position
 		}
 		selected?.isHidden = selectedHex == nil
-		selected?.position = selectedHex.map { hex in (hex.cartesian * .hexSize).cg } ?? .zero
+		selected?.position = selectedHex.map { hex in hex.point } ?? .zero
 
 		if state.events.isEmpty { return }
 		state.events.forEach(processEvent)
@@ -42,8 +47,12 @@ final class GameScene: SKScene {
 				units[uid] = sprite
 				addChild(sprite)
 			}
-		case let .move(src, pos):
-			units[src]?.run(.move(to: (pos.cartesian * .hexSize).cg, duration: 0.1))
+		case let .kill(uid):
+			units[uid]?.removeFromParent()
+		case let .move(uid):
+			if let unit = state[uid] {
+				units[uid]?.run(.move(to: unit.position.point, duration: 0.2))
+			}
 		case let .attack(src, dst):
 			units[src]?.run(.hit()) { [dst = units[dst]] in dst?.run(.hit()) }
 		}
@@ -84,81 +93,3 @@ final class GameScene: SKScene {
 		self.selected = selected
 	}
 }
-
-extension SKAction {
-
-	static func hit() -> SKAction {
-		.sequence([
-			.scale(to: 0.9, duration: 0.1),
-			.scale(to: 1.0, duration: 0.1)
-		])
-	}
-}
-
-@MainActor
-extension Unit {
-
-	var sprite: SKNode {
-		let node = SKNode()
-		let sprite = SKSpriteNode(imageNamed: "Inf")
-		sprite.xScale = player.team == .axis ? 0.5 : -0.5
-		sprite.yScale = 0.5
-		node.addChild(sprite)
-		node.position = (position.cartesian * .hexSize).cg
-		node.zPosition = 3.0
-		return node
-	}
-}
-
-@MainActor
-extension State {
-
-	static var initial: State {
-		.init(
-			map: Map(),
-			players: [
-				.init(id: .axis(0), money: 100),
-				.init(id: .allies(0), money: 100)
-			],
-			units: [
-				.infantry(player: .axis(0), position: .zero),
-				.infantry(player: .allies(0), position: .zero.neighbor(5).neighbor(5))
-			]
-		)
-	}
-}
-
-#if os(OSX)
-extension GameScene {
-
-	override func keyDown(with event: NSEvent) {
-		switch event.specialKey {
-		case .leftArrow: state.apply(.direction(.left))
-		case .rightArrow: state.apply(.direction(.right))
-		case .downArrow: state.apply(.direction(.down))
-		case .upArrow: state.apply(.direction(.up))
-		default: break
-		}
-		switch event.characters {
-		case "q": state.apply(.target(.prev))
-		case "r": state.apply(.target(.next))
-		case "w": state.apply(.menu(.no))
-		case "e": state.apply(.menu(.yes))
-		case "a": state.apply(.action(.a))
-		case "s": state.apply(.action(.b))
-		case "d": state.apply(.action(.c))
-		case "f": state.apply(.action(.d))
-		case "m": camera?.run(.scale(to: 4.0, duration: 0.33))
-		case "z": camera?.run(.scale(to: (camera?.xScale ?? 1.0) > 2.0 ? 1.0 : 4.0, duration: 0.33))
-		default: break
-		}
-	}
-
-	override func keyUp(with event: NSEvent) {
-		switch event.characters {
-		case "m": camera?.run(.scale(to: 1.0, duration: 0.33))
-		default: break
-		}
-	}
-}
-#endif

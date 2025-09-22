@@ -19,17 +19,25 @@ struct City: Hashable, Codable {
 }
 
 enum Terrain: Hashable, Codable {
-	case clear, forest, hills, mountains, swamp, desert
+	case field, forest, hills, mountains, swamp, desert
 }
 
 extension Terrain {
 
 	var moveCost: Int {
 		switch self {
-		case .clear: 0
+		case .field: 0
 		case .forest, .hills: 1
 		case .mountains: 3
 		case .swamp, .desert: 2
+		}
+	}
+
+	var defBonus: Int {
+		switch self {
+		case .forest, .hills: 2
+		case .mountains: 3
+		default: 0
 		}
 	}
 }

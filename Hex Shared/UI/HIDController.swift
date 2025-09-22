@@ -3,7 +3,7 @@ import GameController
 final class HIDController {
 	private let lifetime: Any
 
-	init() {
+	init(inputStream: @escaping (Input) -> Void) {
 		lifetime = NotificationCenter.default.addObserver(
 			forName: .GCControllerDidBecomeCurrent,
 			object: nil,
