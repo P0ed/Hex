@@ -8,6 +8,7 @@ struct State: Hashable, Codable {
 	var currentPlayer: PlayerID = .axis(0)
 	var turn: UInt32 = 0
 	var selectedUnit: UnitID?
+	var selection: Set<Hex> = []
 
 	var events: [Event] = []
 }

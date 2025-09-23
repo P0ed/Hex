@@ -3,13 +3,13 @@ struct Map: Hashable, Codable {
 	var terrain: [Hex: Terrain] = [:]
 	var cities: [Hex: City] = [:]
 
-	var cells: [Hex] {
+	var cells: Set<Hex> {
 		let radii = Int(radii)
-		return (-radii...radii).flatMap { q in
+		return Set((-radii...radii).flatMap { q in
 			(max(-radii, -q - radii)...min(radii, -q + radii)).map { r in
 				Hex(q, r)
 			}
-		}
+		})
 	}
 }
 

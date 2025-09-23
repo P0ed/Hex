@@ -2,14 +2,16 @@ import SpriteKit
 
 extension SKShapeNode {
 
-	convenience init(hex: Hex, size: Double) {
+	convenience init(hex: Hex, base: SKColor, line: SKColor) {
 		self.init(path: .make { path in
 			let corners = hex.corners
-			path.move(to: (corners[5] * size).cg)
+			path.move(to: (corners[5] * .hexSize).cg)
 			corners.forEach { corner in
-				path.addLine(to: (corner * size).cg)
+				path.addLine(to: (corner * .hexSize).cg)
 			}
 		})
+		fillColor = base
+		strokeColor = line
 	}
 }
 

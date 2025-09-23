@@ -8,4 +8,6 @@ extension SKColor {
 	static var lineCell: SKColor { .init(white: 0.12, alpha: 1.0) }
 	static var lineSelection: SKColor { .init(white: 0.24, alpha: 0.5) }
 	static var lineCursor: SKColor { .init(white: 0.32, alpha: 0.5) }
+
+	static var textDefault: SKColor { .init(white: 0.96, alpha: 1.0) }
 }
