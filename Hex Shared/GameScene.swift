@@ -47,7 +47,13 @@ private extension GameScene {
 		selected?.position = selectedHex.map { hex in hex.point } ?? .zero
 
 		if state.events.isEmpty { return }
-		state.events.forEach(processEvent)
+		Task { await reduceEvents() }
+	}
+
+	func reduceEvents() async {
+		for event in state.events {
+			await processEvent(event)
+		}
 		state.events = []
 	}
 
