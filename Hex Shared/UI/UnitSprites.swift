@@ -6,7 +6,7 @@ extension Unit {
 	var sprite: SKNode {
 		let node = SKNode()
 		node.position = position.point
-		node.zPosition = 3.0
+		node.zPosition = 4.0
 
 		let sprite = SKSpriteNode(imageNamed: imageName)
 		sprite.xScale = player.team == .axis ? 0.5 : -0.5
@@ -26,8 +26,8 @@ extension Unit {
 
 	private var imageName: String {
 		switch stats.typ {
-		case .inf: "Inf"
-		case .recon: "Recon"
+		case .inf: "Inf 39"
+		case .recon: "LT"
 		case .tank: "Tank"
 		case .art: "Art"
 		case .antiAir: "AA"

@@ -64,22 +64,43 @@ private extension GameScene {
 	}
 
 	func addMap() {
-		state.map.cells.forEach { hex in
+		let fieldDef = SKTileDefinition(texture: .init(image: .field), size: .hex)
+		let tileGroupRule = SKTileGroupRule(adjacency: .hexFlatAdjacencyAll, tileDefinitions: [fieldDef])
+		let tileGroup = SKTileGroup(rules: [tileGroupRule])
+		let tileSet = SKTileSet(tileGroups: [tileGroup], tileSetType: .hexagonalFlat)
+
+		let tileMap = SKTileMapNode(
+			tileSet: tileSet,
+			columns: state.map.radii * 2 + 1,
+			rows: state.map.radii * 2 + 1,
+			tileSize: .hex
+		)
+		let cells = state.map.cells
+		let r = state.map.radii
+
+		cells.forEach { hex in
+			tileMap.setTileGroup(tileGroup, forColumn: r + hex.col, row: r + hex.row)
+		}
+		tileMap.position = .init(x: -.hexSize * 1.5, y: .hexSize * 0.4)
+		addChild(tileMap)
+
+		cells.forEach { hex in
 			let cell = SKShapeNode(hex: hex, base: .baseCell, line: .lineCell)
+			cell.zPosition = 1.0
 			addChild(cell)
 		}
 	}
 
 	func addCursor() {
 		let cursor = SKShapeNode(hex: .zero, base: .baseCursor, line: .lineCursor)
-		cursor.zPosition = 2.0
+		cursor.zPosition = 3.0
 		addChild(cursor)
 		self.cursor = cursor
 	}
 
 	func addSelected() {
 		let selected = SKShapeNode(hex: .zero, base: .baseSelection, line: .lineSelection)
-		selected.zPosition = 1.0
+		selected.zPosition = 2.0
 		addChild(selected)
 		self.selected = selected
 	}

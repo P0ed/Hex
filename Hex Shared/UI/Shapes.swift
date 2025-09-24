@@ -3,13 +3,8 @@ import SpriteKit
 extension SKShapeNode {
 
 	convenience init(hex: Hex, base: SKColor, line: SKColor) {
-		self.init(path: .make { path in
-			let corners = hex.corners
-			path.move(to: (corners[5] * .hexSize).cg)
-			corners.forEach { corner in
-				path.addLine(to: (corner * .hexSize).cg)
-			}
-		})
+		self.init(path: .hex)
+		position = hex.point
 		fillColor = base
 		strokeColor = line
 	}
@@ -21,6 +16,16 @@ extension CGPath {
 		let path = CGMutablePath()
 		transform(path)
 		return path
+	}
+
+	static var hex: CGPath {
+		.make { path in
+			let corners = Hex.zero.corners
+			path.move(to: (corners[5] * .hexSize).cg)
+			corners.forEach { corner in
+				path.addLine(to: (corner * .hexSize).cg)
+			}
+		}
 	}
 }
 
@@ -34,4 +39,8 @@ extension Hex {
 
 extension Double {
 	static var hexSize: Double { 24.0 }
+}
+
+extension CGSize {
+	static var hex: CGSize { .init(width: 2 * .hexSize, height: sqrt(3.0) * .hexSize) }
 }
