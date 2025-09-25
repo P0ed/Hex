@@ -19,9 +19,7 @@ extension Hex {
 	static var zero: Hex { Hex(0, 0) }
 
 	var col: Int { q }
-	var row: Int {
-		r + (q - q & 1) / 2
-	}
+	var row: Int { r + (q - q & 1) / 2 }
 
 	var length: Int { (abs(q) + abs(r) + abs(s)) / 2 }
 

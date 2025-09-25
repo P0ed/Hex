@@ -44,7 +44,7 @@
 
 # Ground Tiles:
 
-* Clear
+* Field
 * Forest
 * Hills
 * Mountains

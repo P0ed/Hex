@@ -20,11 +20,8 @@ extension CGPath {
 
 	static var hex: CGPath {
 		.make { path in
-			let corners = Hex.zero.corners
-			path.move(to: (corners[5] * .hexSize).cg)
-			corners.forEach { corner in
-				path.addLine(to: (corner * .hexSize).cg)
-			}
+			path.addLines(between: Hex.zero.corners.map { ($0 * .hexSize).cg })
+			path.closeSubpath()
 		}
 	}
 }
@@ -42,5 +39,5 @@ extension Double {
 }
 
 extension CGSize {
-	static var hex: CGSize { .init(width: 2 * .hexSize, height: sqrt(3.0) * .hexSize) }
+	static var hex: CGSize { .init(width: 2 * .hexSize, height: 2 * .hexSize) }
 }

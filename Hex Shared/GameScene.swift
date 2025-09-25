@@ -65,23 +65,25 @@ private extension GameScene {
 
 	func addMap() {
 		let fieldDef = SKTileDefinition(texture: .init(image: .field), size: .hex)
-		let tileGroupRule = SKTileGroupRule(adjacency: .hexFlatAdjacencyAll, tileDefinitions: [fieldDef])
+		let tileGroupRule = SKTileGroupRule(adjacency: .adjacencyAll, tileDefinitions: [fieldDef])
 		let tileGroup = SKTileGroup(rules: [tileGroupRule])
 		let tileSet = SKTileSet(tileGroups: [tileGroup], tileSetType: .hexagonalFlat)
 
-		let tileMap = SKTileMapNode(
-			tileSet: tileSet,
-			columns: state.map.radii * 2 + 1,
-			rows: state.map.radii * 2 + 1,
-			tileSize: .hex
-		)
 		let cells = state.map.cells
 		let r = state.map.radii
+
+		let tileMap = SKTileMapNode(
+			tileSet: tileSet,
+			columns: r * 2 + 1,
+			rows: r * 2 + 1,
+			tileSize: CGSize(width: .hexSize * 2.0, height: .hexSize * sqrt(3.0))
+		)
 
 		cells.forEach { hex in
 			tileMap.setTileGroup(tileGroup, forColumn: r + hex.col, row: r + hex.row)
 		}
-		tileMap.position = .init(x: -.hexSize * 1.5, y: .hexSize * 0.4)
+
+		tileMap.position = .init(x: -.hexSize * 1.5, y: .hexSize * 0.31)
 		addChild(tileMap)
 
 		cells.forEach { hex in
