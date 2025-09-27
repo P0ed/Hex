@@ -18,9 +18,6 @@ extension Hex {
 
 	static var zero: Hex { Hex(0, 0) }
 
-	var col: Int { q }
-	var row: Int { r + (q - q & 1) / 2 }
-
 	var length: Int { (abs(q) + abs(r) + abs(s)) / 2 }
 
 	func distance(to hex: Hex) -> Int { (self - hex).length }
@@ -49,12 +46,12 @@ extension Hex {
 		Hex(lhs.q * rhs, lhs.r * rhs)
 	}
 
-	var cartesian: Point {
+	var pt: Point {
 		Point(1.5 * Double(q), .s3 * 0.5 * Double(q) + .s3 * Double(r))
 	}
 
 	var corners: [Point] {
-		(0..<6).map { [cartesian] in cartesian + .hexCorner($0) }
+		(0..<6).map { [pt] in pt + .hexCorner($0) }
 	}
 }
 

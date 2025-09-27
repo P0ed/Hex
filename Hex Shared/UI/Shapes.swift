@@ -20,7 +20,7 @@ extension CGPath {
 
 	static var hex: CGPath {
 		.make { path in
-			path.addLines(between: Hex.zero.corners.map { ($0 * .hexSize).cg })
+			path.addLines(between: Hex.zero.corners.map { ($0 * .hexR).cg })
 			path.closeSubpath()
 		}
 	}
@@ -31,13 +31,13 @@ extension Point {
 }
 
 extension Hex {
-	var point: CGPoint { (cartesian * .hexSize).cg }
+	var point: CGPoint { (pt * .hexR).cg }
 }
 
 extension Double {
-	static var hexSize: Double { 24.0 }
+	static var hexR: Double { 24.0 }
 }
 
 extension CGSize {
-	static var hex: CGSize { .init(width: 2 * .hexSize, height: 2 * .hexSize) }
+	static var hex: CGSize { .init(width: 2.0 * Double.hexR, height: 2.0 * Double.hexR) }
 }

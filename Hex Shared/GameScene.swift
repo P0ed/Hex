@@ -1,11 +1,13 @@
 import SpriteKit
+import GameplayKit
 
 final class GameScene: SKScene {
 	private(set) var state: State = .initial { didSet { didSetState() } }
 	private(set) var cursor: SKNode?
 	private(set) var selected: SKNode?
+	private(set) var grid: SKNode?
 	private(set) var units: [UnitID: SKNode] = [:]
-	private var hid: HIDController?
+	private let hid = HIDController()
 
 	override func sceneDidLoad() {
 		backgroundColor = .black
@@ -20,7 +22,9 @@ final class GameScene: SKScene {
 
 		state.events = state.units.map { u in .spawn(u.id) }
 
-		hid = HIDController { [weak self] input in self?.applyInput(input) }
+		hid.inputStream = { [weak self] input in
+			if let self, state.events.isEmpty { applyInput(input) }
+		}
 	}
 
 	func applyInput(_ input: Input) {
@@ -64,33 +68,36 @@ private extension GameScene {
 	}
 
 	func addMap() {
-		let fieldDef = SKTileDefinition(texture: .init(image: .field), size: .hex)
-		let tileGroupRule = SKTileGroupRule(adjacency: .adjacencyAll, tileDefinitions: [fieldDef])
-		let tileGroup = SKTileGroup(rules: [tileGroupRule])
-		let tileSet = SKTileSet(tileGroups: [tileGroup], tileSetType: .hexagonalFlat)
-
 		let cells = state.map.cells
 		let r = state.map.radii
 
-		let tileMap = SKTileMapNode(
-			tileSet: tileSet,
+		let terrain = SKTileMapNode(
+			tileSet: .terrain,
 			columns: r * 2 + 1,
 			rows: r * 2 + 1,
-			tileSize: CGSize(width: .hexSize * 2.0, height: .hexSize * sqrt(3.0))
+			tileSize: CGSize(width: .hexR * 2.0, height: .hexR * sqrt(3.0))
+		)
+		let grid = SKTileMapNode(
+			tileSet: .cell,
+			columns: r * 2 + 1,
+			rows: r * 2 + 1,
+			tileSize: CGSize(width: .hexR * 2.0, height: .hexR * sqrt(3.0))
 		)
 
-		cells.forEach { hex in
-			tileMap.setTileGroup(tileGroup, forColumn: r + hex.col, row: r + hex.row)
+		cells.forEach { [noise = GKNoiseMap.terrain(r: r, seed: 0)] hex in
+			let x = r + hex.q
+			let y = r + hex.r + (hex.q - hex.q & 1) / 2
+			let pos = SIMD2<Int32>(Int32(x), Int32(y))
+			let val = noise.value(at: pos)
+			terrain.setTileGroup(.group(at: val), forColumn: x, row: y)
+			grid.setTileGroup(.cell, forColumn: x, row: y)
 		}
+		terrain.position = .init(x: -.hexR * 1.5, y: .hexR * 0.31)
+		addChild(terrain)
 
-		tileMap.position = .init(x: -.hexSize * 1.5, y: .hexSize * 0.31)
-		addChild(tileMap)
-
-		cells.forEach { hex in
-			let cell = SKShapeNode(hex: hex, base: .baseCell, line: .lineCell)
-			cell.zPosition = 1.0
-			addChild(cell)
-		}
+		grid.zPosition = 1.0
+		terrain.addChild(grid)
+		self.grid = grid
 	}
 
 	func addCursor() {

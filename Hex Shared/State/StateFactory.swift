@@ -9,12 +9,13 @@ extension State {
 				.init(id: .allies(0), money: 100)
 			],
 			units: [
-				.tank(player: .axis(0), position: .zero.neighbor(.southWest).neighbor(.south)),
-				.infantry(player: .axis(0), position: .zero.neighbor(.south).neighbor(.south)),
-				.infantry(player: .axis(0), position: .zero.neighbor(.southEast).neighbor(.southEast)),
+				.tank(player: .axis(0), position: Hex(0, -1)),
+				.tank(player: .axis(0), position: Hex(-4, 1)),
+				.infantry(player: .axis(0), position: Hex(-4, 0)),
+				.infantry(player: .axis(0), position: Hex(1, -2)),
 
-				.infantry(player: .allies(0), position: .zero.neighbor(.north).neighbor(.north)),
-				.infantry(player: .allies(0), position: .zero.neighbor(.northEast).neighbor(.northEast)),
+				.infantry(player: .allies(0), position: Hex(0, 3)),
+				.infantry(player: .allies(0), position: Hex(3, 1)),
 			]
 		)
 	}

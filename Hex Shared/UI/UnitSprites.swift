@@ -13,13 +13,19 @@ extension Unit {
 		sprite.yScale = 0.5
 		node.addChild(sprite)
 
+		let plate = SKSpriteNode(imageNamed: "Plate")
+		plate.position = CGPoint(x: 0, y: Double.hexR * -0.64)
+		plate.zPosition = 5.0
+		node.addChild(plate)
+
 		let label = SKLabelNode(fontNamed: "Menlo")
 		label.name = "hp"
-		label.position = CGPoint(x: 0, y: .hexSize * -0.8)
-		label.fontSize = CGFloat(Double.hexSize * 0.28)
+		label.fontSize = CGFloat(Double.hexR * 0.22)
 		label.fontColor = .textDefault
 		label.text = "\(hp.value)"
-		node.addChild(label)
+		label.position = CGPoint(x: 0, y: Double.hexR * -0.12)
+		label.zPosition = 6.0
+		plate.addChild(label)
 
 		return node
 	}

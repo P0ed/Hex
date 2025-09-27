@@ -1,5 +1,5 @@
 struct Map: Hashable, Codable {
-	var radii: Int = 8
+	var radii: Int = 16
 	var terrain: [Hex: Terrain] = [:]
 	var cities: [Hex: City] = [:]
 
