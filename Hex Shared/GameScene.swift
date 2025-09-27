@@ -5,6 +5,7 @@ final class GameScene: SKScene {
 	private(set) var state: State = .random() { didSet { didSetState() } }
 	private(set) var cursor: SKNode?
 	private(set) var selected: SKNode?
+	private(set) var fog: SKNode?
 	private(set) var grid: SKNode?
 	private(set) var units: [UnitID: SKNode] = [:]
 	private let hid = HIDController()
@@ -13,10 +14,11 @@ final class GameScene: SKScene {
 		backgroundColor = .black
 		scaleMode = .aspectFill
 
-		addCamera()
-		addMap()
-		addSelected()
-		addCursor()
+		let map = addMap(state.map)
+		grid = map.grid
+		camera = addCamera()
+		selected = addSelected()
+		cursor = addCursor()
 
 		if let cursor { camera?.constraints = [.distance(.init(upperLimit: 200), to: cursor)] }
 
@@ -59,44 +61,23 @@ private extension GameScene {
 		state.events = []
 	}
 
-	func addCamera() {
+	func addCamera() -> SKCameraNode {
 		let camera = SKCameraNode()
 		addChild(camera)
-		self.camera = camera
+		return camera
 	}
 
-	func addMap() {
-		let cells = state.map.cells
-		let r = state.map.radii
-
-		let grid = SKTileMapNode(tiles: .cell, radii: r)
-		grid.zPosition = 1.0
-		self.grid = grid
-
-		let terrain = SKTileMapNode(tiles: .terrain, radii: r)
-		terrain.position = .init(x: -.hexR * 1.5, y: .hexR * 0.31)
-		terrain.addChild(grid)
-		addChild(terrain)
-
-		cells.forEach { hex in
-			let (x, y) = state.map.converting(hex)
-			let tileGroup = state.map[hex].tileGroup
-			terrain.setTileGroup(tileGroup, forColumn: x, row: y)
-			grid.setTileGroup(.cell, forColumn: x, row: y)
-		}
-	}
-
-	func addSelected() {
+	func addSelected() -> SKNode {
 		let selected = SKShapeNode(hex: .zero, base: .baseSelection, line: .lineSelection)
 		selected.zPosition = 2.0
 		addChild(selected)
-		self.selected = selected
+		return selected
 	}
 
-	func addCursor() {
+	func addCursor() -> SKNode {
 		let cursor = SKShapeNode(hex: .zero, base: .baseCursor, line: .lineCursor)
 		cursor.zPosition = 3.0
 		addChild(cursor)
-		self.cursor = cursor
+		return cursor
 	}
 }

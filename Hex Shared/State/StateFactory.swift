@@ -3,9 +3,9 @@ import GameplayKit
 @MainActor
 extension State {
 
-	static func random(radii: Int = 16, seed: Int = 0) -> State {
+	static func random(radius: Int = 16, seed: Int = 0) -> State {
 		.init(
-			map: Map(radii: radii, seed: seed),
+			map: Map(radius: radius, seed: seed),
 			players: [
 				Player(id: .axis),
 				Player(id: .allies)
@@ -27,11 +27,11 @@ extension State {
 @MainActor
 extension Map {
 
-	init(radii: Int, seed: Int) {
-		self = Map(radii: radii)
+	init(radius: Int, seed: Int) {
+		self = Map(radius: radius)
 
-		let noise = GKNoiseMap.terrain(radii: radii, seed: seed)
-		let pairs = [Hex].circle(radii).map { hex in
+		let noise = GKNoiseMap.terrain(radius: radius, seed: seed)
+		let pairs = [Hex].circle(radius).map { hex in
 			let (x, y) = converting(hex)
 			let pos = SIMD2<Int32>(Int32(x), Int32(y))
 			return (hex, Terrain.terrain(at: noise.value(at: pos)))

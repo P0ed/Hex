@@ -1,26 +1,26 @@
 struct Map: Hashable, Codable {
-	var radii: Int
+	var radius: Int
 	var terrain: [Hex: Terrain] = [:]
 	var cities: [Hex: City] = [:]
 
-	var cells: [Hex] { .circle(radii) }
+	var cells: [Hex] { .circle(radius) }
 
 	subscript(_ hex: Hex) -> Terrain {
 		terrain[hex] ?? .field
 	}
 
 	func converting(_ hex: Hex) -> (Int, Int) {
-		(radii + hex.q, radii + hex.r + (hex.q - hex.q & 1) / 2)
+		(radius + hex.q, radius + hex.r + (hex.q - hex.q & 1) / 2)
 	}
 }
 
 extension [Hex] {
 
-	static func circle(_ radii: Int) -> Self {
-		let _radii = -radii
-		let qs = (_radii...radii)
+	static func circle(_ radius: Int) -> Self {
+		let _radius = -radius
+		let qs = (_radius...radius)
 		return qs.flatMap { q in
-			let rs = Swift.max(_radii, _radii - q)...Swift.min(radii, radii - q)
+			let rs = Swift.max(_radius, _radius - q)...Swift.min(radius, radius - q)
 			return rs.map { r in Hex(q, r) }
 		}
 	}

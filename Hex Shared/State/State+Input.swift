@@ -27,7 +27,7 @@ extension State {
 		case .up: cursor.neighbor(.north)
 		}
 
-		if c.distance(to: .zero) <= map.radii { cursor = c }
+		if c.distance(to: .zero) <= map.radius { cursor = c }
 	}
 
 	mutating func primaryAction() {
