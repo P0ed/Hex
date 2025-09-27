@@ -15,8 +15,8 @@ final class GameScene: SKScene {
 
 		addCamera()
 		addMap()
-		addCursor()
 		addSelected()
+		addCursor()
 
 		if let cursor { camera?.constraints = [.distance(.init(upperLimit: 200), to: cursor)] }
 
@@ -71,20 +71,17 @@ private extension GameScene {
 		let cells = state.map.cells
 		let r = state.map.radii
 
-		let terrain = SKTileMapNode(
-			tileSet: .terrain,
-			columns: r * 2 + 1,
-			rows: r * 2 + 1,
-			tileSize: CGSize(width: .hexR * 2.0, height: .hexR * sqrt(3.0))
-		)
-		let grid = SKTileMapNode(
-			tileSet: .cell,
-			columns: r * 2 + 1,
-			rows: r * 2 + 1,
-			tileSize: CGSize(width: .hexR * 2.0, height: .hexR * sqrt(3.0))
-		)
+		let noise = GKNoiseMap.terrain(radii: r, seed: 0)
+		let grid = SKTileMapNode(tiles: .cell, radii: r)
+		grid.zPosition = 1.0
+		self.grid = grid
 
-		cells.forEach { [noise = GKNoiseMap.terrain(r: r, seed: 0)] hex in
+		let terrain = SKTileMapNode(tiles: .terrain, radii: r)
+		terrain.position = .init(x: -.hexR * 1.5, y: .hexR * 0.31)
+		terrain.addChild(grid)
+		addChild(terrain)
+
+		cells.forEach { hex in
 			let x = r + hex.q
 			let y = r + hex.r + (hex.q - hex.q & 1) / 2
 			let pos = SIMD2<Int32>(Int32(x), Int32(y))
@@ -92,19 +89,6 @@ private extension GameScene {
 			terrain.setTileGroup(.group(at: val), forColumn: x, row: y)
 			grid.setTileGroup(.cell, forColumn: x, row: y)
 		}
-		terrain.position = .init(x: -.hexR * 1.5, y: .hexR * 0.31)
-		addChild(terrain)
-
-		grid.zPosition = 1.0
-		terrain.addChild(grid)
-		self.grid = grid
-	}
-
-	func addCursor() {
-		let cursor = SKShapeNode(hex: .zero, base: .baseCursor, line: .lineCursor)
-		cursor.zPosition = 3.0
-		addChild(cursor)
-		self.cursor = cursor
 	}
 
 	func addSelected() {
@@ -112,5 +96,12 @@ private extension GameScene {
 		selected.zPosition = 2.0
 		addChild(selected)
 		self.selected = selected
+	}
+
+	func addCursor() {
+		let cursor = SKShapeNode(hex: .zero, base: .baseCursor, line: .lineCursor)
+		cursor.zPosition = 3.0
+		addChild(cursor)
+		self.cursor = cursor
 	}
 }

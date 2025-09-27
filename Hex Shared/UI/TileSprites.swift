@@ -43,9 +43,21 @@ extension SKTileSet {
 }
 
 @MainActor
+extension SKTileMapNode {
+	convenience init(tiles: SKTileSet, radii: Int) {
+		self.init(
+			tileSet: tiles,
+			columns: radii * 2 + 1,
+			rows: radii * 2 + 1,
+			tileSize: CGSize(width: .hexR * 2.0, height: .hexR * sqrt(3.0))
+		)
+	}
+}
+
+@MainActor
 extension GKNoiseMap {
 
-	static func terrain(r: Int, seed: Int) -> GKNoiseMap {
+	static func terrain(radii: Int, seed: Int) -> GKNoiseMap {
 
 		let noiseSource = GKPerlinNoiseSource(
 			frequency: 8.2,
@@ -58,7 +70,7 @@ extension GKNoiseMap {
 			GKNoise(noiseSource),
 			size: .one,
 			origin: .zero,
-			sampleCount: SIMD2<Int32>(Int32(r) * 2 + 1, Int32(r) * 2 + 1),
+			sampleCount: SIMD2<Int32>(Int32(radii) * 2 + 1, Int32(radii) * 2 + 1),
 			seamless: false
 		)
 
