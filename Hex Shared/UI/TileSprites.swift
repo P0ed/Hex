@@ -16,8 +16,12 @@ extension SKTileGroup {
 	static let hills = make(.hills)
 	static let mountains = make(.mountains)
 	static let swamp = make(.swamp)
+}
 
-	static func group(at height: Float) -> SKTileGroup {
+@MainActor
+extension Terrain {
+
+	static func terrain(at height: Float) -> Terrain {
 		switch (height + 1.0) / 2.0 {
 		case 0.0 ..< 0.1: .swamp
 		case 0.1 ..< 0.5: .field
@@ -25,6 +29,16 @@ extension SKTileGroup {
 		case 0.7 ..< 0.9: .hills
 		case 0.9 ... 1.0: .mountains
 		default: .field
+		}
+	}
+
+	var tileGroup: SKTileGroup {
+		switch self {
+		case .field: .field
+		case .forest: .forest
+		case .hills: .hills
+		case .mountains: .mountains
+		case .swamp: .swamp
 		}
 	}
 }

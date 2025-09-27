@@ -2,7 +2,7 @@ import SpriteKit
 import GameplayKit
 
 final class GameScene: SKScene {
-	private(set) var state: State = .initial { didSet { didSetState() } }
+	private(set) var state: State = .random() { didSet { didSetState() } }
 	private(set) var cursor: SKNode?
 	private(set) var selected: SKNode?
 	private(set) var grid: SKNode?
@@ -55,9 +55,7 @@ private extension GameScene {
 	}
 
 	func reduceEvents() async {
-		for event in state.events {
-			await processEvent(event)
-		}
+		for event in state.events { await processEvent(event) }
 		state.events = []
 	}
 
@@ -71,7 +69,6 @@ private extension GameScene {
 		let cells = state.map.cells
 		let r = state.map.radii
 
-		let noise = GKNoiseMap.terrain(radii: r, seed: 0)
 		let grid = SKTileMapNode(tiles: .cell, radii: r)
 		grid.zPosition = 1.0
 		self.grid = grid
@@ -82,11 +79,9 @@ private extension GameScene {
 		addChild(terrain)
 
 		cells.forEach { hex in
-			let x = r + hex.q
-			let y = r + hex.r + (hex.q - hex.q & 1) / 2
-			let pos = SIMD2<Int32>(Int32(x), Int32(y))
-			let val = noise.value(at: pos)
-			terrain.setTileGroup(.group(at: val), forColumn: x, row: y)
+			let (x, y) = state.map.converting(hex)
+			let tileGroup = state.map[hex].tileGroup
+			terrain.setTileGroup(tileGroup, forColumn: x, row: y)
 			grid.setTileGroup(.cell, forColumn: x, row: y)
 		}
 	}

@@ -10,15 +10,18 @@ struct UnitID: Hashable, Codable, ExpressibleByIntegerLiteral {
 	}
 }
 
-struct PlayerID: Hashable, Codable {
+struct PlayerID: Hashable, Codable, ExpressibleByIntegerLiteral {
 	var value: UInt8
-	var team: Team
+	var team: Team { value & 1 == 0 ? .axis : .allies }
 
-	static func axis(_ id: UInt8) -> Self {
-		.init(value: id, team: .axis)
+	init(value: UInt8) {
+		self.value = value
 	}
 
-	static func allies(_ id: UInt8) -> Self {
-		.init(value: id, team: .allies)
+	init(integerLiteral value: IntegerLiteralType) {
+		self = PlayerID(value: UInt8(value))
 	}
+
+	static var axis: Self { 0 }
+	static var allies: Self { 1 }
 }

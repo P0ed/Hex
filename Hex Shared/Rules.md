@@ -36,8 +36,8 @@
 # Buildings:
 
 * Airfield (provides supplies to air units)
-* Factory (produces money)
-* Laboratory (produces research points)
+* Factory (produces prestige points)
+* Laboratory (produces science points)
 * Radar (detects air units)
 * Bunker
 

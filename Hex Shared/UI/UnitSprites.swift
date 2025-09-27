@@ -23,9 +23,9 @@ extension Unit {
 		label.fontSize = CGFloat(Double.hexR * 0.22)
 		label.fontColor = .textDefault
 		label.text = "\(hp.value)"
-		label.position = CGPoint(x: 0, y: Double.hexR * -0.12)
+		label.position = CGPoint(x: 0, y: Double.hexR * -0.76)
 		label.zPosition = 6.0
-		plate.addChild(label)
+		node.addChild(label)
 
 		return node
 	}

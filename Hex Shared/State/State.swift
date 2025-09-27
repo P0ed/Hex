@@ -5,20 +5,21 @@ struct State: Hashable, Codable {
 	var units: [Unit]
 
 	var cursor: Hex = .zero
-	var currentPlayer: PlayerID = .axis(0)
+	var currentPlayer: PlayerID = .axis
 	var turn: UInt32 = 0
 	var selectedUnit: UnitID?
-	var selection: Set<Hex> = []
+	var selectable: Set<Hex> = []
 
 	var events: [Event] = []
 }
 
 struct Player: Hashable, Codable {
 	var id: PlayerID
-	var money: UInt32
+	var prestige: UInt32 = 0
+	var science: UInt32 = 0
 }
 
-enum Team: UInt8, Hashable, Codable { case axis, allies }
+enum Team: Hashable, Codable { case axis, allies }
 
 enum Event: Hashable, Codable {
 	case spawn(UnitID)
