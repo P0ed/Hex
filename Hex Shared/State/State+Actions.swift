@@ -16,14 +16,14 @@ extension State {
 	}
 
 	mutating func move(unit: Unit, to position: Hex) {
-		guard unit.canMove else { return }
+		guard unit.canMove, moves(for: unit).contains(position) else { return }
 
 		let unit = modifying(unit) { u in
 			u.position = position
 			u.mp.decrement()
 		}
 		self[unit.id] = unit
-		selectedUnit = unit.hasActions ? unit.id : .none
+		selectUnit(unit.hasActions ? unit : .none)
 		events.append(.move(unit.id))
 	}
 

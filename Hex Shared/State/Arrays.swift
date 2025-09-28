@@ -15,6 +15,17 @@ extension InlineArray {
 
 extension Array {
 
+	init<let count: Int>(_ inlineArray: InlineArray<count, Element>) {
+		var arr = [] as Self
+		arr.reserveCapacity(count)
+		for idx in inlineArray.indices { arr.append(inlineArray[idx]) }
+		self = arr
+	}
+
+	static func make(_ tfm: (inout Self) -> Void) -> Self {
+		modifying([], tfm)
+	}
+
 	mutating func mapInPlace(_ tfm: (inout Element) -> Void) -> Self {
 		map { e in modifying(e, tfm) }
 	}

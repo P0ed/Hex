@@ -10,7 +10,8 @@ extension SKTileGroup {
 		)
 	}
 
-	static let cell = make(.cell)
+	static let grid = make(.grid)
+	static let fog = make(.fog)
 	static let field = make(.field)
 	static let forest = make(.forest)
 	static let hills = make(.hills)
@@ -46,8 +47,8 @@ extension Terrain {
 @MainActor
 extension SKTileSet {
 
-	static let cell = SKTileSet(
-		tileGroups: [.cell],
+	static let cells = SKTileSet(
+		tileGroups: [.grid, .fog],
 		tileSetType: .hexagonalFlat
 	)
 	static let terrain = SKTileSet(

@@ -38,20 +38,20 @@ extension State {
 				if dst.player.team != unit.player.team {
 					attack(src: unit, dst: dst)
 				} else {
-					selectedUnit = dst.id
+					selectUnit(dst)
 				}
 			} else {
 				move(unit: unit, to: cursor)
 			}
 		} else {
 			if let u = self[cursor], u.player == currentPlayer {
-				selectedUnit = u.id
+				selectUnit(u)
 			}
 		}
 	}
 
 	mutating func secondaryAction() {
-		selectedUnit = .none
+		selectUnit(.none)
 	}
 
 	mutating func prevUnit() {
@@ -62,8 +62,8 @@ extension State {
 		let player = currentPlayer
 
 		let units: AnyRandomAccessCollection<Unit> = reversed
-			? .init(units.reversed())
-			: .init(units)
+		? .init(units.reversed())
+		: .init(units)
 
 		let idx = selectedUnit.flatMap { uid in
 			units.enumerated().first { i, u in u.id == uid }?.offset
@@ -77,9 +77,28 @@ extension State {
 			units.dropFirst(idx + 1).first(where: validUnit)
 		} ?? units.first(where: validUnit)
 
-		if let nextUnit {
-			selectedUnit = nextUnit.id
-			cursor = nextUnit.position
+		if let nextUnit { selectUnit(nextUnit) }
+	}
+
+	mutating func selectUnit(_ unit: Unit?) {
+		if let unit {
+			selectedUnit = unit.id
+			cursor = unit.position
+			selectable = unit.canMove ? moves(for: unit) : .none
+		} else {
+			selectedUnit = .none
+			selectable = .none
 		}
+	}
+
+	func moves(for unit: Unit) -> Set<Hex> {
+		Set([Hex].make { hs in
+			hs += Array(unit.position.neighbors)
+		})
+		.subtracting(units.map(\.position))
+	}
+
+	func vision(for unit: Unit) -> Set<Hex> {
+		Set([unit.position]).union(Array(unit.position.neighbors))
 	}
 }

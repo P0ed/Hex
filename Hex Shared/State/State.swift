@@ -4,11 +4,13 @@ struct State: Hashable, Codable {
 	var players: [Player]
 	var units: [Unit]
 
-	var cursor: Hex = .zero
 	var currentPlayer: PlayerID = .axis
 	var turn: UInt32 = 0
+	var visible: Set<Hex>?
+
+	var cursor: Hex = .zero
 	var selectedUnit: UnitID?
-	var selectable: Set<Hex> = []
+	var selectable: Set<Hex>?
 
 	var events: [Event] = []
 }
