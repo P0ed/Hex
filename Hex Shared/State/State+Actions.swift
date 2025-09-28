@@ -1,9 +1,24 @@
 extension State {
 
 	func moves(for unit: Unit) -> Set<Hex> {
-		Set([Hex].make { hs in
-			hs += unit.position.circle(Int(unit.stats.mov))
-		})
+		.make { hs in
+			if unit.stats.typ == .air {
+				hs.formUnion(unit.position.circle(Int(unit.stats.mov)))
+			} else {
+				var front = [(unit.position, Int(unit.stats.mov))] as [(Hex, Int)]
+				repeat {
+					front = front.flatMap { fx, mp in
+						fx.circle(1).compactMap { hx in
+							let mpLeft = mp - map[hx].moveCost
+							return hs.contains(hx) || mpLeft < 0
+							? nil
+							: (hx, mpLeft)
+						}
+					}
+					hs.formUnion(front.map(\.0))
+				} while !front.isEmpty
+			}
+		}
 		.subtracting(units.map(\.position))
 	}
 
@@ -42,8 +57,7 @@ extension State {
 
 	mutating func move(unit: Unit, to position: Hex) {
 		guard unit.player == currentPlayer,
-			  unit.canMove,
-			  moves(for: unit).contains(position)
+			  unit.canMove, moves(for: unit).contains(position)
 		else { return }
 
 		let unit = modifying(unit) { u in
@@ -58,7 +72,10 @@ extension State {
 	}
 
 	mutating func attack(src: Unit, dst: Unit) {
-		guard src.canFire, src.canHit(unit: dst) else { return }
+		guard src.player == currentPlayer,
+			  src.player.team != dst.player.team,
+			  src.canFire, src.canHit(unit: dst)
+		else { return }
 
 		var src = src
 		var dst = dst

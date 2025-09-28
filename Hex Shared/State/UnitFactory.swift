@@ -37,13 +37,31 @@ extension Unit {
 			position: position,
 			hp: Cap(10),
 			mp: Cap(1),
-			ammo: Cap(7),
+			ammo: Cap(6),
 			stats: Stats(
 				typ: .tank,
 				atk: 7,
 				def: 10,
 				mov: 5,
 				rng: 2
+			)
+		)
+	}
+
+	static func art(player: PlayerID, position: Hex) -> Self {
+		.init(
+			id: .next(),
+			player: player,
+			position: position,
+			hp: Cap(10),
+			mp: Cap(1),
+			ammo: Cap(5),
+			stats: Stats(
+				typ: .art,
+				atk: 6,
+				def: 4,
+				mov: 1,
+				rng: 4
 			)
 		)
 	}

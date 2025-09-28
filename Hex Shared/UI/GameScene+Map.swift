@@ -17,6 +17,7 @@ extension GameScene {
 
 		let grid = SKTileMapNode(tiles: .cells, radius: map.radius)
 		grid.zPosition = 1.0
+		grid.isHidden = true
 
 		let terrain = SKTileMapNode(tiles: .terrain, radius: map.radius)
 		terrain.position = .init(x: -.hexR * 1.5, y: .hexR * 0.31)

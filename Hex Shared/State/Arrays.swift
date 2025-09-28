@@ -31,6 +31,13 @@ extension Array {
 	}
 }
 
+extension Set {
+
+	static func make(_ tfm: (inout Self) -> Void) -> Self {
+		modifying([], tfm)
+	}
+}
+
 func modifying<A>(_ value: A, _ tfm: (inout A) -> Void) -> A {
 	var value = value
 	tfm(&value)

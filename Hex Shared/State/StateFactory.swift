@@ -15,6 +15,7 @@ extension State {
 				.infantry(player: .axis, position: Hex(1, -2)),
 				.tank(player: .axis, position: Hex(0, -1)),
 				.tank(player: .axis, position: Hex(-4, 1)),
+				.art(player: .axis, position: Hex(-3, 2)),
 
 				.infantry(player: .allies, position: Hex(0, 3)),
 				.infantry(player: .allies, position: Hex(3, 1)),
