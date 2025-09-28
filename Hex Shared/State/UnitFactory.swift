@@ -24,7 +24,8 @@ extension Unit {
 				typ: .inf,
 				atk: 4,
 				def: 6,
-				mov: 3
+				mov: 3,
+				rng: 1
 			)
 		)
 	}
@@ -41,7 +42,8 @@ extension Unit {
 				typ: .tank,
 				atk: 7,
 				def: 10,
-				mov: 5
+				mov: 5,
+				rng: 2
 			)
 		)
 	}

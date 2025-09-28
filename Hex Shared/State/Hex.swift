@@ -34,6 +34,10 @@ extension Hex {
 		self + Self.directions[Int(neighbor.rawValue % 6)]
 	}
 
+	func circle(_ radius: Int) -> [Hex] {
+		[Hex].circle(radius).map { $0 + self }
+	}
+
 	static func + (lhs: Hex, rhs: Hex) -> Hex {
 		Hex(lhs.q + rhs.q, lhs.r + rhs.r)
 	}

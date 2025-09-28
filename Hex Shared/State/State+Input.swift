@@ -90,15 +90,4 @@ extension State {
 			selectable = .none
 		}
 	}
-
-	func moves(for unit: Unit) -> Set<Hex> {
-		Set([Hex].make { hs in
-			hs += Array(unit.position.neighbors)
-		})
-		.subtracting(units.map(\.position))
-	}
-
-	func vision(for unit: Unit) -> Set<Hex> {
-		Set([unit.position]).union(Array(unit.position.neighbors))
-	}
 }

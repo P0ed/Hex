@@ -15,6 +15,7 @@ struct Stats: Hashable, Codable {
 	var atk: UInt8
 	var def: UInt8
 	var mov: UInt8
+	var rng: UInt8
 }
 
 enum UnitType: Hashable, Codable {
@@ -35,6 +36,15 @@ extension Unit {
 	var hasActions: Bool { canMove || canFire }
 	var canMove: Bool { !mp.isEmpty }
 	var canFire: Bool { !fired && !ammo.isEmpty }
+
+	func canHit(unit: Unit) -> Bool {
+		position.distance(to: unit.position) <= stats.rng
+	}
+
+	mutating func nextTurn() {
+		mp.refill()
+		fired = false
+	}
 }
 
 extension Cap {
