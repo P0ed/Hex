@@ -11,6 +11,18 @@ extension State {
 		Set(unit.position.circle(2))
 	}
 
+	func vision(for player: PlayerID) -> Set<Hex> {
+		units.reduce(into: [] as Set<Hex>) { v, u in
+			guard u.player == player else { return }
+			v.formUnion(vision(for: u))
+		}
+	}
+
+	mutating func initialize() {
+		visible = vision(for: currentPlayer)
+		events = units.map { u in .spawn(u.id) }
+	}
+
 	mutating func endTurn() {
 		guard let idx = players.firstIndex(where: { $0.id == currentPlayer }) else { return }
 
@@ -18,6 +30,8 @@ extension State {
 		currentPlayer = players[nextIdx].id
 		turn = nextIdx == 0 ? turn + 1 : turn
 		selectUnit(.none)
+
+		visible = vision(for: currentPlayer)
 
 		if nextIdx == 0 {
 			units = units.mapInPlace { u in
@@ -27,13 +41,18 @@ extension State {
 	}
 
 	mutating func move(unit: Unit, to position: Hex) {
-		guard unit.canMove, moves(for: unit).contains(position) else { return }
+		guard unit.player == currentPlayer,
+			  unit.canMove,
+			  moves(for: unit).contains(position)
+		else { return }
 
 		let unit = modifying(unit) { u in
 			u.position = position
 			u.mp.decrement()
 		}
 		self[unit.id] = unit
+		let vision = vision(for: unit)
+		visible?.formUnion(vision)
 		selectUnit(unit.hasActions ? unit : .none)
 		events.append(.move(unit.id))
 	}

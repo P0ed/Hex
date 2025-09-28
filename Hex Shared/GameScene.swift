@@ -26,7 +26,7 @@ final class GameScene: SKScene {
 
 		if let cursor { camera?.constraints = [.distance(.init(upperLimit: 200), to: cursor)] }
 
-		state.events = state.units.map { u in .spawn(u.id) }
+		state.initialize()
 
 		hid.inputStream = { [weak self] input in
 			if let self, state.events.isEmpty { applyInput(input) }
