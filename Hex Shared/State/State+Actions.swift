@@ -82,19 +82,19 @@ extension State {
 
 		src.fired = true
 		src.ammo.decrement()
-		dst.hp.decrement(amount: src.stats.atk)
+		dst.hp.decrement(by: src.stats.atk)
 
-		if !dst.hp.isEmpty, !dst.ammo.isEmpty, dst.canHit(unit: src) {
+		if dst.hp > 0, dst.ammo > 0, dst.canHit(unit: src) {
 			dst.ammo.decrement()
-			src.hp.decrement(amount: dst.stats.atk)
+			src.hp.decrement(by: dst.stats.atk)
 		}
 
-		self[src.id] = src.hp.isEmpty ? .none : src
-		self[dst.id] = dst.hp.isEmpty ? .none : dst
+		self[src.id] = src.hp == 0 ? .none : src
+		self[dst.id] = dst.hp == 0 ? .none : dst
 
-		selectUnit(src.hasActions && !src.hp.isEmpty ? src : .none)
+		selectUnit(src.hasActions && src.hp > 0 ? src : .none)
 		events.append(.attack(src.id, dst.id))
-		if dst.hp.isEmpty { events.append(.kill(dst.id)) }
-		if src.hp.isEmpty { events.append(.kill(src.id)) }
+		if dst.hp == 0 { events.append(.kill(dst.id)) }
+		if src.hp == 0 { events.append(.kill(src.id)) }
 	}
 }

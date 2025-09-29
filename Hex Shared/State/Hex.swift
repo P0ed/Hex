@@ -1,16 +1,16 @@
 import math_h
 
 struct Hex: Hashable, Codable {
-	private var _q: Int16
-	private var _r: Int16
+	private var _q: Int8
+	private var _r: Int8
 
 	var q: Int { Int(_q) }
 	var r: Int { Int(_r) }
 	var s: Int { -(q + r) }
 
 	init(_ q: Int, _ r: Int) {
-		_q = Int16(q)
-		_r = Int16(r)
+		_q = Int8(q)
+		_r = Int8(r)
 	}
 }
 

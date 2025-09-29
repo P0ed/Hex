@@ -22,7 +22,7 @@ extension Unit {
 		label.name = "hp"
 		label.fontSize = CGFloat(Double.hexR * 0.22)
 		label.fontColor = .textDefault
-		label.text = "\(hp.value)"
+		label.text = "\(hp)"
 		label.position = CGPoint(x: 0, y: Double.hexR * -0.76)
 		label.zPosition = 6.0
 		node.addChild(label)
@@ -49,6 +49,6 @@ extension SKNode {
 	}
 
 	func update(_ unit: Unit) {
-		unitHP?.text = "\(unit.hp.value)"
+		unitHP?.text = "\(unit.hp)"
 	}
 }

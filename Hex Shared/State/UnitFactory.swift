@@ -17,9 +17,6 @@ extension Unit {
 			id: .next(),
 			player: player,
 			position: position,
-			hp: Cap(10),
-			mp: Cap(1),
-			ammo: Cap(7),
 			stats: Stats(
 				typ: .inf,
 				atk: 4,
@@ -35,9 +32,6 @@ extension Unit {
 			id: .next(),
 			player: player,
 			position: position,
-			hp: Cap(10),
-			mp: Cap(1),
-			ammo: Cap(6),
 			stats: Stats(
 				typ: .tank,
 				atk: 7,
@@ -53,9 +47,6 @@ extension Unit {
 			id: .next(),
 			player: player,
 			position: position,
-			hp: Cap(10),
-			mp: Cap(1),
-			ammo: Cap(5),
 			stats: Stats(
 				typ: .art,
 				atk: 6,
