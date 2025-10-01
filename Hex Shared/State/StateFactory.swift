@@ -3,12 +3,12 @@ import GameplayKit
 @MainActor
 extension State {
 
-	static func random(radius: Int = 16, seed: Int = 0) -> State {
+	static func random(radius: Int = 64, seed: Int = 0) -> State {
 		.init(
 			map: Map(radius: radius, seed: seed),
 			players: [
 				Player(id: .axis),
-				Player(id: .allies)
+				Player(id: .allies, ai: true),
 			],
 			units: [
 				.infantry(player: .axis, position: Hex(-4, 0)),

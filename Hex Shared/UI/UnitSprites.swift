@@ -11,16 +11,18 @@ extension Unit {
 		let sprite = SKSpriteNode(imageNamed: imageName)
 		sprite.xScale = player.team == .axis ? 0.5 : -0.5
 		sprite.yScale = 0.5
+		sprite.texture?.filteringMode = .nearest
 		node.addChild(sprite)
 
 		let plate = SKSpriteNode(imageNamed: "Plate")
 		plate.position = CGPoint(x: 0, y: Double.hexR * -0.64)
 		plate.zPosition = 5.0
+		plate.texture?.filteringMode = .nearest
 		node.addChild(plate)
 
 		let label = SKLabelNode(fontNamed: "Menlo")
 		label.name = "hp"
-		label.fontSize = CGFloat(Double.hexR * 0.22)
+		label.fontSize = CGFloat(round(Double.hexR * 0.22))
 		label.fontColor = .textDefault
 		label.text = "\(hp)"
 		label.position = CGPoint(x: 0, y: Double.hexR * -0.76)

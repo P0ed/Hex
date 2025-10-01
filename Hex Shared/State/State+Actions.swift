@@ -55,6 +55,17 @@ extension State {
 		}
 	}
 
+	mutating func selectUnit(_ unit: Unit?) {
+		if let unit {
+			selectedUnit = unit.id
+			cursor = unit.position
+			selectable = unit.canMove ? moves(for: unit) : .none
+		} else {
+			selectedUnit = .none
+			selectable = .none
+		}
+	}
+
 	mutating func move(unit: Unit, to position: Hex) {
 		guard unit.player == currentPlayer,
 			  unit.canMove, moves(for: unit).contains(position)

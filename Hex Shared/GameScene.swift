@@ -28,13 +28,13 @@ final class GameScene: SKScene {
 
 		state.initialize()
 
-		hid.inputStream = { [weak self] input in
-			if let self, state.events.isEmpty { applyInput(input) }
-		}
+		hid.inputStream = { [weak self] input in self?.applyInput(input) }
 	}
 
 	func applyInput(_ input: Input) {
-		state.apply(input)
+		if !state.events.isEmpty, state[state.currentPlayer]?.ai == false {
+			state.apply(input)
+		}
 	}
 
 	func addUnit(_ uid: UnitID, node: SKNode) {

@@ -17,6 +17,7 @@ struct State: Hashable, Codable {
 
 struct Player: Hashable, Codable {
 	var id: PlayerID
+	var ai: Bool = false
 	var prestige: UInt32 = 0
 	var science: UInt32 = 0
 }

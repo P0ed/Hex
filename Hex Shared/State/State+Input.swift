@@ -18,6 +18,9 @@ extension State {
 		default: break
 		}
 	}
+}
+
+private extension State {
 
 	mutating func moveCursor(_ direction: Direction) {
 		let c = switch direction {
@@ -78,16 +81,5 @@ extension State {
 		} ?? units.first(where: validUnit)
 
 		if let nextUnit { selectUnit(nextUnit) }
-	}
-
-	mutating func selectUnit(_ unit: Unit?) {
-		if let unit {
-			selectedUnit = unit.id
-			cursor = unit.position
-			selectable = unit.canMove ? moves(for: unit) : .none
-		} else {
-			selectedUnit = .none
-			selectable = .none
-		}
 	}
 }

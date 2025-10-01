@@ -40,6 +40,7 @@ extension Terrain {
 		case .hills: .hills
 		case .mountains: .mountains
 		case .swamp: .swamp
+		default: .field
 		}
 	}
 }
@@ -74,15 +75,28 @@ extension GKNoiseMap {
 
 	static func terrain(radius: Int, seed: Int) -> GKNoiseMap {
 
-		let noiseSource = GKPerlinNoiseSource(
+		let perlin = GKNoise(GKPerlinNoiseSource(
 			frequency: 8.2,
 			octaveCount: 6,
 			persistence: 0.47,
 			lacunarity: 0.68,
 			seed: Int32(seed)
-		)
+		))
+//		let ridged = GKNoise(GKRidgedNoiseSource(
+//			frequency: 8.2,
+//			octaveCount: 5,
+//			lacunarity: 0.82,
+//			seed: Int32(seed)
+//		))
+//		let voronoi = GKNoise(GKVoronoiNoiseSource(
+//			frequency: 6.8,
+//			displacement: 1.0,
+//			distanceEnabled: false,
+//			seed: Int32(seed)
+//		))
+
 		let noiseMap = GKNoiseMap(
-			GKNoise(noiseSource),
+			perlin,
 			size: .one,
 			origin: .zero,
 			sampleCount: SIMD2<Int32>(Int32(radius) * 2 + 1, Int32(radius) * 2 + 1),
