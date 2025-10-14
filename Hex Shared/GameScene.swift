@@ -24,7 +24,9 @@ final class GameScene: SKScene {
 		camera = addCamera()
 		cursor = addCursor()
 
-		if let cursor { camera?.constraints = [.distance(.init(upperLimit: 200), to: cursor)] }
+		if let cursor {
+			camera?.constraints = [.distance(.init(upperLimit: Double.hexR * 8), to: cursor)]
+		}
 
 		state.initialize()
 
@@ -32,7 +34,7 @@ final class GameScene: SKScene {
 	}
 
 	func applyInput(_ input: Input) {
-		if !state.events.isEmpty, state[state.currentPlayer]?.ai == false {
+		if state.events.isEmpty/*, state[state.currentPlayer]?.ai == false*/ {
 			state.apply(input)
 		}
 	}

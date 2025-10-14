@@ -55,12 +55,12 @@ struct Stats: Hashable, Codable {
 //	var moveType: MoveType {
 //		MoveType(rawValue: bits(width: 2, shift: 0)) ?? .leg
 //	}
-//	var hardAttack: UInt8 {
-//		/// # None, Light, Medium, Heavy
-//		bits(width: 2, shift: 2)
-//	}
 //	var armor: UInt8 {
 //		/// # Soft, Light, Meduim, Heavy
+//		bits(width: 2, shift: 2)
+//	}
+//	var hardAttack: UInt8 {
+//		/// # None, Light, Medium, Heavy
 //		bits(width: 2, shift: 4)
 //	}
 //	var airAttack: UInt8 {

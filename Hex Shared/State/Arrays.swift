@@ -22,24 +22,7 @@ extension Array {
 		self = arr
 	}
 
-	static func make(_ tfm: (inout Self) -> Void) -> Self {
-		modifying([], tfm)
-	}
-
 	mutating func mapInPlace(_ tfm: (inout Element) -> Void) -> Self {
 		map { e in modifying(e, tfm) }
 	}
-}
-
-extension Set {
-
-	static func make(_ tfm: (inout Self) -> Void) -> Self {
-		modifying([], tfm)
-	}
-}
-
-func modifying<A>(_ value: A, _ tfm: (inout A) -> Void) -> A {
-	var value = value
-	tfm(&value)
-	return value
 }
