@@ -18,11 +18,11 @@ extension Unit {
 			player: player,
 			position: position,
 			stats: Stats(
-				typ: .inf,
 				atk: 4,
 				def: 6,
 				mov: 3,
-				rng: 1
+				rng: 1,
+				flg: .empty
 			)
 		)
 	}
@@ -33,11 +33,13 @@ extension Unit {
 			player: player,
 			position: position,
 			stats: Stats(
-				typ: .tank,
 				atk: 7,
 				def: 10,
 				mov: 5,
-				rng: 2
+				rng: 2,
+				flg: .make { flg in
+					flg.armor = 2
+				}
 			)
 		)
 	}
@@ -48,11 +50,13 @@ extension Unit {
 			player: player,
 			position: position,
 			stats: Stats(
-				typ: .art,
 				atk: 6,
 				def: 4,
 				mov: 1,
-				rng: 4
+				rng: 4,
+				flg: .make { flg in
+					flg.isArty = true
+				}
 			)
 		)
 	}

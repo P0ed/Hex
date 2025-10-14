@@ -2,7 +2,7 @@ extension State {
 
 	func moves(for unit: Unit) -> Set<Hex> {
 		.make { hs in
-			if unit.stats.typ == .air {
+			if unit.type == .air {
 				hs.formUnion(unit.position.circle(Int(unit.stats.mov)))
 			} else {
 				var front = [(unit.position, Int(unit.stats.mov))] as [(Hex, Int)]

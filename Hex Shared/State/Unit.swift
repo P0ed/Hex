@@ -33,49 +33,63 @@ extension Unit {
 }
 
 struct Stats: Hashable, Codable {
-	var typ: UnitType
 	var atk: UInt8
 	var def: UInt8
 	var mov: UInt8
 	var rng: UInt8
-//	var flg: Flags
+	var flg: Flags
 }
 
-//struct Flags: RawRepresentable, Hashable, Codable {
-//	var rawValue: UInt16
-//}
-//
-//extension Flags {
-//
-//	private func bits(width: UInt8, shift: UInt8) -> UInt8 {
-//		let mask: RawValue = 1 << (width + 1) - 1
-//		return UInt8((rawValue & mask) >> shift)
-//	}
-//
-//	var moveType: MoveType {
-//		MoveType(rawValue: bits(width: 2, shift: 0)) ?? .leg
-//	}
-//	var armor: UInt8 {
-//		/// # Soft, Light, Meduim, Heavy
-//		bits(width: 2, shift: 2)
-//	}
-//	var hardAttack: UInt8 {
-//		/// # None, Light, Medium, Heavy
-//		bits(width: 2, shift: 4)
-//	}
-//	var airAttack: UInt8 {
-//		bits(width: 2, shift: 6)
-//	}
-//	var isArty: Bool {
-//		bits(width: 1, shift: 8) == 1
-//	}
-//	var isAntiAir: Bool {
-//		bits(width: 1, shift: 9) == 1
-//	}
-//}
+struct Flags: RawRepresentable, Hashable, Codable {
+	var rawValue: UInt16
+}
+
+extension Flags: Monoid {
+	static var empty: Flags { .init(rawValue: 0) }
+	mutating func combine(_ other: Flags) { rawValue |= other.rawValue }
+}
+
+extension Flags {
+
+	private static func mask(width: UInt8, shift: UInt8) -> RawValue {
+		(1 << (width + 1) - 1) << shift
+	}
+
+	private func bits(width: UInt8, shift: UInt8) -> UInt8 {
+		let mask = Self.mask(width: width, shift: shift)
+		return UInt8((rawValue & mask) >> shift)
+	}
+
+	private mutating func setBits(_ value: UInt8, width: UInt8, shift: UInt8) {
+		let mask = Self.mask(width: width, shift: shift)
+		rawValue &= ~mask
+		rawValue |= RawValue(value) << shift & mask
+	}
+
+	var moveType: MoveType {
+		get { MoveType(rawValue: bits(width: 2, shift: 0)) ?? .none }
+		set { setBits(newValue.rawValue, width: 2, shift: 0) }
+	}
+	var armor: UInt8 {
+		get { bits(width: 2, shift: 2) }
+		set { setBits(newValue, width: 2, shift: 2) }
+	}
+	var hardAttack: UInt8 {
+		get { bits(width: 2, shift: 4) }
+		set { setBits(newValue, width: 2, shift: 4) }
+	}
+	var isArty: Bool {
+		get { bits(width: 1, shift: 6) == 1 }
+		set { setBits(newValue ? 1 : 0, width: 1, shift: 6) }
+	}
+	var isAntiAir: Bool {
+		get { bits(width: 1, shift: 7) == 1 }
+		set { setBits(newValue ? 1 : 0, width: 1, shift: 7) }
+	}
+}
 
 enum MoveType: UInt8, Hashable, Codable {
-	case leg, wheel, track, air
+	case none, leg, wheel, track
 }
 
 enum UnitType: Hashable, Codable {
@@ -86,6 +100,15 @@ extension Unit {
 	var hasActions: Bool { canMove || canFire }
 	var canMove: Bool { mp != 0 }
 	var canFire: Bool { !fired && ammo != 0 }
+
+	var type: UnitType {
+		switch stats.flg.armor {
+		case 0: stats.flg.isArty ? .art : .inf
+		case 1: .recon
+		case 2: .tank
+		default: .tank
+		}
+	}
 
 	func canHit(unit: Unit) -> Bool {
 		position.distance(to: unit.position) <= stats.rng

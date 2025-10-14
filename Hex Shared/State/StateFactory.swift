@@ -3,7 +3,7 @@ import GameplayKit
 @MainActor
 extension State {
 
-	static func random(radius: Int = 64, seed: Int = 0) -> State {
+	static func random(radius: Int = 32, seed: Int = 0) -> State {
 		.init(
 			map: Map(radius: radius, seed: seed),
 			players: [

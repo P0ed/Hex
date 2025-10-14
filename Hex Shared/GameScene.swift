@@ -24,10 +24,6 @@ final class GameScene: SKScene {
 		camera = addCamera()
 		cursor = addCursor()
 
-		if let cursor {
-			camera?.constraints = [.distance(.init(upperLimit: Double.hexR * 8), to: cursor)]
-		}
-
 		state.initialize()
 
 		hid.inputStream = { [weak self] input in self?.applyInput(input) }
@@ -54,6 +50,7 @@ private extension GameScene {
 
 	func didSetState(oldValue: State) {
 		cursor?.position = state.cursor.point
+		camera?.position = state.camera.point
 
 		if state.visible != oldValue.visible || state.selectable != oldValue.selectable {
 			updateFog()

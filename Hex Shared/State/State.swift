@@ -9,6 +9,7 @@ struct State: Hashable, Codable {
 	var visible: Set<Hex>?
 
 	var cursor: Hex = .zero
+	var camera: Hex = .zero
 	var selectedUnit: UnitID?
 	var selectable: Set<Hex>?
 

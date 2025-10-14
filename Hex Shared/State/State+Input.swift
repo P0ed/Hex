@@ -24,13 +24,25 @@ private extension State {
 
 	mutating func moveCursor(_ direction: Direction) {
 		let c = switch direction {
-		case .left: cursor.neighbor(cursor.q % 2 == 0 ? .southWest : .northWest)
-		case .right: cursor.neighbor(cursor.q % 2 == 0 ? .southEast : .northEast)
+		case .left: cursor.neighbor(cursor.q & 1 == 0 ? .southWest : .northWest)
+		case .right: cursor.neighbor(cursor.q & 1 == 0 ? .southEast : .northEast)
 		case .down: cursor.neighbor(.south)
 		case .up: cursor.neighbor(.north)
 		}
 
-		if c.distance(to: .zero) <= map.radius { cursor = c }
+		if c.distance(to: .zero) <= map.radius {
+			cursor = c
+			if abs(camera.q - cursor.q) > 6 {
+				camera = camera.neighbor(
+					(camera.q - cursor.q) > 0
+					? (camera.q & 1 == 0 ? .southWest : .northWest)
+					: (camera.q & 1 == 0 ? .southEast : .northEast)
+				)
+			}
+			if abs(camera.r - cursor.r) > 4 {
+				camera = camera.neighbor((camera.r - cursor.r) > 0 ? .south : .north)
+			}
+		}
 	}
 
 	mutating func primaryAction() {
