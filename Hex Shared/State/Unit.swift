@@ -133,11 +133,17 @@ extension Unit {
 
 extension UInt8 {
 
-	mutating func refill(amount: UInt8, cap: UInt8) {
+	@discardableResult
+	mutating func refill(amount: UInt8, cap: UInt8) -> UInt8 {
+		let old = self
 		self = UInt8(Swift.min(UInt16(cap), UInt16(self + amount)))
+		return self - old
 	}
 
-	mutating func decrement(by amount: UInt8 = 1) {
+	@discardableResult
+	mutating func decrement(by amount: UInt8 = 1) -> UInt8 {
+		let old = self
 		self -= self < amount ? self : amount
+		return old - self
 	}
 }

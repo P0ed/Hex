@@ -77,7 +77,7 @@ extension State {
 		}
 		self[unit.id] = unit
 		let vision = vision(for: unit)
-		visible?.formUnion(vision)
+		visible.formUnion(vision)
 		selectUnit(unit.hasActions ? unit : .none)
 		events.append(.move(unit.id))
 	}
@@ -105,7 +105,8 @@ extension State {
 
 		selectUnit(src.hasActions && src.hp > 0 ? src : .none)
 		events.append(.attack(src.id, dst.id))
-		if dst.hp == 0 { events.append(.kill(dst.id)) }
+
 		if src.hp == 0 { events.append(.kill(src.id)) }
+		if dst.hp == 0 { events.append(.kill(dst.id)) }
 	}
 }

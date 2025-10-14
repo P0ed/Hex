@@ -15,6 +15,7 @@ private extension GameScene {
 	func processSpawn(uid: UnitID) {
 		guard let unit = state[uid] else { return }
 		let sprite = unit.sprite
+		sprite.isHidden = !state.visible.contains(unit.position)
 		addUnit(uid, node: sprite)
 	}
 

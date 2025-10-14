@@ -6,7 +6,7 @@ struct State: Hashable, Codable {
 
 	var currentPlayer: PlayerID = .axis
 	var turn: UInt32 = 0
-	var visible: Set<Hex>?
+	var visible: Set<Hex> = []
 
 	var cursor: Hex = .zero
 	var camera: Hex = .zero

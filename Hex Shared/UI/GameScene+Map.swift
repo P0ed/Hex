@@ -63,12 +63,10 @@ extension GameScene {
 	func updateFog() {
 		state.map.cells.forEach { hex in
 			let (x, y) = state.map.converting(hex)
-			if let visible = state.visible {
-				fog?.setTileGroup(
-					visible.contains(hex) ? nil : .fog,
-					forColumn: x, row: y
-				)
-			}
+			fog?.setTileGroup(
+				state.visible.contains(hex) ? nil : .fog,
+				forColumn: x, row: y
+			)
 			if let selectable = state.selectable {
 				selection?.setTileGroup(
 					selectable.contains(hex) ? nil : .fog,
@@ -76,7 +74,9 @@ extension GameScene {
 				)
 			}
 		}
-		fog?.isHidden = state.visible == nil
+		state.units.forEach { unit in
+			units[unit.id]?.isHidden = !state.visible.contains(unit.position)
+		}
 		selection?.isHidden = state.selectable == nil
 	}
 }
