@@ -33,7 +33,7 @@ extension Unit {
 	}
 
 	private var imageName: String {
-		switch type {
+		switch stats.unitType {
 		case .inf: "Inf 39"
 		case .recon: "LT"
 		case .tank: "Tank"

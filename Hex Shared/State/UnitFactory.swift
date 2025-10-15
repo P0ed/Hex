@@ -17,13 +17,13 @@ extension Unit {
 			id: .next(),
 			player: player,
 			position: position,
-			stats: Stats(
-				atk: 4,
-				def: 6,
-				mov: 3,
-				rng: 1,
-				flg: .empty
-			)
+			stats: .make { stats in
+				stats.atk = 4
+				stats.def = 6
+				stats.mov = 3
+				stats.rng = 1
+				stats.unitType = .inf
+			}
 		)
 	}
 
@@ -32,15 +32,14 @@ extension Unit {
 			id: .next(),
 			player: player,
 			position: position,
-			stats: Stats(
-				atk: 7,
-				def: 10,
-				mov: 5,
-				rng: 2,
-				flg: .make { flg in
-					flg.armor = 2
-				}
-			)
+			stats: .make { stats in
+				stats.atk = 7
+				stats.def = 10
+				stats.mov = 5
+				stats.rng = 2
+				stats.armor = 2
+				stats.unitType = .tank
+			}
 		)
 	}
 
@@ -49,15 +48,13 @@ extension Unit {
 			id: .next(),
 			player: player,
 			position: position,
-			stats: Stats(
-				atk: 6,
-				def: 4,
-				mov: 1,
-				rng: 4,
-				flg: .make { flg in
-					flg.isArty = true
-				}
-			)
+			stats: .make { stats in
+				stats.atk = 6
+				stats.def = 4
+				stats.mov = 1
+				stats.rng = 4
+				stats.unitType = .art
+			}
 		)
 	}
 }
