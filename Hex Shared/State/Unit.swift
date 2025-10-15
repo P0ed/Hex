@@ -2,38 +2,11 @@ struct Unit: Hashable, Codable {
 	var id: UnitID
 	var player: PlayerID
 	var position: Hex
-	var hp: UInt8
-	var mp: UInt8
-	var ammo: UInt8
-	var fuel: UInt8
-	var exp: UInt8
-	var fired: Bool
 	var stats: Stats
 }
 
-extension Unit {
-
-	init(
-		id: UnitID,
-		player: PlayerID,
-		position: Hex,
-		stats: Stats
-	) {
-		self.id = id
-		self.player = player
-		self.position = position
-		self.hp = 15
-		self.mp = stats.mov
-		self.ammo = 15
-		self.fuel = 15
-		self.exp = 0
-		self.fired = false
-		self.stats = stats
-	}
-}
-
 struct Stats: RawRepresentable, Hashable, Codable {
-	var rawValue: UInt32
+	var rawValue: UInt64
 }
 
 extension Stats: Monoid {
@@ -56,37 +29,73 @@ extension Stats {
 		rawValue |= RawValue(value) << shift & mask
 	}
 
+	static var base: Self {
+		.make { stats in
+			stats.hp = 0xF
+			stats.mp = 0xF
+			stats.ammo = 0xF
+			stats.fuel = 0xF
+			stats.exp = 0
+			stats.fired = false
+		}
+	}
+
+	var hp: UInt8 {
+		get { get(width: 4, shift: 0) }
+		set { set(newValue, width: 4, shift: 0) }
+	}
+	var mp: UInt8 {
+		get { get(width: 4, shift: 4) }
+		set { set(newValue, width: 4, shift: 4) }
+	}
+	var ammo: UInt8 {
+		get { get(width: 4, shift: 8) }
+		set { set(newValue, width: 4, shift: 8) }
+	}
+	var fuel: UInt8 {
+		get { get(width: 4, shift: 12) }
+		set { set(newValue, width: 4, shift: 12) }
+	}
+	var exp: UInt8 {
+		get { get(width: 8, shift: 16) }
+		set { set(newValue, width: 8, shift: 16) }
+	}
+	var fired: Bool {
+		get { get(width: 1, shift: 24) == 1 }
+		set { set(newValue ? 1 : 0, width: 1, shift: 24) }
+	}
+
 	var moveType: MoveType {
-		get { MoveType(rawValue: get(width: 2, shift: 0)) ?? .none }
-		set { set(newValue.rawValue, width: 2, shift: 0) }
+		get { MoveType(rawValue: get(width: 2, shift: 25)) ?? .none }
+		set { set(newValue.rawValue, width: 2, shift: 25) }
 	}
 	var armor: UInt8 {
-		get { get(width: 2, shift: 2) }
-		set { set(newValue, width: 2, shift: 2) }
+		get { get(width: 2, shift: 27) }
+		set { set(newValue, width: 2, shift: 27) }
 	}
 	var hardAttack: UInt8 {
-		get { get(width: 2, shift: 4) }
-		set { set(newValue, width: 2, shift: 4) }
+		get { get(width: 2, shift: 29) }
+		set { set(newValue, width: 2, shift: 29) }
 	}
 	var unitType: UnitType {
-		get { UnitType(rawValue: get(width: 3, shift: 6)) ?? .inf }
-		set { set(newValue.rawValue, width: 3, shift: 6) }
+		get { UnitType(rawValue: get(width: 3, shift: 31)) ?? .inf }
+		set { set(newValue.rawValue, width: 3, shift: 31) }
 	}
 	var atk: UInt8 {
-		get { get(width: 5, shift: 9) }
-		set { set(newValue, width: 5, shift: 9) }
+		get { get(width: 5, shift: 34) }
+		set { set(newValue, width: 5, shift: 34) }
 	}
 	var def: UInt8 {
-		get { get(width: 5, shift: 14) }
-		set { set(newValue, width: 5, shift: 14) }
+		get { get(width: 5, shift: 39) }
+		set { set(newValue, width: 5, shift: 39) }
 	}
 	var mov: UInt8 {
-		get { get(width: 4, shift: 19) }
-		set { set(newValue, width: 4, shift: 19) }
+		get { get(width: 4, shift: 44) }
+		set { set(newValue, width: 4, shift: 44) }
 	}
 	var rng: UInt8 {
-		get { get(width: 3, shift: 23) }
-		set { set(newValue, width: 3, shift: 23) }
+		get { get(width: 3, shift: 48) }
+		set { set(newValue, width: 3, shift: 48) }
 	}
 }
 
@@ -100,27 +109,27 @@ enum UnitType: UInt8, Hashable, Codable {
 
 extension Unit {
 	var hasActions: Bool { canMove || canFire }
-	var canMove: Bool { mp != 0 }
-	var canFire: Bool { !fired && ammo != 0 }
+	var canMove: Bool { stats.mp != 0 }
+	var canFire: Bool { !stats.fired && stats.ammo != 0 }
 
 	func canHit(unit: Unit) -> Bool {
 		position.distance(to: unit.position) <= stats.rng
 	}
 
 	mutating func nextTurn() {
-		if mp == stats.mov, !fired { resupply() }
-		mp = stats.mov
-		fired = false
+		if stats.mp == stats.mov, !stats.fired { resupply() }
+		stats.mp = 15
+		stats.fired = false
 	}
 
 	mutating func heal() {
-		hp.refill(amount: 15 / 2, cap: 15)
+		stats.hp.refill(amount: 15 / 2, cap: 15)
 		resupply()
 	}
 
 	mutating func resupply() {
-		ammo.refill(amount: 15 / 2, cap: 15)
-		fuel.refill(amount: 15 / 2, cap: 15)
+		stats.ammo.refill(amount: 15 / 2, cap: 15)
+		stats.fuel.refill(amount: 15 / 2, cap: 15)
 	}
 }
 

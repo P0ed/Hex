@@ -9,6 +9,8 @@ protocol Monoid {
 	mutating func combine(_ other: Self)
 }
 
+infix operator ><
+
 extension Monoid {
 
 	static func make(_ tfm: (inout Self) -> Void) -> Self {
@@ -17,6 +19,10 @@ extension Monoid {
 
 	func combined(_ other: Self) -> Self {
 		modifying(self, { $0.combine(other) })
+	}
+
+	static func >< (_ lhs: Self, rhs: Self) -> Self {
+		lhs.combined(rhs)
 	}
 }
 

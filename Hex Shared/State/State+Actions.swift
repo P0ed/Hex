@@ -82,7 +82,7 @@ extension State {
 
 		let unit = modifying(unit) { u in
 			u.position = position
-			u.mp.decrement()
+			u.stats.mp.decrement()
 		}
 		self[unit.id] = unit
 		let vision = vision(for: unit)
@@ -100,23 +100,23 @@ extension State {
 		var src = src
 		var dst = dst
 
-		src.fired = true
-		src.ammo.decrement()
-		dst.hp.decrement(by: src.stats.atk)
+		src.stats.fired = true
+		src.stats.ammo.decrement()
+		dst.stats.hp.decrement(by: src.stats.atk)
 
-		if dst.hp > 0, dst.ammo > 0, dst.canHit(unit: src) {
-			dst.ammo.decrement()
-			src.hp.decrement(by: dst.stats.atk)
+		if dst.stats.hp > 0, dst.stats.ammo > 0, dst.canHit(unit: src) {
+			dst.stats.ammo.decrement()
+			src.stats.hp.decrement(by: dst.stats.atk)
 		}
 
-		self[src.id] = src.hp == 0 ? .none : src
-		self[dst.id] = dst.hp == 0 ? .none : dst
+		self[src.id] = src.stats.hp == 0 ? .none : src
+		self[dst.id] = dst.stats.hp == 0 ? .none : dst
 
-		selectUnit(src.hasActions && src.hp > 0 ? src : .none)
+		selectUnit(src.hasActions && src.stats.hp > 0 ? src : .none)
 		events.append(.attack(src.id, dst.id))
 
-		if src.hp == 0 { events.append(.kill(src.id)) }
-		if dst.hp == 0 { events.append(.kill(dst.id)) }
+		if src.stats.hp == 0 { events.append(.kill(src.id)) }
+		if dst.stats.hp == 0 { events.append(.kill(dst.id)) }
 	}
 
 	private var tooFarX: Bool { abs(camera.pt.x - cursor.pt.x) > 16.0 }

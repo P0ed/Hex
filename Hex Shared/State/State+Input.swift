@@ -7,7 +7,7 @@ enum Input { case direction(Direction), target(Target), action(Action), menu, ta
 extension State {
 
 	var isHuman: Bool { self[currentPlayer]?.ai == false }
-	var canHandleInput: Bool { isHuman && events.isEmpty }
+	var canHandleInput: Bool { /*isHuman && */events.isEmpty }
 
 	mutating func apply(_ input: Input) {
 		guard canHandleInput else { return }
@@ -29,18 +29,15 @@ extension State {
 private extension State {
 
 	mutating func tap(_ hex: Hex) {
-		guard canHandleInput, hex.distance(to: .zero) <= map.radius else { return }
+		guard canHandleInput, map.contains(hex) else { return }
 
 		cursor = hex
 		primaryAction()
 	}
 
 	mutating func moveCursor(_ direction: Direction) {
-		let c = cursor.neighbor(direction)
-
-		if c.distance(to: .zero) <= map.radius {
-			cursor = c
-		}
+		let hex = cursor.neighbor(direction)
+		if map.contains(hex) { cursor = hex }
 	}
 
 	mutating func primaryAction() {

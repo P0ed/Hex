@@ -7,6 +7,10 @@ struct Map: Hashable, Codable {
 
 	subscript(_ hex: Hex) -> Terrain { terrain[hex] ?? .field }
 
+	func contains(_ hex: Hex) -> Bool {
+		hex.distance(to: .zero) <= radius
+	}
+
 	func converting(_ hex: Hex) -> (Int, Int) {
 		(radius + hex.q, radius + hex.r + (hex.q - hex.q & 1) / 2)
 	}
