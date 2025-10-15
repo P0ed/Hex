@@ -73,7 +73,7 @@ extension GameScene {
 
 	func addCamera() -> SKCameraNode {
 		let camera = SKCameraNode()
-		camera.setScale(1.5)
+		camera.setScale(2.0)
 		addChild(camera)
 		return camera
 	}

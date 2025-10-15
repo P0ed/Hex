@@ -10,6 +10,10 @@ struct Map: Hashable, Codable {
 	func converting(_ hex: Hex) -> (Int, Int) {
 		(radius + hex.q, radius + hex.r + (hex.q - hex.q & 1) / 2)
 	}
+
+	func converting(col: Int, row: Int) -> Hex {
+		return Hex(col - radius, row - (col - col & 1) / 2 - radius / 2)
+	}
 }
 
 extension [Hex] {

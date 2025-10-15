@@ -28,6 +28,15 @@ final class GameScene: SKScene {
 		}
 	}
 
+	func act(on hex: Hex) {
+		if state.cursor == hex {
+			applyInput(.action(.a))
+		} else {
+			state.cursor = hex
+			applyInput(.action(.a))
+		}
+	}
+
 	func addUnit(_ uid: UnitID, node: SKNode) {
 		addChild(node)
 		nodes?.units[uid] = node

@@ -26,14 +26,14 @@ struct PlayerID: Hashable, Codable, ExpressibleByIntegerLiteral {
 	static var allies: Self { 1 }
 }
 
-struct CityID: Hashable, Codable, ExpressibleByIntegerLiteral {
-	var value: UInt8
-
-	init(value: UInt8) {
-		self.value = value
-	}
-
-	init(integerLiteral value: IntegerLiteralType) {
-		self = CityID(value: UInt8(value))
-	}
-}
+//struct CityID: Hashable, Codable, ExpressibleByIntegerLiteral {
+//	var value: UInt8
+//
+//	init(value: UInt8) {
+//		self.value = value
+//	}
+//
+//	init(integerLiteral value: IntegerLiteralType) {
+//		self = CityID(value: UInt8(value))
+//	}
+//}

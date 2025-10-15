@@ -19,10 +19,20 @@ extension GameScene {
 		case "s": applyInput(.action(.b))
 		case "d": applyInput(.action(.c))
 		case "f": applyInput(.action(.d))
-		case "z": camera?.run(.scale(to: (camera?.xScale ?? 1.0) > 4.0 ? 1.5 : 8.0, duration: 0.33))
+		case "z": camera?.run(.scale(to: (camera?.xScale ?? 1.0) > 4.0 ? 2.0 : 8.0, duration: 0.22))
 		case "x": nodes?.grid.isHidden.toggle()
 		default: break
 		}
+	}
+
+	override func mouseDown(with event: NSEvent) {
+		guard let grid = nodes?.grid as? SKTileMapNode else { return }
+		let location = event.location(in: grid)
+		let hex = state.map.converting(
+			col: grid.tileColumnIndex(fromPosition: location),
+			row: grid.tileRowIndex(fromPosition: location)
+		)
+		act(on: hex)
 	}
 }
 #endif

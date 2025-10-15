@@ -8,7 +8,7 @@ extension SKTileGroup {
 		SKTileGroup(
 			tileDefinition: SKTileDefinition(
 				texture: .init(image: image),
-				size: CGSize(width: 2 * .hexR, height: 2 * .hexR)
+				size: .hex
 			)
 		)
 	}
