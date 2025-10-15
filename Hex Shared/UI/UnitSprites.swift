@@ -15,17 +15,17 @@ extension Unit {
 		node.addChild(sprite)
 
 		let plate = SKSpriteNode(imageNamed: "Plate")
-		plate.position = CGPoint(x: 0, y: Double.hexR * -0.64)
+		plate.position = CGPoint(x: 0, y: -20.5)
 		plate.zPosition = 5.0
 		plate.texture?.filteringMode = .nearest
 		node.addChild(plate)
 
 		let label = SKLabelNode(fontNamed: "Menlo")
 		label.name = "hp"
-		label.fontSize = CGFloat(round(Double.hexR * 0.22))
+		label.fontSize = 8.0
 		label.fontColor = .textDefault
 		label.text = "\(hp)"
-		label.position = CGPoint(x: 0, y: Double.hexR * -0.76)
+		label.position = CGPoint(x: 0, y: -24.5)
 		label.zPosition = 6.0
 		node.addChild(label)
 

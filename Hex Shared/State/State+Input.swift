@@ -36,10 +36,8 @@ private extension State {
 	}
 
 	mutating func primaryAction() {
-		let cursor = cursor
-
 		if let selectedID = selectedUnit, let unit = self[selectedID] {
-			if let dst = self[cursor] {
+			if let dst = self.units[cursor] {
 				if dst.player.team != unit.player.team {
 					attack(src: unit, dst: dst)
 				} else {
@@ -49,7 +47,7 @@ private extension State {
 				move(unit: unit, to: cursor)
 			}
 		} else {
-			if let u = self[cursor], u.player == currentPlayer {
+			if let u = self.units[cursor], u.player == currentPlayer {
 				selectUnit(u)
 			}
 		}

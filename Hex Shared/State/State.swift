@@ -64,8 +64,8 @@ extension State {
 			}
 		}
 	}
+}
 
-	subscript(_ hex: Hex) -> Unit? {
-		units.first(where: { $0.position == hex })
-	}
+extension [Unit] {
+	subscript(_ hex: Hex) -> Unit? { first { u in u.position == hex } }
 }

@@ -19,7 +19,9 @@ extension GameScene {
 		case "s": applyInput(.action(.b))
 		case "d": applyInput(.action(.c))
 		case "f": applyInput(.action(.d))
-		case "z": camera?.run(.scale(to: (camera?.xScale ?? 1.0) > 4.0 ? 2.0 : 8.0, duration: 0.22))
+		case "z": camera?.run(
+			.scale(to: (camera?.xScale ?? 1.0) > 3.0 ? 2.0 : 4.0, duration: 0.15)
+		)
 		case "x": nodes?.grid.isHidden.toggle()
 		default: break
 		}
