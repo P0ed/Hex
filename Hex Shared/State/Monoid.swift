@@ -18,7 +18,7 @@ extension Monoid {
 	}
 
 	func combined(_ other: Self) -> Self {
-		modifying(self, { $0.combine(other) })
+		modifying(self, { m in m.combine(other) })
 	}
 
 	static func >< (_ lhs: Self, rhs: Self) -> Self {

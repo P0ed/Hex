@@ -20,7 +20,7 @@ extension CGPath {
 
 	static var hex: CGPath {
 		.make { path in
-			path.addLines(between: Hex.zero.corners.map { ($0 * .hexR).cg })
+			path.addLines(between: Hex.zero.corners.map { pt in (pt * .hexR).cg })
 			path.closeSubpath()
 		}
 	}

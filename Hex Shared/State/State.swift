@@ -37,10 +37,10 @@ extension State {
 
 	subscript(_ pid: PlayerID) -> Player? {
 		get {
-			players.first(where: { $0.id == pid })
+			players.first(where: { p in p.id == pid })
 		}
 		set {
-			if let idx = players.firstIndex(where: { $0.id == pid }) {
+			if let idx = players.firstIndex(where: { p in p.id == pid }) {
 				if let newValue {
 					players[idx] = newValue
 				} else {
@@ -52,10 +52,10 @@ extension State {
 
 	subscript(_ uid: UnitID) -> Unit? {
 		get {
-			units.first(where: { $0.id == uid })
+			units.first(where: { u in u.id == uid })
 		}
 		set {
-			if let idx = units.firstIndex(where: { $0.id == uid }) {
+			if let idx = units.firstIndex(where: { u in u.id == uid }) {
 				if let newValue {
 					units[idx] = newValue
 				} else {

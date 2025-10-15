@@ -27,7 +27,7 @@ extension Hex {
 	}
 
 	var neighbors: [6 of Hex] {
-		Self.directions.map { $0 + self }
+		Self.directions.map { x in x + self }
 	}
 
 	func neighbor(_ neighbor: HexNeighbor) -> Hex {
@@ -44,7 +44,7 @@ extension Hex {
 	}
 
 	func circle(_ radius: Int) -> [Hex] {
-		[Hex].circle(radius).map { $0 + self }
+		[Hex].circle(radius).map { x in x + self }
 	}
 
 	static func + (lhs: Hex, rhs: Hex) -> Hex {
@@ -60,7 +60,7 @@ extension Hex {
 	}
 
 	var corners: [Point] {
-		(0..<6).map { [pt] in pt + .hexCorner($0) }
+		(0..<6).map { [pt] c in pt + .hexCorner(c) }
 	}
 }
 

@@ -39,7 +39,8 @@ extension State {
 	}
 
 	mutating func endTurn() {
-		guard let idx = players.firstIndex(where: { $0.id == currentPlayer }) else { return }
+		guard let idx = players.firstIndex(where: { p in p.id == currentPlayer })
+		else { return }
 
 		let nextIdx = (idx + 1) % players.count
 		currentPlayer = players[nextIdx].id
@@ -55,9 +56,9 @@ extension State {
 	}
 
 	mutating func captureCities() {
-		let reflag = units.reduce(into: false) { reflag, unit in
-			if let city = map.cities[unit.position], city.controller != unit.player {
-				map.cities[unit.position]?.controller = unit.player
+		let reflag = units.reduce(into: false) { reflag, u in
+			if let city = map.cities[u.position], city.controller != u.player {
+				map.cities[u.position]?.controller = u.player
 				reflag = true
 			}
 		}

@@ -109,8 +109,8 @@ extension GameScene {
 				)
 			}
 		}
-		state.units.forEach { unit in
-			nodes?.units[unit.id]?.isHidden = !state.visible.contains(unit.position)
+		state.units.forEach { u in
+			nodes?.units[u.id]?.isHidden = !state.visible.contains(u.position)
 		}
 		nodes?.selection.isHidden = state.selectable == nil
 	}
