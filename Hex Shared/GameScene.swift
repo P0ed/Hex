@@ -21,9 +21,6 @@ final class GameScene: SKScene {
 
 		hid.inputStream = { [weak self] input in self?.state.apply(input) }
 	}
-}
-
-extension GameScene {
 
 	func applyInput(_ input: Input) {
 		state.apply(input)
@@ -38,23 +35,16 @@ extension GameScene {
 		nodes?.units[uid]?.removeFromParent()
 		nodes?.units[uid] = .none
 	}
-}
 
-private extension GameScene {
-
-	func didSetState(oldValue: State) {
+	private func didSetState(oldValue: State) {
 		nodes?.cursor.position = state.cursor.point
 		camera?.position = state.camera.point
+		updateFogIfNeeded(oldValue)
+		if state.isCursorTooFar { state.alignCamera() }
 
-		if state.visible != oldValue.visible || state.selectable != oldValue.selectable {
-			updateFog()
+		Task {
+			for event in state.events { await processEvent(event) }
+			if !state.events.isEmpty { state.events = [] }
 		}
-
-		Task { await reduceEvents() }
-	}
-
-	private func reduceEvents() async {
-		for event in state.events { await processEvent(event) }
-		if !state.events.isEmpty { state.events = [] }
 	}
 }

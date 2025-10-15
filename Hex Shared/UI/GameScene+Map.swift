@@ -14,7 +14,7 @@ extension GameScene {
 		var fog: SKTileMapNode
 		var selection: SKTileMapNode
 		var flags: SKTileMapNode
-		var grid: SKNode
+		var grid: SKTileMapNode
 		var units: [UnitID: SKNode]
 
 		init(cursor: SKNode, map: MapNodes) {
@@ -92,7 +92,10 @@ extension GameScene {
 		return cursor
 	}
 
-	func updateFog() {
+	func updateFogIfNeeded(_ oldValue: State) {
+		guard state.visible != oldValue.visible || state.selectable != oldValue.selectable
+		else { return }
+
 		state.map.cells.forEach { hex in
 			let (x, y) = state.map.converting(hex)
 			nodes?.fog.setTileGroup(

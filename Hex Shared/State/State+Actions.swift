@@ -118,4 +118,18 @@ extension State {
 		if src.hp == 0 { events.append(.kill(src.id)) }
 		if dst.hp == 0 { events.append(.kill(dst.id)) }
 	}
+
+	private var tooFarX: Bool { abs(camera.pt.x - cursor.pt.x) > 16.0 }
+	private var tooFarY: Bool { abs(camera.pt.y - cursor.pt.y) > 9.0 }
+
+	var isCursorTooFar: Bool { tooFarX || tooFarY }
+
+	mutating func alignCamera() {
+		while tooFarX {
+			camera = camera.neighbor((camera.pt.x - cursor.pt.x) > 0.0 ? .left : .right)
+		}
+		while tooFarY {
+			camera = camera.neighbor((camera.pt.y - cursor.pt.y) > 0.0 ? .down : .up)
+		}
+	}
 }

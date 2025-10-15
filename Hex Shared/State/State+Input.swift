@@ -40,12 +40,6 @@ private extension State {
 
 		if c.distance(to: .zero) <= map.radius {
 			cursor = c
-			while abs(camera.pt.x - cursor.pt.x) > 12 {
-				camera = camera.neighbor((camera.pt.x - cursor.pt.x) > 0 ? .left : .right)
-			}
-			while abs(camera.pt.y - cursor.pt.y) > 8 {
-				camera = camera.neighbor((camera.pt.y - cursor.pt.y) > 0 ? .down : .up)
-			}
 		}
 	}
 
