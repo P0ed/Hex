@@ -35,7 +35,7 @@ extension Hex {
 }
 
 extension Double {
-	static var hexR: Double { 24.0 }
+	static var hexR: Double { 32.0 }
 }
 
 extension CGSize {

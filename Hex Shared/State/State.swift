@@ -19,8 +19,8 @@ struct State: Hashable, Codable {
 struct Player: Hashable, Codable {
 	var id: PlayerID
 	var ai: Bool = false
-	var prestige: UInt32 = 0
-	var science: UInt32 = 0
+	var prestige: UInt16 = 0
+	var science: UInt16 = 0
 }
 
 enum Team: Hashable, Codable { case axis, allies }
@@ -30,6 +30,7 @@ enum Event: Hashable, Codable {
 	case kill(UnitID)
 	case move(UnitID)
 	case attack(UnitID, UnitID)
+	case reflag
 }
 
 extension State {

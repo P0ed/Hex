@@ -34,6 +34,15 @@ extension Hex {
 		self + Self.directions[Int(neighbor.rawValue % 6)]
 	}
 
+	func neighbor(_ direction: Direction) -> Hex {
+		switch direction {
+		case .left: neighbor(q & 1 == 0 ? .northWest : .southWest)
+		case .right: neighbor(q & 1 == 0 ? .northEast : .southEast)
+		case .down: neighbor(.south)
+		case .up: neighbor(.north)
+		}
+	}
+
 	func circle(_ radius: Int) -> [Hex] {
 		[Hex].circle(radius).map { $0 + self }
 	}
@@ -46,12 +55,8 @@ extension Hex {
 		Hex(lhs.q - rhs.q, lhs.r - rhs.r)
 	}
 
-	static func * (lhs: Hex, rhs: Int) -> Hex {
-		Hex(lhs.q * rhs, lhs.r * rhs)
-	}
-
 	var pt: Point {
-		Point(1.5 * Double(q), .s3 * 0.5 * Double(q) + .s3 * Double(r))
+		Point(1.5 * Double(q), (0.5 * Double(q) + Double(r)) * .s3)
 	}
 
 	var corners: [Point] {

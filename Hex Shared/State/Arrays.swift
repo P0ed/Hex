@@ -22,7 +22,7 @@ extension Array {
 		self = arr
 	}
 
-	mutating func mapInPlace(_ tfm: (inout Element) -> Void) -> Self {
+	func mapInPlace(_ tfm: (inout Element) -> Void) -> Self {
 		map { e in modifying(e, tfm) }
 	}
 }

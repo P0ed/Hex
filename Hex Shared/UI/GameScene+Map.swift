@@ -5,7 +5,26 @@ extension GameScene {
 	struct MapNodes {
 		var fog: SKTileMapNode
 		var selection: SKTileMapNode
+		var flags: SKTileMapNode
 		var grid: SKTileMapNode
+	}
+
+	struct BattlefieldNodes {
+		var cursor: SKNode
+		var fog: SKTileMapNode
+		var selection: SKTileMapNode
+		var flags: SKTileMapNode
+		var grid: SKNode
+		var units: [UnitID: SKNode]
+
+		init(cursor: SKNode, map: MapNodes) {
+			self.cursor = cursor
+			self.fog = map.fog
+			self.selection = map.selection
+			self.flags = map.flags
+			self.grid = map.grid
+			self.units = [:]
+		}
 	}
 
 	func addMap(_ map: Map) -> MapNodes {
@@ -15,6 +34,9 @@ extension GameScene {
 		let selection = SKTileMapNode(tiles: .cells, radius: map.radius)
 		selection.zPosition = 0.2
 
+		let flags = SKTileMapNode(tiles: .flags, radius: map.radius)
+		flags.zPosition = 0.3
+
 		let grid = SKTileMapNode(tiles: .cells, radius: map.radius)
 		grid.zPosition = 1.0
 		grid.isHidden = true
@@ -23,6 +45,7 @@ extension GameScene {
 		terrain.position = .init(x: -.hexR * 1.5, y: .hexR * 0.31)
 		terrain.addChild(fog)
 		terrain.addChild(selection)
+		terrain.addChild(flags)
 		terrain.addChild(grid)
 		addChild(terrain)
 
@@ -31,17 +54,26 @@ extension GameScene {
 			let tileGroup = map[hex].tileGroup
 			terrain.setTileGroup(tileGroup, forColumn: x, row: y)
 			grid.setTileGroup(.grid, forColumn: x, row: y)
+
+			if let city = map.cities[hex] {
+				flags.setTileGroup(
+					city.controller == .axis ? .axis : .allies,
+					forColumn: x, row: y
+				)
+			}
 		}
 
 		return MapNodes(
 			fog: fog,
 			selection: selection,
+			flags: flags,
 			grid: grid
 		)
 	}
 
 	func addCamera() -> SKCameraNode {
 		let camera = SKCameraNode()
+		camera.setScale(1.5)
 		addChild(camera)
 		return camera
 	}
@@ -63,20 +95,30 @@ extension GameScene {
 	func updateFog() {
 		state.map.cells.forEach { hex in
 			let (x, y) = state.map.converting(hex)
-			fog?.setTileGroup(
+			nodes?.fog.setTileGroup(
 				state.visible.contains(hex) ? nil : .fog,
 				forColumn: x, row: y
 			)
 			if let selectable = state.selectable {
-				selection?.setTileGroup(
+				nodes?.selection.setTileGroup(
 					selectable.contains(hex) ? nil : .fog,
 					forColumn: x, row: y
 				)
 			}
 		}
 		state.units.forEach { unit in
-			units[unit.id]?.isHidden = !state.visible.contains(unit.position)
+			nodes?.units[unit.id]?.isHidden = !state.visible.contains(unit.position)
 		}
-		selection?.isHidden = state.selectable == nil
+		nodes?.selection.isHidden = state.selectable == nil
+	}
+
+	func updateFlags() {
+		state.map.cities.forEach { hex, city in
+			let (x, y) = state.map.converting(hex)
+			nodes?.flags.setTileGroup(
+				city.controller == .axis ? .axis : .allies,
+				forColumn: x, row: y
+			)
+		}
 	}
 }

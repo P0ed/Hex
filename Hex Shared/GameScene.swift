@@ -4,12 +4,7 @@ import GameplayKit
 final class GameScene: SKScene {
 	private(set) var state: State = .random()
 	{ didSet { didSetState(oldValue: oldValue) } }
-
-	private(set) var cursor: SKNode?
-	private(set) var fog: SKTileMapNode?
-	private(set) var selection: SKTileMapNode?
-	private(set) var grid: SKNode?
-	private(set) var units: [UnitID: SKNode] = [:]
+	private(set) var nodes: BattlefieldNodes?
 
 	private let hid = HIDController()
 
@@ -17,13 +12,11 @@ final class GameScene: SKScene {
 		backgroundColor = .black
 		scaleMode = .aspectFill
 
-		let map = addMap(state.map)
-		fog = map.fog
-		selection = map.selection
-		grid = map.grid
+		nodes = BattlefieldNodes(
+			cursor: addCursor(),
+			map: addMap(state.map)
+		)
 		camera = addCamera()
-		cursor = addCursor()
-
 		state.initialize()
 
 		hid.inputStream = { [weak self] input in self?.applyInput(input) }
@@ -37,31 +30,30 @@ final class GameScene: SKScene {
 
 	func addUnit(_ uid: UnitID, node: SKNode) {
 		addChild(node)
-		units[uid] = node
+		nodes?.units[uid] = node
 	}
 
 	func removeUnit(_ uid: UnitID) {
-		units[uid]?.removeFromParent()
-		units[uid] = .none
+		nodes?.units[uid]?.removeFromParent()
+		nodes?.units[uid] = .none
 	}
 }
 
 private extension GameScene {
 
 	func didSetState(oldValue: State) {
-		cursor?.position = state.cursor.point
+		nodes?.cursor.position = state.cursor.point
 		camera?.position = state.camera.point
 
 		if state.visible != oldValue.visible || state.selectable != oldValue.selectable {
 			updateFog()
 		}
 
-		if state.events.isEmpty { return }
 		Task { await reduceEvents() }
 	}
 
 	private func reduceEvents() async {
 		for event in state.events { await processEvent(event) }
-		state.events = []
+		if !state.events.isEmpty { state.events = [] }
 	}
 }

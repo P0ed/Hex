@@ -1,16 +1,15 @@
 enum Direction { case left, right, down, up }
 enum Target { case prev, next }
 enum Action { case a, b, c, d }
-enum Menu { case no, yes }
 
-enum Input { case direction(Direction), target(Target), action(Action), menu(Menu) }
+enum Input { case direction(Direction), target(Target), action(Action), menu }
 
 extension State {
 
 	mutating func apply(_ input: Input) {
 		switch input {
 		case let .direction(direction): moveCursor(direction)
-		case .menu(.yes): endTurn()
+		case .menu: endTurn()
 		case .action(.a): primaryAction()
 		case .action(.b): secondaryAction()
 		case .target(.prev): prevUnit()
@@ -23,24 +22,15 @@ extension State {
 private extension State {
 
 	mutating func moveCursor(_ direction: Direction) {
-		let c = switch direction {
-		case .left: cursor.neighbor(cursor.q & 1 == 0 ? .southWest : .northWest)
-		case .right: cursor.neighbor(cursor.q & 1 == 0 ? .southEast : .northEast)
-		case .down: cursor.neighbor(.south)
-		case .up: cursor.neighbor(.north)
-		}
+		let c = cursor.neighbor(direction)
 
 		if c.distance(to: .zero) <= map.radius {
 			cursor = c
-			if abs(camera.q - cursor.q) > 6 {
-				camera = camera.neighbor(
-					(camera.q - cursor.q) > 0
-					? (camera.q & 1 == 0 ? .southWest : .northWest)
-					: (camera.q & 1 == 0 ? .southEast : .northEast)
-				)
+			while abs(camera.pt.x - cursor.pt.x) > 12 {
+				camera = camera.neighbor((camera.pt.x - cursor.pt.x) > 0 ? .left : .right)
 			}
-			if abs(camera.r - cursor.r) > 4 {
-				camera = camera.neighbor((camera.r - cursor.r) > 0 ? .south : .north)
+			while abs(camera.pt.y - cursor.pt.y) > 8 {
+				camera = camera.neighbor((camera.pt.y - cursor.pt.y) > 0 ? .down : .up)
 			}
 		}
 	}

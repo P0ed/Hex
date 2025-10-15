@@ -13,23 +13,14 @@ extension GameScene {
 		}
 		switch event.characters {
 		case "q": applyInput(.target(.prev))
-		case "r": applyInput(.target(.next))
-		case "w": applyInput(.menu(.no))
-		case "e": applyInput(.menu(.yes))
+		case "w": applyInput(.target(.next))
+		case "e": applyInput(.menu)
 		case "a": applyInput(.action(.a))
 		case "s": applyInput(.action(.b))
 		case "d": applyInput(.action(.c))
 		case "f": applyInput(.action(.d))
-		case "z": camera?.run(.scale(to: (camera?.xScale ?? 1.0) > 2.0 ? 1.0 : 4.0, duration: 0.33))
-		case "x": camera?.run(.scale(to: 12.0, duration: 0.33))
-		case "c": grid?.isHidden.toggle()
-		default: break
-		}
-	}
-
-	override func keyUp(with event: NSEvent) {
-		switch event.characters {
-		case "x": camera?.run(.scale(to: 1.0, duration: 0.33))
+		case "z": camera?.run(.scale(to: (camera?.xScale ?? 1.0) > 4.0 ? 1.5 : 8.0, duration: 0.33))
+		case "x": nodes?.grid.isHidden.toggle()
 		default: break
 		}
 	}

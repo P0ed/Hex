@@ -3,7 +3,7 @@ import GameplayKit
 @MainActor
 extension State {
 
-	static func random(radius: Int = 32, seed: Int = 0) -> State {
+	static func random(radius: Int = 24, seed: Int = 0) -> State {
 		.init(
 			map: Map(radius: radius, seed: seed),
 			players: [
@@ -38,5 +38,13 @@ extension Map {
 			return (hex, Terrain.terrain(at: noise.value(at: pos)))
 		}
 		terrain = Dictionary(pairs, uniquingKeysWith: { _, r in r })
+
+		terrain[Hex(2, 3)] = .city
+		terrain[Hex(1, -3)] = .city
+
+		cities = [
+			Hex(1, -3): City(name: "Berlin", controller: .axis),
+			Hex(2, 3): City(name: "Washington", controller: .allies),
+		]
 	}
 }

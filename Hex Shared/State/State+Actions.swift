@@ -47,12 +47,21 @@ extension State {
 		selectUnit(.none)
 
 		visible = vision(for: currentPlayer)
+		captureCities()
 
 		if nextIdx == 0 {
-			units = units.mapInPlace { u in
-				u.nextTurn()
+			units = units.mapInPlace { u in u.nextTurn() }
+		}
+	}
+
+	mutating func captureCities() {
+		let reflag = units.reduce(into: false) { reflag, unit in
+			if let city = map.cities[unit.position], city.controller != unit.player {
+				map.cities[unit.position]?.controller = unit.player
+				reflag = true
 			}
 		}
+		if reflag { events.append(.reflag) }
 	}
 
 	mutating func selectUnit(_ unit: Unit?) {

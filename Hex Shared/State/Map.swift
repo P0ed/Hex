@@ -5,9 +5,7 @@ struct Map: Hashable, Codable {
 
 	var cells: [Hex] { .circle(radius) }
 
-	subscript(_ hex: Hex) -> Terrain {
-		terrain[hex] ?? .field
-	}
+	subscript(_ hex: Hex) -> Terrain { terrain[hex] ?? .field }
 
 	func converting(_ hex: Hex) -> (Int, Int) {
 		(radius + hex.q, radius + hex.r + (hex.q - hex.q & 1) / 2)
@@ -32,7 +30,7 @@ struct City: Hashable, Codable {
 }
 
 enum Terrain: Hashable, Codable {
-	case city, airfield, trenches, road, river, bridge, swamp, field, forest, hills, mountains
+	case city, airfield, trenches, road, river, bridge, field, forest, hills, mountains
 }
 
 extension Terrain {
@@ -41,7 +39,7 @@ extension Terrain {
 		switch self {
 		case .city, .airfield, .road, .bridge, .field: 1
 		case .forest, .hills, .trenches: 2
-		case .mountains, .swamp, .river: 3
+		case .mountains, .river: 3
 		}
 	}
 
