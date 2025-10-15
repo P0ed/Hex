@@ -2,24 +2,38 @@ enum Direction { case left, right, down, up }
 enum Target { case prev, next }
 enum Action { case a, b, c, d }
 
-enum Input { case direction(Direction), target(Target), action(Action), menu }
+enum Input { case direction(Direction), target(Target), action(Action), menu, tap(Hex) }
 
 extension State {
 
+	var isHuman: Bool { self[currentPlayer]?.ai == false }
+	var canHandleInput: Bool { isHuman && events.isEmpty }
+
 	mutating func apply(_ input: Input) {
+		guard canHandleInput else { return }
+
 		switch input {
-		case let .direction(direction): moveCursor(direction)
+		case .direction(let direction): moveCursor(direction)
 		case .menu: endTurn()
 		case .action(.a): primaryAction()
 		case .action(.b): secondaryAction()
+		case .action(.c): break
+		case .action(.d): break
 		case .target(.prev): prevUnit()
 		case .target(.next): nextUnit()
-		default: break
+		case .tap(let hex): tap(hex)
 		}
 	}
 }
 
 private extension State {
+
+	mutating func tap(_ hex: Hex) {
+		guard canHandleInput, hex.distance(to: .zero) <= map.radius else { return }
+
+		cursor = hex
+		primaryAction()
+	}
 
 	mutating func moveCursor(_ direction: Direction) {
 		let c = cursor.neighbor(direction)

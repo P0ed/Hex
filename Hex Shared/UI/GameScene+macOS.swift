@@ -30,11 +30,10 @@ extension GameScene {
 	override func mouseDown(with event: NSEvent) {
 		guard let grid = nodes?.grid as? SKTileMapNode else { return }
 		let location = event.location(in: grid)
-		let hex = state.map.converting(
+		applyInput(.tap(state.map.converting(
 			col: grid.tileColumnIndex(fromPosition: location),
 			row: grid.tileRowIndex(fromPosition: location)
-		)
-		act(on: hex)
+		)))
 	}
 }
 #endif

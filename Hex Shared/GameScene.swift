@@ -19,22 +19,14 @@ final class GameScene: SKScene {
 		camera = addCamera()
 		state.initialize()
 
-		hid.inputStream = { [weak self] input in self?.applyInput(input) }
+		hid.inputStream = { [weak self] input in self?.state.apply(input) }
 	}
+}
+
+extension GameScene {
 
 	func applyInput(_ input: Input) {
-		if state.events.isEmpty/*, state[state.currentPlayer]?.ai == false*/ {
-			state.apply(input)
-		}
-	}
-
-	func act(on hex: Hex) {
-		if state.cursor == hex {
-			applyInput(.action(.a))
-		} else {
-			state.cursor = hex
-			applyInput(.action(.a))
-		}
+		state.apply(input)
 	}
 
 	func addUnit(_ uid: UnitID, node: SKNode) {
