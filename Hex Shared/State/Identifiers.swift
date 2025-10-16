@@ -1,17 +1,18 @@
 struct UnitID: Hashable, Codable, ExpressibleByIntegerLiteral {
-	var value: UInt32
+	var value: UInt16
 
-	init(value: UInt32) {
+	init(value: UInt16) {
 		self.value = value
 	}
 
 	init(integerLiteral value: IntegerLiteralType) {
-		self = UnitID(value: UInt32(value))
+		self = UnitID(value: UInt16(value))
 	}
 }
 
 struct PlayerID: Hashable, Codable, ExpressibleByIntegerLiteral {
 	var value: UInt8
+
 	var team: Team { value & 1 == 0 ? .axis : .allies }
 
 	init(value: UInt8) {
