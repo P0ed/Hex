@@ -2,8 +2,9 @@ import SpriteKit
 import GameplayKit
 
 final class GameScene: SKScene {
-	private(set) var state: State = .random()
+	private(set) var state: GameState = .random()
 	{ didSet { didSetState(oldValue: oldValue) } }
+
 	private(set) var nodes: BattlefieldNodes?
 
 	private let hid = HIDController()
@@ -36,15 +37,17 @@ final class GameScene: SKScene {
 		nodes?.units[uid] = .none
 	}
 
-	private func didSetState(oldValue: State) {
+	private func didSetState(oldValue: GameState) {
 		nodes?.cursor.position = state.cursor.point
 		camera?.position = state.camera.point
 		updateFogIfNeeded(oldValue)
+		updateShopIfNeeded(oldValue.shop)
 		if state.isCursorTooFar { state.alignCamera() }
 
 		Task {
 			for event in state.events { await processEvent(event) }
 			if !state.events.isEmpty { state.events = [] }
+			if !state.isHuman { state.runAI() }
 		}
 	}
 }

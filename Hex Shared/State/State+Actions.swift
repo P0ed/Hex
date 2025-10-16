@@ -1,4 +1,4 @@
-extension State {
+extension GameState {
 
 	func moves(for unit: Unit) -> Set<Hex> {
 		.make { hs in
@@ -31,6 +31,9 @@ extension State {
 			guard u.player == player else { return }
 			v.formUnion(vision(for: u))
 		}
+		.union(map.cities.flatMap { hex, city in
+			city.controller == player ? hex.circle(1) : []
+		})
 	}
 
 	mutating func initialize() {

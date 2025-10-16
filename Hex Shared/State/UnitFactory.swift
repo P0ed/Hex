@@ -1,10 +1,10 @@
 @MainActor
-private extension UnitID {
+extension UnitID {
 
 	private static var id = 0 as UnitID
 
 	static func next() -> UnitID {
-		defer { id.value += 1 }
+		id.value += 1
 		return id
 	}
 }
@@ -12,27 +12,27 @@ private extension UnitID {
 @MainActor
 extension Unit {
 
-	static func infantry(player: PlayerID, position: Hex) -> Self {
+	static func infantry(id: UnitID? = nil, player: PlayerID, position: Hex) -> Self {
 		.init(
-			id: .next(),
+			id: id ?? .next(),
 			player: player,
 			position: position,
 			stats: .base >< .inf39
 		)
 	}
 
-	static func tank(player: PlayerID, position: Hex) -> Self {
+	static func tank(id: UnitID? = nil, player: PlayerID, position: Hex) -> Self {
 		.init(
-			id: .next(),
+			id: id ?? .next(),
 			player: player,
 			position: position,
 			stats: .base >< .tank39
 		)
 	}
 
-	static func art(player: PlayerID, position: Hex) -> Self {
+	static func art(id: UnitID? = nil, player: PlayerID, position: Hex) -> Self {
 		.init(
-			id: .next(),
+			id: id ?? .next(),
 			player: player,
 			position: position,
 			stats: .base >< .art39

@@ -92,7 +92,7 @@ extension GameScene {
 		return cursor
 	}
 
-	func updateFogIfNeeded(_ oldValue: State) {
+	func updateFogIfNeeded(_ oldValue: GameState) {
 		guard state.visible != oldValue.visible || state.selectable != oldValue.selectable
 		else { return }
 

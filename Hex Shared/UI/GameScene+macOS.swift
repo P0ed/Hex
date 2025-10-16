@@ -30,10 +30,12 @@ extension GameScene {
 	override func mouseDown(with event: NSEvent) {
 		guard let grid = nodes?.grid else { return }
 		let location = event.location(in: grid)
-		applyInput(.tap(state.map.converting(
-			col: grid.tileColumnIndex(fromPosition: location),
-			row: grid.tileRowIndex(fromPosition: location)
-		)))
+		applyInput(.tap(
+			state.map.converting(
+				col: grid.tileColumnIndex(fromPosition: location),
+				row: grid.tileRowIndex(fromPosition: location)
+			)
+		))
 	}
 }
 #endif

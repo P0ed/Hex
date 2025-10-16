@@ -1,9 +1,9 @@
 import GameplayKit
 
 @MainActor
-extension State {
+extension GameState {
 
-	static func random(radius: Int = 12, seed: Int = 0) -> State {
+	static func random(radius: Int = 12, seed: Int = 0) -> GameState {
 		.init(
 			map: Map(radius: radius, seed: seed),
 			players: [
