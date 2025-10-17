@@ -31,17 +31,18 @@ extension Stats {
 
 	static var base: Self {
 		.make { stats in
-			stats.hp = 0xF
-			stats.mp = 0x1
-			stats.ammo = 0xF
-			stats.fuel = 0xF
+			stats.hp = 15
+			stats.mp = 1
+			stats.ap = 1
+			stats.ammo = 15
+			stats.fuel = 15
 		}
 	}
 
 	static var shop: Self {
 		modifying(.base) { stats in
-			stats.mp = 0x0
-			stats.fired = true
+			stats.mp = 0
+			stats.ap = 0
 		}
 	}
 
@@ -50,24 +51,28 @@ extension Stats {
 		set { set(newValue, width: 4, offset: 0) }
 	}
 	var mp: UInt8 {
-		get { get(width: 4, offset: 4) }
-		set { set(newValue, width: 4, offset: 4) }
+		get { get(width: 1, offset: 4) }
+		set { set(newValue, width: 1, offset: 4) }
+	}
+	var ap: UInt8 {
+		get { get(width: 1, offset: 5) }
+		set { set(newValue, width: 1, offset: 5) }
 	}
 	var ammo: UInt8 {
-		get { get(width: 4, offset: 8) }
-		set { set(newValue, width: 4, offset: 8) }
+		get { get(width: 4, offset: 6) }
+		set { set(newValue, width: 4, offset: 6) }
 	}
 	var fuel: UInt8 {
-		get { get(width: 4, offset: 12) }
-		set { set(newValue, width: 4, offset: 12) }
+		get { get(width: 4, offset: 10) }
+		set { set(newValue, width: 4, offset: 10) }
 	}
 	var exp: UInt8 {
-		get { get(width: 8, offset: 16) }
-		set { set(newValue, width: 8, offset: 16) }
+		get { get(width: 8, offset: 14) }
+		set { set(newValue, width: 8, offset: 14) }
 	}
-	var fired: Bool {
-		get { get(width: 1, offset: 24) == 1 }
-		set { set(newValue ? 1 : 0, width: 1, offset: 24) }
+	var ent: UInt8 {
+		get { get(width: 3, offset: 22) }
+		set { set(newValue, width: 3, offset: 22) }
 	}
 
 	var moveType: MoveType {
@@ -115,16 +120,19 @@ enum UnitType: UInt8, Hashable, Codable {
 extension Unit {
 	var hasActions: Bool { canMove || canFire }
 	var canMove: Bool { stats.mp != 0 }
-	var canFire: Bool { !stats.fired && stats.ammo != 0 }
+	var canFire: Bool { stats.ap != 0 && stats.ammo != 0 }
 
 	func canHit(unit: Unit) -> Bool {
 		position.distance(to: unit.position) <= stats.rng
 	}
 
 	mutating func nextTurn() {
-		if stats.mp == stats.mov, !stats.fired { resupply() }
-		stats.mp = 0x1
-		stats.fired = false
+		if stats.mp != 0, stats.ap != 0 {
+			resupply()
+			stats.ent.refill(amount: 1, cap: 7)
+		}
+		stats.mp = 1
+		stats.ap = 1
 	}
 
 	mutating func heal() {
@@ -157,7 +165,7 @@ extension Unit {
 		
 		
 		- - - - - - - -
-		Cost: \(cost)€
+		Cost: \(cost)
 		"""
 	}
 }

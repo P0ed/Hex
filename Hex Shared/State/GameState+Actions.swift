@@ -117,7 +117,7 @@ extension GameState {
 		var src = src
 		var dst = dst
 
-		src.stats.fired = true
+		src.stats.ap.decrement()
 		src.stats.ammo.decrement()
 		dst.stats.hp.decrement(by: src.stats.atk)
 
