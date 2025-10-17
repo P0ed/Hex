@@ -58,7 +58,7 @@ extension GameState {
 		}
 	}
 
-	mutating func captureCities() {
+	private mutating func captureCities() {
 		let reflag = units.reduce(into: false) { reflag, u in
 			if let city = map.cities[u.position], city.controller != u.player {
 				map.cities[u.position]?.controller = u.player

@@ -12,7 +12,6 @@ struct GameState: Hashable, Codable {
 	var camera: Hex = .zero
 	var selectedUnit: UnitID?
 	var selectable: Set<Hex>?
-	var shop: Shop?
 
 	var events: [Event] = []
 }
@@ -26,18 +25,14 @@ struct Player: Hashable, Codable {
 
 enum Team: Hashable, Codable { case axis, allies }
 
-struct Shop: Hashable, Codable {
-	var units: [Unit]
-	var cursor: Int
-	var location: Hex
-}
-
 enum Event: Hashable, Codable {
 	case spawn(UnitID)
 	case kill(UnitID)
 	case move(UnitID)
 	case attack(UnitID, UnitID)
 	case reflag
+	case shop
+	case menu
 }
 
 extension GameState {

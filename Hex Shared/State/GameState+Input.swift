@@ -8,23 +8,9 @@ enum Input { case direction(Direction), target(Target), action(Action), menu, ta
 extension GameState {
 
 	var isHuman: Bool { self[currentPlayer]?.ai == false }
-	var canHandleInput: Bool { /*isHuman && */events.isEmpty }
+	var canHandleInput: Bool { isHuman && events.isEmpty }
 
 	mutating func apply(_ input: Input) {
-		guard canHandleInput else { return }
-
-		if case .some = shop {
-			shopInput(input)
-		} else {
-			rootInput(input)
-		}
-	}
-}
-
-@MainActor
-private extension GameState {
-
-	mutating func rootInput(_ input: Input) {
 		guard canHandleInput else { return }
 
 		switch input {
@@ -39,24 +25,10 @@ private extension GameState {
 		case .tap(let hex): tap(hex)
 		}
 	}
+}
 
-	mutating func shopInput(_ input: Input) {
-		guard var shop else { return }
-
-		switch input {
-		case .direction(let direction):
-			shop.moveCursor(direction)
-			self.shop = shop
-		case .action(.a):
-			let unit = shop.buyUnit()
-			units.append(unit)
-			events.append(.spawn(unit.id))
-			self.shop = .none
-		case .action(.b):
-			self.shop = .none
-		default: break
-		}
-	}
+@MainActor
+private extension GameState {
 
 	mutating func tap(_ hex: Hex) {
 		guard canHandleInput, map.contains(hex) else { return }
@@ -76,7 +48,7 @@ private extension GameState {
 				if dst.player.team != unit.player.team {
 					attack(src: unit, dst: dst)
 				} else {
-					selectUnit(dst)
+					selectUnit(dst == unit ? .none : dst)
 				}
 			} else {
 				move(unit: unit, to: cursor)
@@ -85,7 +57,7 @@ private extension GameState {
 			if let u = units[cursor], u.player == currentPlayer {
 				selectUnit(u)
 			} else if let c = map.cities[cursor], c.controller == currentPlayer {
-				displayShop(at: cursor)
+				events.append(.shop)
 			}
 		}
 	}

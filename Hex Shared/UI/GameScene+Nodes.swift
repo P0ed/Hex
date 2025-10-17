@@ -2,29 +2,31 @@ import SpriteKit
 
 extension GameScene {
 
-	struct MapNodes {
-		var fog: SKTileMapNode
-		var selection: SKTileMapNode
-		var flags: SKTileMapNode
-		var grid: SKTileMapNode
-	}
-
 	struct BattlefieldNodes {
 		var cursor: SKNode
 		var fog: SKTileMapNode
 		var selection: SKTileMapNode
 		var flags: SKTileMapNode
 		var grid: SKTileMapNode
+		var menu: SKNode
 		var units: [UnitID: SKNode]
 
-		init(cursor: SKNode, map: MapNodes) {
+		init(cursor: SKNode, map: MapNodes, menu: SKNode) {
 			self.cursor = cursor
 			self.fog = map.fog
 			self.selection = map.selection
 			self.flags = map.flags
 			self.grid = map.grid
+			self.menu = menu
 			self.units = [:]
 		}
+	}
+
+	struct MapNodes {
+		var fog: SKTileMapNode
+		var selection: SKTileMapNode
+		var flags: SKTileMapNode
+		var grid: SKTileMapNode
 	}
 
 	func addMap(_ map: Map) -> MapNodes {
@@ -69,6 +71,12 @@ extension GameScene {
 			flags: flags,
 			grid: grid
 		)
+	}
+
+	func addMenu() -> SKNode {
+		let menu = SKNode()
+		addChild(menu)
+		return menu
 	}
 
 	func addCamera() -> SKCameraNode {

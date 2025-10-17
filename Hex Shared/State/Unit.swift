@@ -32,7 +32,7 @@ extension Stats {
 	static var base: Self {
 		.make { stats in
 			stats.hp = 0xF
-			stats.mp = 0xF
+			stats.mp = 0x1
 			stats.ammo = 0xF
 			stats.fuel = 0xF
 			stats.exp = 0
@@ -118,7 +118,7 @@ extension Unit {
 
 	mutating func nextTurn() {
 		if stats.mp == stats.mov, !stats.fired { resupply() }
-		stats.mp = 15
+		stats.mp = 0x1
 		stats.fired = false
 	}
 

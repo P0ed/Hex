@@ -39,12 +39,14 @@ extension Map {
 		}
 		terrain = Dictionary(pairs, uniquingKeysWith: { _, r in r })
 
-		terrain[Hex(2, 3)] = .city
 		terrain[Hex(1, -3)] = .city
+		terrain[Hex(2, 3)] = .city
+		terrain[Hex(-2, 5)] = .city
 
 		cities = [
 			Hex(1, -3): City(name: "Berlin", controller: .axis),
 			Hex(2, 3): City(name: "Washington", controller: .allies),
+			Hex(-2, 5): City(name: "Washington", controller: .allies),
 		]
 	}
 }

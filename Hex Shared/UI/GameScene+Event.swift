@@ -7,6 +7,8 @@ extension GameScene {
 		case let .move(uid): await processMove(uid: uid)
 		case let .attack(src, dst): await processAttack(src: src, dst: dst)
 		case .reflag: updateFlags()
+		case .shop: processShop()
+		case .menu: break
 		}
 	}
 }
@@ -39,5 +41,25 @@ private extension GameScene {
 		if let dstUnit = state[dst] {
 			nodes?.units[dst]?.update(dstUnit)
 		}
+	}
+
+	func processShop() {
+		guard let city = state.map.cities[state.cursor],
+			  city.controller == state.currentPlayer,
+			  state.units[state.cursor] == nil
+		else { return }
+
+		show(ModalMenu(
+			location: state.cursor,
+			items: state.unitTemplates.map { template in
+				MenuItem(
+					icon: template.imageName,
+					text: template.imageName,
+					action: { [hex = state.cursor] state in
+						state.buy(template, at: hex)
+					}
+				)
+			}
+		))
 	}
 }
