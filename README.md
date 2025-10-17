@@ -1,3 +1,3 @@
-# 0ug hex grid exploration in pure Swift
+# Panzer General inspired hex grid game engine
 
-<img width="1024" src="https://github.com/user-attachments/assets/6bce917f-64af-4f1c-a8ef-51b1045c7925" />
+<img width="640" height="640" src="https://github.com/user-attachments/assets/4f87289d-5e83-46f3-9e86-c36a7921ae52" />
