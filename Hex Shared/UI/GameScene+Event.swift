@@ -54,7 +54,7 @@ private extension GameScene {
 				MenuItem(
 					icon: template.imageName,
 					text: template.imageName,
-					description: template.description,
+					description: template.description + " / \(state.prestige)€",
 					action: { [hex = state.cursor] state in
 						state.buy(template, at: hex)
 					}

@@ -15,7 +15,7 @@ extension GameState {
 				Unit(id: .make(), player: .axis, position: Hex(1, -2), stats: .base >< .inf39),
 				Unit(id: .make(), player: .axis, position: Hex(0, -1), stats: .base >< .tank39),
 				Unit(id: .make(), player: .axis, position: Hex(-4, 1), stats: .base >< .tank39),
-				Unit(id: .make(), player: .axis, position: Hex(-3, 2), stats: .base >< .art39),
+				Unit(id: .make(), player: .axis, position: Hex(-1, 1), stats: .base >< .art39),
 
 				Unit(id: .make(), player: .allies, position: Hex(0, 3), stats: .base >< .inf39),
 				Unit(id: .make(), player: .allies, position: Hex(3, 1), stats: .base >< .inf39),

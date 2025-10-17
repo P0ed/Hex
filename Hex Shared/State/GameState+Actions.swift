@@ -1,5 +1,16 @@
 extension GameState {
 
+	var prestige: UInt16 {
+		get { self[currentPlayer]?.prestige ?? 0 }
+		set { self[currentPlayer]?.prestige = newValue }
+	}
+
+	var income: UInt16 {
+		min(.max - prestige, map.cities.values.reduce(into: 0) { r, c in
+			r += c.controller == currentPlayer ? 48 : 0
+		})
+	}
+
 	func moves(for unit: Unit) -> Set<Hex> {
 		.make { hs in
 			if unit.stats.unitType == .air {
@@ -44,6 +55,8 @@ extension GameState {
 	mutating func endTurn() {
 		guard let idx = players.firstIndex(where: { p in p.id == currentPlayer })
 		else { return }
+
+		players[idx].prestige += income
 
 		let nextIdx = (idx + 1) % players.count
 		currentPlayer = players[nextIdx].id

@@ -200,7 +200,7 @@ extension GameScene.Nodes {
 		)
 		label.zPosition = 0.1
 		label.name = "label"
-		label.fontSize = 12.0
+		label.fontSize = 11.0
 		label.fontName = "Menlo"
 		label.numberOfLines = 0
 		frame.addChild(label)

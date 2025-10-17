@@ -18,6 +18,7 @@ extension Stats {
 			stats.mov = 3
 			stats.rng = 1
 			stats.unitType = .inf
+			stats.moveType = .leg
 		}
 	}
 
@@ -30,6 +31,7 @@ extension Stats {
 			stats.armor = 2
 			stats.hardAttack = 1
 			stats.unitType = .tank
+			stats.moveType = .track
 		}
 	}
 
@@ -40,6 +42,7 @@ extension Stats {
 			stats.mov = 1
 			stats.rng = 4
 			stats.unitType = .art
+			stats.moveType = .leg
 		}
 	}
 }

@@ -10,7 +10,9 @@ extension GameState {
 	}
 
 	mutating func buy(_ template: Unit, at position: Hex) {
+		guard prestige >= template.cost else { return }
 		let unit = template.buy(at: position)
+		prestige -= template.cost
 		units.append(unit)
 		events.append(.spawn(unit.id))
 	}

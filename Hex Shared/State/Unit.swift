@@ -137,16 +137,27 @@ extension Unit {
 		stats.fuel.refill(amount: 15 / 2, cap: 15)
 	}
 
+	var cost: UInt16 {
+		switch stats.unitType {
+		case .inf: 80
+		case .tank: 240
+		case .art: 160
+		default: 120
+		}
+	}
+
 	var description: String {
 		"""
 		\(stats.unitType)
-		ATK: \(stats.atk)
-		DEF: \(stats.def)
-		MOV: \(stats.mov)
-		TYP: \(stats.moveType)
-		ARM: \(stats.armor)
-		PTR: \(stats.hardAttack)
+		ATK: \(stats.atk) - \(stats.hardAttack)
+		DEF: \(stats.def) - \(stats.armor)
+		MOV: \(stats.mov) - \(stats.moveType)
 		RNG: \(stats.rng)
+		
+		
+		
+		- - - - - - - -
+		Cost: \(cost)€
 		"""
 	}
 }
