@@ -16,7 +16,7 @@ extension Unit {
 
 		let plate = SKSpriteNode(imageNamed: "Plate")
 		plate.position = CGPoint(x: 0, y: -20.5)
-		plate.zPosition = 5.0
+		plate.zPosition = 0.1
 		plate.texture?.filteringMode = .nearest
 		node.addChild(plate)
 
@@ -26,7 +26,7 @@ extension Unit {
 		label.fontColor = .textDefault
 		label.text = "\(stats.hp)"
 		label.position = CGPoint(x: 0, y: -24.5)
-		label.zPosition = 6.0
+		label.zPosition = 0.2
 		node.addChild(label)
 
 		return node

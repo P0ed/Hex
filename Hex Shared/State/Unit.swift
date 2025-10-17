@@ -35,8 +35,13 @@ extension Stats {
 			stats.mp = 0x1
 			stats.ammo = 0xF
 			stats.fuel = 0xF
-			stats.exp = 0
-			stats.fired = false
+		}
+	}
+
+	static var shop: Self {
+		modifying(.base) { stats in
+			stats.mp = 0x0
+			stats.fired = true
 		}
 	}
 
@@ -130,6 +135,19 @@ extension Unit {
 	mutating func resupply() {
 		stats.ammo.refill(amount: 15 / 2, cap: 15)
 		stats.fuel.refill(amount: 15 / 2, cap: 15)
+	}
+
+	var description: String {
+		"""
+		\(stats.unitType)
+		ATK: \(stats.atk)
+		DEF: \(stats.def)
+		MOV: \(stats.mov)
+		TYP: \(stats.moveType)
+		ARM: \(stats.armor)
+		PTR: \(stats.hardAttack)
+		RNG: \(stats.rng)
+		"""
 	}
 }
 

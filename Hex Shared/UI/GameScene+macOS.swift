@@ -4,6 +4,11 @@ import SpriteKit
 extension GameScene {
 
 	override func keyDown(with event: NSEvent) {
+		switch event.keyCode {
+		case 36, 49: apply(.action(.a))
+		case 51, 53: apply(.action(.b))
+		default: break
+		}
 		switch event.specialKey {
 		case .leftArrow: apply(.direction(.left))
 		case .rightArrow: apply(.direction(.right))
@@ -28,14 +33,23 @@ extension GameScene {
 	}
 
 	override func mouseDown(with event: NSEvent) {
-		guard let grid = nodes?.grid else { return }
-		let location = event.location(in: grid)
-		apply(.tap(
-			state.map.converting(
-				col: grid.tileColumnIndex(fromPosition: location),
-				row: grid.tileRowIndex(fromPosition: location)
-			)
-		))
+		guard let nodes else { return }
+		if menuState == nil {
+			let location = event.location(in: nodes.grid)
+			apply(.hex(
+				state.map.converting(
+					col: nodes.grid.tileColumnIndex(fromPosition: location),
+					row: nodes.grid.tileRowIndex(fromPosition: location)
+				)
+			))
+		} else {
+			let idx = nodes.menu.nodes(at: event.location(in: nodes.menu))
+				.compactMap { n in n as? SKShapeNode }.first
+				.flatMap(nodes.menu.children.firstIndex)
+			if let idx {
+				apply(.index(idx))
+			}
+		}
 	}
 }
 #endif

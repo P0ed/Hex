@@ -5,10 +5,10 @@ final class GameScene: SKScene {
 	private(set) var state: GameState = .random()
 	{ didSet { didSetState(oldValue: oldValue) } }
 
-	private(set) var menuState: ModalMenu?
+	private(set) var menuState: MenuState?
 	{ didSet { didSetMenu(oldValue: oldValue) } }
 
-	private(set) var nodes: BattlefieldNodes?
+	private(set) var nodes: Nodes?
 
 	private let hid = HIDController()
 
@@ -16,12 +16,12 @@ final class GameScene: SKScene {
 		backgroundColor = .black
 		scaleMode = .aspectFill
 
-		nodes = BattlefieldNodes(
+		nodes = Nodes(
 			cursor: addCursor(),
+			camera: addCamera(),
 			map: addMap(state.map),
 			menu: addMenu()
 		)
-		camera = addCamera()
 		state.initialize()
 
 		hid.inputStream = { [weak self] input in self?.apply(input) }
@@ -32,8 +32,8 @@ final class GameScene: SKScene {
 		else { menuState?.apply(input) }
 	}
 
-	func show(_ menu: ModalMenu?) {
-		menuState = menu
+	func show(_ menu: MenuState?) {
+		menuState = menu.flatMap { m in m.items.isEmpty ? .none : m }
 	}
 
 	func addUnit(_ uid: UnitID, node: SKNode) {
@@ -54,22 +54,20 @@ final class GameScene: SKScene {
 
 		Task {
 			for event in state.events { await processEvent(event) }
-			if !state.events.isEmpty { state.events = [] }
-			if !state.isHuman { state.runAI() }
+			if !state.events.isEmpty { return state.events = [] }
+			if !state.isHuman { return state.runAI() }
 		}
 	}
 
-	private func didSetMenu(oldValue: ModalMenu?) {
-		if let menuState {
-			if oldValue == nil {
-				nodes?.menu.isHidden = false
-			} else if let action = menuState.action {
-				if case let .apply(transform) = action { transform(&state) }
-				show(.none)
-			}
-		} else if oldValue != nil {
-			nodes?.menu.isHidden = true
-			nodes?.menu.removeAllChildren()
+	private func didSetMenu(oldValue: MenuState?) {
+		if let action = menuState?.action {
+			if case let .apply(transform) = action { transform(&state) }
+			return menuState = .none
+		} else if (menuState == nil) != (oldValue == nil) {
+			if let menuState { nodes?.showMenu(menuState) }
+			else { nodes?.hideMenu() }
+		} else if let menuState {
+			nodes?.updateMenu(menuState)
 		}
 	}
 }

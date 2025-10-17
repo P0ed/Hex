@@ -11,15 +11,16 @@ extension GameState {
 				Player(id: .allies, ai: true),
 			],
 			units: [
-				.infantry(player: .axis, position: Hex(-4, 0)),
-				.infantry(player: .axis, position: Hex(1, -2)),
-				.tank(player: .axis, position: Hex(0, -1)),
-				.tank(player: .axis, position: Hex(-4, 1)),
-				.art(player: .axis, position: Hex(-3, 2)),
+				Unit(id: .make(), player: .axis, position: Hex(-4, 0), stats: .base >< .inf39),
+				Unit(id: .make(), player: .axis, position: Hex(1, -2), stats: .base >< .inf39),
+				Unit(id: .make(), player: .axis, position: Hex(0, -1), stats: .base >< .tank39),
+				Unit(id: .make(), player: .axis, position: Hex(-4, 1), stats: .base >< .tank39),
+				Unit(id: .make(), player: .axis, position: Hex(-3, 2), stats: .base >< .art39),
 
-				.infantry(player: .allies, position: Hex(0, 3)),
-				.infantry(player: .allies, position: Hex(3, 1)),
-				.tank(player: .allies, position: Hex(4, 2)),
+				Unit(id: .make(), player: .allies, position: Hex(0, 3), stats: .base >< .inf39),
+				Unit(id: .make(), player: .allies, position: Hex(3, 1), stats: .base >< .inf39),
+				Unit(id: .make(), player: .allies, position: Hex(4, 2), stats: .base >< .tank39),
+				Unit(id: .make(), player: .allies, position: Hex(-2, 5), stats: .base >< .art39),
 			]
 		)
 	}
@@ -46,7 +47,7 @@ extension Map {
 		cities = [
 			Hex(1, -3): City(name: "Berlin", controller: .axis),
 			Hex(2, 3): City(name: "Washington", controller: .allies),
-			Hex(-2, 5): City(name: "Washington", controller: .allies),
+			Hex(-2, 5): City(name: "London", controller: .allies),
 		]
 	}
 }

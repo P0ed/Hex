@@ -2,7 +2,7 @@ enum Direction { case left, right, down, up }
 enum Target { case prev, next }
 enum Action { case a, b, c, d }
 
-enum Input { case direction(Direction), target(Target), action(Action), menu, tap(Hex) }
+enum Input { case direction(Direction), target(Target), action(Action), menu, hex(Hex), index(Int) }
 
 @MainActor
 extension GameState {
@@ -22,7 +22,8 @@ extension GameState {
 		case .action(.d): break
 		case .target(.prev): prevUnit()
 		case .target(.next): nextUnit()
-		case .tap(let hex): tap(hex)
+		case .hex(let hex): select(hex)
+		case .index: break
 		}
 	}
 }
@@ -30,7 +31,7 @@ extension GameState {
 @MainActor
 private extension GameState {
 
-	mutating func tap(_ hex: Hex) {
+	mutating func select(_ hex: Hex) {
 		guard canHandleInput, map.contains(hex) else { return }
 
 		cursor = hex
@@ -50,13 +51,15 @@ private extension GameState {
 				} else {
 					selectUnit(dst == unit ? .none : dst)
 				}
-			} else {
+			} else if unit.canMove {
 				move(unit: unit, to: cursor)
+			} else if map.cities[cursor]?.controller == currentPlayer {
+				events.append(.shop)
 			}
 		} else {
 			if let u = units[cursor], u.player == currentPlayer {
 				selectUnit(u)
-			} else if let c = map.cities[cursor], c.controller == currentPlayer {
+			} else if map.cities[cursor]?.controller == currentPlayer {
 				events.append(.shop)
 			}
 		}

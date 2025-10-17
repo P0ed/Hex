@@ -49,17 +49,18 @@ private extension GameScene {
 			  state.units[state.cursor] == nil
 		else { return }
 
-		show(ModalMenu(
-			location: state.cursor,
+		show(MenuState(
 			items: state.unitTemplates.map { template in
 				MenuItem(
 					icon: template.imageName,
 					text: template.imageName,
+					description: template.description,
 					action: { [hex = state.cursor] state in
 						state.buy(template, at: hex)
 					}
 				)
-			}
+			},
+			inspector: true
 		))
 	}
 }

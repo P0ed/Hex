@@ -3,8 +3,9 @@ extension GameState {
 
 	var unitTemplates: [Unit] {
 		[
-			.infantry(id: 0, player: currentPlayer, position: .zero),
-			.tank(id: 0, player: currentPlayer, position: .zero)
+			Unit(id: .next, player: currentPlayer, position: .zero, stats: .shop >< .inf39),
+			Unit(id: .next, player: currentPlayer, position: .zero, stats: .shop >< .tank39),
+			Unit(id: .next, player: currentPlayer, position: .zero, stats: .shop >< .art39),
 		]
 	}
 
@@ -20,10 +21,8 @@ extension Unit {
 
 	func buy(at position: Hex) -> Unit {
 		modifying(self) { u in
-			u.id = .next()
+			u.id = .make()
 			u.position = position
-			u.stats.fired = true
-			u.stats.mp = 0
 		}
 	}
 }

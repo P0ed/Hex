@@ -1,42 +1,11 @@
 @MainActor
 extension UnitID {
 
-	private static var id = 0 as UnitID
+	private(set) static var next: UnitID = 0
 
-	static func next() -> UnitID {
-		id.value += 1
-		return id
-	}
-}
-
-@MainActor
-extension Unit {
-
-	static func infantry(id: UnitID? = nil, player: PlayerID, position: Hex) -> Self {
-		.init(
-			id: id ?? .next(),
-			player: player,
-			position: position,
-			stats: .base >< .inf39
-		)
-	}
-
-	static func tank(id: UnitID? = nil, player: PlayerID, position: Hex) -> Self {
-		.init(
-			id: id ?? .next(),
-			player: player,
-			position: position,
-			stats: .base >< .tank39
-		)
-	}
-
-	static func art(id: UnitID? = nil, player: PlayerID, position: Hex) -> Self {
-		.init(
-			id: id ?? .next(),
-			player: player,
-			position: position,
-			stats: .base >< .art39
-		)
+	static func make() -> UnitID {
+		defer { next.value += 1 }
+		return next
 	}
 }
 
@@ -59,6 +28,7 @@ extension Stats {
 			stats.mov = 5
 			stats.rng = 2
 			stats.armor = 2
+			stats.hardAttack = 1
 			stats.unitType = .tank
 		}
 	}
