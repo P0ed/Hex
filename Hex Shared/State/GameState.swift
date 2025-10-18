@@ -33,6 +33,7 @@ enum Event: Hashable, Codable {
 	case reflag
 	case shop
 	case menu
+	case gameOver
 }
 
 extension GameState {

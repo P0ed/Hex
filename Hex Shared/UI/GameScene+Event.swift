@@ -9,6 +9,16 @@ extension GameScene {
 		case .reflag: updateFlags()
 		case .shop: processShop()
 		case .menu: break
+		case .gameOver: show(MenuState(
+			items: [.init(
+				icon: "Restart",
+				text: "",
+				action: { [weak self, size] _ in
+					self?.view?.presentScene(GameScene(size: size))
+				}
+			)],
+			inspector: true
+		))
 		}
 	}
 }

@@ -57,6 +57,7 @@ extension GameState {
 		else { return }
 
 		players[idx].prestige += income
+		captureCities()
 
 		let nextIdx = (idx + 1) % players.count
 		currentPlayer = players[nextIdx].id
@@ -64,7 +65,6 @@ extension GameState {
 		selectUnit(.none)
 
 		visible = vision(for: currentPlayer)
-		captureCities()
 
 		if nextIdx == 0 {
 			units = units.mapInPlace { u in u.nextTurn() }
@@ -78,7 +78,21 @@ extension GameState {
 				reflag = true
 			}
 		}
-		if reflag { events.append(.reflag) }
+		if reflag {
+			events.append(.reflag)
+			eliminatePlayers()
+		}
+	}
+
+	private mutating func eliminatePlayers() {
+		players.removeAll { player in
+			!map.cities.values.contains { city in
+				city.controller == player.id
+			}
+		}
+		if players.count == 1 {
+			events.append(.gameOver)
+		}
 	}
 
 	mutating func selectUnit(_ unit: Unit?) {

@@ -157,10 +157,12 @@ extension Unit {
 	var description: String {
 		"""
 		\(stats.unitType)
+		
 		ATK: \(stats.atk) - \(stats.hardAttack)
 		DEF: \(stats.def) - \(stats.armor)
 		MOV: \(stats.mov) - \(stats.moveType)
 		RNG: \(stats.rng)
+		
 		
 		
 		

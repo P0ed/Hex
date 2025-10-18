@@ -70,7 +70,7 @@ extension GameScene {
 	func addMenu() -> SKNode {
 		let menu = SKShapeNode(
 			rectOf: Nodes.menuSize,
-			cornerRadius: Nodes.radius
+			cornerRadius: Nodes.outerR
 		)
 		menu.fillColor = .lightGray
 		menu.strokeColor = .gray
@@ -133,10 +133,12 @@ extension GameScene {
 @MainActor
 extension GameScene.Nodes {
 
-	static let radius = 12.0 as CGFloat
-	static let itemSize = CGSize(width: 64.0, height: 48.0)
-	static let inset = 16.0 as CGFloat
+	static let inset = 8.0 as CGFloat
 	static let spacing = 8.0 as CGFloat
+	static let outerR = 12.0 as CGFloat
+	static let innerR = outerR - inset / 2.0 as CGFloat
+
+	static let itemSize = CGSize(width: 64.0, height: 52.0)
 	static let inspectorSize = CGSize(
 		width: itemSize.width * 2 + spacing,
 		height: itemSize.height * 3 + spacing * 2
@@ -161,7 +163,7 @@ extension GameScene.Nodes {
 
 	private func addMenuItems(_ menuState: MenuState) {
 		menuState.items.enumerated().map { idx, item in
-			let frame = SKShapeNode(rectOf: Self.itemSize, cornerRadius: Self.radius)
+			let frame = SKShapeNode(rectOf: Self.itemSize, cornerRadius: Self.innerR)
 
 			let x = CGFloat(idx % menuState.cols) * (Self.itemSize.width + Self.spacing)
 			let y = CGFloat(idx / menuState.cols) * (Self.itemSize.height + Self.spacing)
@@ -181,7 +183,7 @@ extension GameScene.Nodes {
 	}
 
 	func addMenuInspector() {
-		let frame = SKShapeNode(rectOf: Self.inspectorSize, cornerRadius: Self.radius)
+		let frame = SKShapeNode(rectOf: Self.inspectorSize, cornerRadius: Self.innerR)
 		frame.fillColor = .gray
 		frame.strokeColor = .darkGray
 		frame.name = "inspector"
