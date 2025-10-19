@@ -2,7 +2,9 @@ enum Direction { case left, right, down, up }
 enum Target { case prev, next }
 enum Action { case a, b, c, d }
 
-enum Input { case direction(Direction), target(Target), action(Action), menu, hex(Hex), index(Int) }
+enum Input {
+	case direction(Direction), target(Target), action(Action), menu, hex(Hex), index(Int)
+}
 
 @MainActor
 extension GameState {
@@ -47,12 +49,12 @@ private extension GameState {
 		if let selectedID = selectedUnit, let unit = self[selectedID] {
 			if let dst = units[cursor] {
 				if dst.player.team != unit.player.team {
-					attack(src: unit, dst: dst)
+					attack(src: unit.id, dst: dst.id)
 				} else {
 					selectUnit(dst == unit ? .none : dst)
 				}
 			} else if unit.canMove {
-				move(unit: unit, to: cursor)
+				move(unit: unit.id, to: cursor)
 			} else if map.cities[cursor]?.controller == currentPlayer {
 				events.append(.shop)
 			}

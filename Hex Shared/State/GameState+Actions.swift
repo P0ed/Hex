@@ -90,7 +90,7 @@ extension GameState {
 				city.controller == player.id
 			}
 		}
-		if players.count == 1 {
+		if Set(players.map(\.id.team)).count == 1 {
 			events.append(.gameOver)
 		}
 	}
@@ -106,15 +106,15 @@ extension GameState {
 		}
 	}
 
-	mutating func move(unit: Unit, to position: Hex) {
-		guard unit.player == currentPlayer,
+	mutating func move(unit: UnitID, to position: Hex) {
+		guard var unit = self[unit],
+			  unit.player == currentPlayer,
 			  unit.canMove, moves(for: unit).contains(position)
 		else { return }
 
-		let unit = modifying(unit) { u in
-			u.position = position
-			u.stats.mp.decrement()
-		}
+		unit.position = position
+		unit.stats.mp.decrement()
+
 		self[unit.id] = unit
 		let vision = vision(for: unit)
 		visible.formUnion(vision)
@@ -122,14 +122,16 @@ extension GameState {
 		events.append(.move(unit.id))
 	}
 
-	mutating func attack(src: Unit, dst: Unit) {
-		guard src.player == currentPlayer,
+	func targets(unit: UnitID) -> [Unit] {
+		self[unit].map { u in enemyUnits.filter(u.canHit) } ?? []
+	}
+
+	mutating func attack(src: UnitID, dst: UnitID) {
+		guard var src = self[src], var dst = self[dst],
+			  src.player == currentPlayer,
 			  src.player.team != dst.player.team,
 			  src.canFire, src.canHit(unit: dst)
 		else { return }
-
-		var src = src
-		var dst = dst
 
 		src.stats.ap.decrement()
 		src.stats.ammo.decrement()

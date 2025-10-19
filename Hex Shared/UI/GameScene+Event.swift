@@ -8,17 +8,8 @@ extension GameScene {
 		case let .attack(src, dst): await processAttack(src: src, dst: dst)
 		case .reflag: updateFlags()
 		case .shop: processShop()
-		case .menu: break
-		case .gameOver: show(MenuState(
-			items: [.init(
-				icon: "Restart",
-				text: "",
-				action: { [weak self, size] _ in
-					self?.view?.presentScene(GameScene(size: size))
-				}
-			)],
-			inspector: true
-		))
+		case .menu: processMenu()
+		case .gameOver: processGameOver()
 		}
 	}
 }
@@ -72,5 +63,32 @@ private extension GameScene {
 			},
 			inspector: true
 		))
+	}
+
+	func processMenu() {
+		show(MenuState(
+			items: [.init(
+				icon: "Restart", text: "Restart",
+				action: { [weak self] _ in self?.restartGame() }
+			)],
+			inspector: false
+		))
+	}
+
+	func processGameOver() {
+		show(MenuState(
+			items: [.init(
+				icon: "Restart", text: "Restart",
+				action: { [weak self] _ in self?.restartGame() }
+			)],
+			inspector: false
+		))
+	}
+
+	private func restartGame() {
+		view?.presentScene(
+			GameScene(size: size),
+			transition: .moveIn(with: .up, duration: 0.47)
+		)
 	}
 }

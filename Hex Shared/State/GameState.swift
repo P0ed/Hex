@@ -3,6 +3,7 @@ struct GameState: Hashable, Codable {
 
 	var players: [Player]
 	var units: [Unit]
+	var d20: D20 = .init(seed: 0)
 
 	var currentPlayer: PlayerID = .axis
 	var turn: UInt32 = 0
@@ -36,6 +37,10 @@ enum Event: Hashable, Codable {
 	case gameOver
 }
 
+struct D20: Hashable, Codable {
+	var seed: UInt64
+}
+
 extension GameState {
 
 	subscript(_ pid: PlayerID) -> Player? {
@@ -67,8 +72,31 @@ extension GameState {
 			}
 		}
 	}
+
+	var playerUnits: LazyFilterSequence<[Unit]> {
+		units.lazy.filter { [currentPlayer] u in u.player == currentPlayer }
+	}
+
+	var enemyUnits: LazyFilterSequence<[Unit]> {
+		units.lazy.filter { [team = currentPlayer.team] u in u.player.team != team }
+	}
 }
 
 extension [Unit] {
 	subscript(_ hex: Hex) -> Unit? { first { u in u.position == hex } }
+}
+
+extension D20: RandomNumberGenerator {
+
+	mutating func next() -> UInt64 {
+		seed &+= 0x9e3779b97f4a7c15
+		var z: UInt64 = seed
+		z = (z ^ (z &>> 30)) &* 0xbf58476d1ce4e5b9
+		z = (z ^ (z &>> 27)) &* 0x94d049bb133111eb
+		return z ^ (z &>> 31)
+	}
+
+	mutating func callAsFunction() -> Int {
+		.random(in: 0..<20, using: &self)
+	}
 }
