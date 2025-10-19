@@ -51,7 +51,7 @@ private extension GameState {
 				if dst.player.team != unit.player.team {
 					attack(src: unit.id, dst: dst.id)
 				} else {
-					selectUnit(dst == unit ? .none : dst)
+					selectUnit(dst == unit ? .none : dst.id)
 				}
 			} else if unit.canMove {
 				move(unit: unit.id, to: cursor)
@@ -60,7 +60,7 @@ private extension GameState {
 			}
 		} else {
 			if let u = units[cursor], u.player == currentPlayer {
-				selectUnit(u)
+				selectUnit(u.id)
 			} else if map.cities[cursor]?.controller == currentPlayer {
 				events.append(.shop)
 			}
@@ -94,6 +94,6 @@ private extension GameState {
 			units.dropFirst(idx + 1).first(where: validUnit)
 		} ?? units.first(where: validUnit)
 
-		if let nextUnit { selectUnit(nextUnit) }
+		if let nextUnit { selectUnit(nextUnit.id) }
 	}
 }

@@ -95,8 +95,8 @@ extension GameState {
 		}
 	}
 
-	mutating func selectUnit(_ unit: Unit?) {
-		if let unit {
+	mutating func selectUnit(_ uid: UnitID?) {
+		if let uid, let unit = self[uid] {
 			selectedUnit = unit.id
 			cursor = unit.position
 			selectable = unit.canMove ? moves(for: unit) : .none
@@ -118,12 +118,16 @@ extension GameState {
 		self[unit.id] = unit
 		let vision = vision(for: unit)
 		visible.formUnion(vision)
-		selectUnit(unit.hasActions ? unit : .none)
+		selectUnit(unit.hasActions ? unit.id : .none)
 		events.append(.move(unit.id))
 	}
 
 	func targets(unit: UnitID) -> [Unit] {
-		self[unit].map { u in enemyUnits.filter(u.canHit) } ?? []
+		self[unit].map { u in
+			enemyUnits
+				.filter { u in visible.contains(u.position) }
+				.filter(u.canHit)
+		} ?? []
 	}
 
 	mutating func attack(src: UnitID, dst: UnitID) {
@@ -145,7 +149,7 @@ extension GameState {
 		self[src.id] = src.stats.hp == 0 ? .none : src
 		self[dst.id] = dst.stats.hp == 0 ? .none : dst
 
-		selectUnit(src.hasActions && src.stats.hp > 0 ? src : .none)
+		selectUnit(src.hasActions && src.stats.hp > 0 ? src.id : .none)
 		events.append(.attack(src.id, dst.id))
 
 		if src.stats.hp == 0 { events.append(.kill(src.id)) }
