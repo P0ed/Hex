@@ -11,7 +11,7 @@ extension UnitID {
 
 extension Stats {
 
-	static var inf39: Self {
+	static var inf: Self {
 		.make { stats in
 			stats.atk = 4
 			stats.def = 6
@@ -22,10 +22,10 @@ extension Stats {
 		}
 	}
 
-	static var tank39: Self {
+	static var tank: Self {
 		.make { stats in
 			stats.atk = 7
-			stats.def = 10
+			stats.def = 9
 			stats.mov = 5
 			stats.rng = 2
 			stats.armor = 2
@@ -35,7 +35,7 @@ extension Stats {
 		}
 	}
 
-	static var art39: Self {
+	static var art: Self {
 		.make { stats in
 			stats.atk = 6
 			stats.def = 4
@@ -46,10 +46,11 @@ extension Stats {
 		}
 	}
 
-	static var recon39: Self {
+	static var recon: Self {
 		.make { stats in
 			stats.atk = 3
 			stats.def = 4
+			stats.armor = 1
 			stats.mov = 6
 			stats.rng = 1
 			stats.unitType = .recon

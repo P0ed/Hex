@@ -111,13 +111,15 @@ extension GameScene {
 	}
 
 	func addStatus() -> SKLabelNode {
-		let label = SKLabelNode(text: "xxx")
+		let label = SKLabelNode()
 		camera?.addChild(label)
 		label.fontName = "Menlo"
 		label.fontSize = 11.0
 		label.fontColor = .white
 		label.zPosition = 10.0
 		label.setScale(0.5)
+		label.horizontalAlignmentMode = .left
+		label.verticalAlignmentMode = .bottom
 		return label
 	}
 
@@ -172,7 +174,10 @@ extension GameScene.Nodes {
 	)
 
 	func layout(size: CGSize) {
-		status.position = CGPoint(x: 0, y: Self.inset - size.height / 2.0)
+		status.position = CGPoint(
+			x: Self.inset - size.width / 2.0,
+			y: Self.inset - size.height / 2.0
+		)
 	}
 
 	func showMenu(_ menuState: MenuState) {

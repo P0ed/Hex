@@ -36,7 +36,7 @@ extension GameState {
 	func vision(for unit: Unit) -> Set<Hex> {
 		let range = switch unit.stats.unitType {
 		case .recon: 3
-		case .inf, .tank: 2
+		case .inf, .tank, .air: 2
 		default: 1
 		}
 		return Set(unit.position.circle(range))

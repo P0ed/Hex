@@ -3,10 +3,10 @@ extension GameState {
 
 	var unitTemplates: [Unit] {
 		[
-			Unit(id: .next, player: player, position: .zero, stats: .shop >< .inf39),
-			Unit(id: .next, player: player, position: .zero, stats: .shop >< .recon39),
-			Unit(id: .next, player: player, position: .zero, stats: .shop >< .tank39),
-			Unit(id: .next, player: player, position: .zero, stats: .shop >< .art39),
+			Unit(id: .next, player: player, position: .zero, stats: .shop >< .inf),
+			Unit(id: .next, player: player, position: .zero, stats: .shop >< .recon),
+			Unit(id: .next, player: player, position: .zero, stats: .shop >< .tank),
+			Unit(id: .next, player: player, position: .zero, stats: .shop >< .art),
 		]
 	}
 

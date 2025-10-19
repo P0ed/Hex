@@ -11,16 +11,17 @@ extension GameState {
 				Player(id: .usa, ai: true),
 			],
 			units: [
-				Unit(id: .make(), player: .deu, position: Hex(-4, 0), stats: .base >< .inf39),
-				Unit(id: .make(), player: .deu, position: Hex(1, -2), stats: .base >< .inf39),
-				Unit(id: .make(), player: .deu, position: Hex(0, -1), stats: .base >< .tank39),
-				Unit(id: .make(), player: .deu, position: Hex(-4, 1), stats: .base >< .tank39),
-				Unit(id: .make(), player: .deu, position: Hex(-1, 1), stats: .base >< .art39),
+				Unit(id: .make(), player: .deu, position: Hex(-4, 0), stats: .base >< .inf),
+				Unit(id: .make(), player: .deu, position: Hex(1, -2), stats: .base >< .inf),
+				Unit(id: .make(), player: .deu, position: Hex(0, -1), stats: .base >< .tank),
+				Unit(id: .make(), player: .deu, position: Hex(-4, 1), stats: .base >< .recon),
+				Unit(id: .make(), player: .deu, position: Hex(-1, 1), stats: .base >< .art),
 
-				Unit(id: .make(), player: .usa, position: Hex(0, 3), stats: .base >< .inf39),
-				Unit(id: .make(), player: .usa, position: Hex(3, 1), stats: .base >< .inf39),
-				Unit(id: .make(), player: .usa, position: Hex(4, 2), stats: .base >< .tank39),
-				Unit(id: .make(), player: .usa, position: Hex(-2, 5), stats: .base >< .art39),
+				Unit(id: .make(), player: .usa, position: Hex(0, 3), stats: .base >< .inf),
+				Unit(id: .make(), player: .usa, position: Hex(3, 1), stats: .base >< .inf),
+				Unit(id: .make(), player: .usa, position: Hex(4, 2), stats: .base >< .tank),
+				Unit(id: .make(), player: .usa, position: Hex(-2, 5), stats: .base >< .art),
+				Unit(id: .make(), player: .usa, position: Hex(2, 3), stats: .base >< .art),
 			]
 		)
 	}

@@ -84,7 +84,7 @@ extension GKNoiseMap {
 	static func terrain(radius: Int, seed: Int) -> GKNoiseMap {
 
 		let perlin = GKNoise(GKPerlinNoiseSource(
-			frequency: 8.2,
+			frequency: 10.0,
 			octaveCount: 6,
 			persistence: 0.47,
 			lacunarity: 0.68,
