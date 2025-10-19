@@ -9,7 +9,7 @@ enum Input {
 @MainActor
 extension GameState {
 
-	var isHuman: Bool { self[currentPlayer]?.ai == false }
+	var isHuman: Bool { self[player]?.ai == false }
 	var canHandleInput: Bool { isHuman && events.isEmpty }
 
 	mutating func apply(_ input: Input) {
@@ -55,13 +55,13 @@ private extension GameState {
 				}
 			} else if unit.canMove {
 				move(unit: unit.id, to: cursor)
-			} else if map.cities[cursor]?.controller == currentPlayer {
+			} else if map.cities[cursor]?.controller == player {
 				events.append(.shop)
 			}
 		} else {
-			if let u = units[cursor], u.player == currentPlayer {
+			if let u = units[cursor], u.player == player {
 				selectUnit(u.id)
-			} else if map.cities[cursor]?.controller == currentPlayer {
+			} else if map.cities[cursor]?.controller == player {
 				events.append(.shop)
 			}
 		}
@@ -76,7 +76,7 @@ private extension GameState {
 	}
 
 	mutating func nextUnit(reversed: Bool = false) {
-		let player = currentPlayer
+		let player = player
 
 		let units: AnyRandomAccessCollection<Unit> = reversed
 		? .init(units.reversed())

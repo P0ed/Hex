@@ -45,4 +45,15 @@ extension Stats {
 			stats.moveType = .leg
 		}
 	}
+
+	static var recon39: Self {
+		.make { stats in
+			stats.atk = 3
+			stats.def = 4
+			stats.mov = 6
+			stats.rng = 1
+			stats.unitType = .recon
+			stats.moveType = .track
+		}
+	}
 }

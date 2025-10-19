@@ -46,7 +46,7 @@ private extension GameScene {
 
 	func processShop() {
 		guard let city = state.map.cities[state.cursor],
-			  city.controller == state.currentPlayer,
+			  city.controller == state.player,
 			  state.units[state.cursor] == nil
 		else { return }
 
@@ -54,7 +54,7 @@ private extension GameScene {
 			items: state.unitTemplates.map { template in
 				MenuItem(
 					icon: template.imageName,
-					text: template.imageName,
+					text: "\(template.stats.unitType)",
 					description: template.description + " / \(state.prestige)",
 					action: { [hex = state.cursor] state in
 						state.buy(template, at: hex)

@@ -1,13 +1,13 @@
 extension GameState {
 
 	var prestige: UInt16 {
-		get { self[currentPlayer]?.prestige ?? 0 }
-		set { self[currentPlayer]?.prestige = newValue }
+		get { self[player]?.prestige ?? 0 }
+		set { self[player]?.prestige = newValue }
 	}
 
 	var income: UInt16 {
 		min(.max - prestige, map.cities.values.reduce(into: 0) { r, c in
-			r += c.controller == currentPlayer ? 48 : 0
+			r += c.controller == player ? 48 : 0
 		})
 	}
 
@@ -34,7 +34,12 @@ extension GameState {
 	}
 
 	func vision(for unit: Unit) -> Set<Hex> {
-		Set(unit.position.circle(2))
+		let range = switch unit.stats.unitType {
+		case .recon: 3
+		case .inf, .tank: 2
+		default: 1
+		}
+		return Set(unit.position.circle(range))
 	}
 
 	func vision(for player: PlayerID) -> Set<Hex> {
@@ -48,25 +53,24 @@ extension GameState {
 	}
 
 	mutating func initialize() {
-		visible = vision(for: currentPlayer)
+		players = players.mapInPlace { p in p.visible = vision(for: p.id) }
 		events = units.map { u in .spawn(u.id) }
 	}
 
 	mutating func endTurn() {
-		guard let idx = players.firstIndex(where: { p in p.id == currentPlayer })
+		guard let idx = players.firstIndex(where: { p in p.id == player })
 		else { return }
 
 		players[idx].prestige += income
 		captureCities()
 
 		let nextIdx = (idx + 1) % players.count
-		currentPlayer = players[nextIdx].id
+		player = players[nextIdx].id
 		turn = nextIdx == 0 ? turn + 1 : turn
 		selectUnit(.none)
 
-		visible = vision(for: currentPlayer)
-
 		if nextIdx == 0 {
+			players = players.mapInPlace { p in p.visible = vision(for: p.id) }
 			units = units.mapInPlace { u in u.nextTurn() }
 		}
 	}
@@ -108,7 +112,7 @@ extension GameState {
 
 	mutating func move(unit: UnitID, to position: Hex) {
 		guard var unit = self[unit],
-			  unit.player == currentPlayer,
+			  unit.player == player,
 			  unit.canMove, moves(for: unit).contains(position)
 		else { return }
 
@@ -117,7 +121,7 @@ extension GameState {
 
 		self[unit.id] = unit
 		let vision = vision(for: unit)
-		visible.formUnion(vision)
+		self[player]?.visible.formUnion(vision)
 		selectUnit(unit.hasActions ? unit.id : .none)
 		events.append(.move(unit.id))
 	}
@@ -138,21 +142,22 @@ extension GameState {
 
 	mutating func attack(src: UnitID, dst: UnitID) {
 		guard var src = self[src], var dst = self[dst],
-			  src.player == currentPlayer,
+			  src.player == player,
 			  src.player.team != dst.player.team,
 			  src.canFire, src.canHit(unit: dst)
 		else { return }
 
+		let terrainDef = map[dst.position].defBonus
+		let dmg = damage(atk: src.stats.atk, def: dst.stats.def + dst.stats.ent + terrainDef)
+		dst.stats.hp.decrement(by: dmg)
+		dst.stats.ent.decrement()
 		src.stats.ap.decrement()
 		src.stats.ammo.decrement()
-		let terrainDef = map[dst.position].defBonus
-		let dmg = damage(atk: src.stats.atk, def: dst.stats.def + terrainDef)
-		dst.stats.hp.decrement(by: dmg)
 
-		if dst.stats.hp > 0, dst.stats.ammo > 0, dst.canHit(unit: src) {
-			dst.stats.ammo.decrement()
+		if dst.stats.hp > 0, dst.canHit(unit: src), src.stats.unitType != .art {
 			let dmg = damage(atk: dst.stats.atk, def: src.stats.def)
 			src.stats.hp.decrement(by: dmg)
+			dst.stats.ammo.decrement()
 		}
 
 		self[src.id] = src.stats.hp == 0 ? .none : src

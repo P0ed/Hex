@@ -62,7 +62,7 @@ extension GameScene {
 
 			if let city = map.cities[hex] {
 				flags.setTileGroup(
-					city.controller == .axis ? .axis : .allies,
+					city.controller == .deu ? .axis : .allies,
 					forColumn: x, row: y
 				)
 			}
@@ -142,7 +142,7 @@ extension GameScene {
 		state.map.cities.forEach { hex, city in
 			let (x, y) = state.map.converting(hex)
 			nodes?.flags.setTileGroup(
-				city.controller == .axis ? .axis : .allies,
+				city.controller == .deu ? .axis : .allies,
 				forColumn: x, row: y
 			)
 		}
@@ -259,7 +259,7 @@ extension GameState {
 
 	var statusText: String {
 		if let selectedUnit, let unit = self[selectedUnit] {
-			unit.description
+			unit.status
 		} else if let city = map.cities[cursor] {
 			city.name
 		} else {

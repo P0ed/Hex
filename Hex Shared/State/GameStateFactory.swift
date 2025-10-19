@@ -7,20 +7,20 @@ extension GameState {
 		.init(
 			map: Map(radius: radius, seed: seed),
 			players: [
-				Player(id: .axis),
-				Player(id: .allies, ai: true),
+				Player(id: .deu),
+				Player(id: .usa, ai: true),
 			],
 			units: [
-				Unit(id: .make(), player: .axis, position: Hex(-4, 0), stats: .base >< .inf39),
-				Unit(id: .make(), player: .axis, position: Hex(1, -2), stats: .base >< .inf39),
-				Unit(id: .make(), player: .axis, position: Hex(0, -1), stats: .base >< .tank39),
-				Unit(id: .make(), player: .axis, position: Hex(-4, 1), stats: .base >< .tank39),
-				Unit(id: .make(), player: .axis, position: Hex(-1, 1), stats: .base >< .art39),
+				Unit(id: .make(), player: .deu, position: Hex(-4, 0), stats: .base >< .inf39),
+				Unit(id: .make(), player: .deu, position: Hex(1, -2), stats: .base >< .inf39),
+				Unit(id: .make(), player: .deu, position: Hex(0, -1), stats: .base >< .tank39),
+				Unit(id: .make(), player: .deu, position: Hex(-4, 1), stats: .base >< .tank39),
+				Unit(id: .make(), player: .deu, position: Hex(-1, 1), stats: .base >< .art39),
 
-				Unit(id: .make(), player: .allies, position: Hex(0, 3), stats: .base >< .inf39),
-				Unit(id: .make(), player: .allies, position: Hex(3, 1), stats: .base >< .inf39),
-				Unit(id: .make(), player: .allies, position: Hex(4, 2), stats: .base >< .tank39),
-				Unit(id: .make(), player: .allies, position: Hex(-2, 5), stats: .base >< .art39),
+				Unit(id: .make(), player: .usa, position: Hex(0, 3), stats: .base >< .inf39),
+				Unit(id: .make(), player: .usa, position: Hex(3, 1), stats: .base >< .inf39),
+				Unit(id: .make(), player: .usa, position: Hex(4, 2), stats: .base >< .tank39),
+				Unit(id: .make(), player: .usa, position: Hex(-2, 5), stats: .base >< .art39),
 			]
 		)
 	}
@@ -45,9 +45,9 @@ extension Map {
 		terrain[Hex(-2, 5)] = .city
 
 		cities = [
-			Hex(1, -3): City(name: "Berlin", controller: .axis),
-			Hex(2, 3): City(name: "Washington", controller: .allies),
-			Hex(-2, 5): City(name: "London", controller: .allies),
+			Hex(1, -3): City(name: "Berlin", controller: .deu),
+			Hex(2, 3): City(name: "Washington", controller: .usa),
+			Hex(-2, 5): City(name: "London", controller: .usa),
 		]
 	}
 }

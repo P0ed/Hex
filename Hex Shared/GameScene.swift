@@ -24,6 +24,7 @@ final class GameScene: SKScene {
 			status: addStatus()
 		)
 		state.initialize()
+		nodes?.layout(size: size)
 
 		hid.inputStream = { [weak self] input in self?.apply(input) }
 	}

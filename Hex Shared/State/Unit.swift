@@ -129,25 +129,26 @@ extension Unit {
 	mutating func nextTurn() {
 		if stats.mp != 0, stats.ap != 0 {
 			resupply()
-			stats.ent.refill(amount: 1, cap: 7)
+			stats.ent.increment(by: 1, cap: 7)
 		}
 		stats.mp = 1
 		stats.ap = 1
 	}
 
 	mutating func heal() {
-		stats.hp.refill(amount: 15 / 2, cap: 15)
+		stats.hp.increment(by: 15 / 2, cap: 15)
 		resupply()
 	}
 
 	mutating func resupply() {
-		stats.ammo.refill(amount: 15 / 2, cap: 15)
-		stats.fuel.refill(amount: 15 / 2, cap: 15)
+		stats.ammo.increment(by: 15 / 2, cap: 15)
+		stats.fuel.increment(by: 15 / 2, cap: 15)
 	}
 
 	var cost: UInt16 {
 		switch stats.unitType {
 		case .inf: 80
+		case .recon: 180
 		case .tank: 240
 		case .art: 160
 		default: 120
@@ -179,7 +180,7 @@ extension Unit {
 extension UInt8 {
 
 	@discardableResult
-	mutating func refill(amount: UInt8, cap: UInt8) -> UInt8 {
+	mutating func increment(by amount: UInt8, cap: UInt8) -> UInt8 {
 		let old = self
 		self = UInt8(Swift.min(UInt16(cap), UInt16(self + amount)))
 		return self - old

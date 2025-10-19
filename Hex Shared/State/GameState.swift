@@ -5,9 +5,8 @@ struct GameState: Hashable, Codable {
 	var units: [Unit]
 	var d20: D20 = .init(seed: 0)
 
-	var currentPlayer: PlayerID = .axis
+	var player: PlayerID = .deu
 	var turn: UInt32 = 0
-	var visible: Set<Hex> = []
 
 	var cursor: Hex = .zero
 	var camera: Hex = .zero
@@ -22,6 +21,7 @@ struct Player: Hashable, Codable {
 	var ai: Bool = false
 	var prestige: UInt16 = 0
 	var science: UInt16 = 0
+	var visible: Set<Hex> = []
 }
 
 enum Team: Hashable, Codable { case axis, allies }
@@ -42,6 +42,8 @@ struct D20: Hashable, Codable {
 }
 
 extension GameState {
+
+	var visible: Set<Hex> { self[player]?.visible ?? [] }
 
 	subscript(_ pid: PlayerID) -> Player? {
 		get {
@@ -74,11 +76,11 @@ extension GameState {
 	}
 
 	var playerUnits: LazyFilterSequence<[Unit]> {
-		units.lazy.filter { [currentPlayer] u in u.player == currentPlayer }
+		units.lazy.filter { [player] u in u.player == player }
 	}
 
 	var enemyUnits: LazyFilterSequence<[Unit]> {
-		units.lazy.filter { [team = currentPlayer.team] u in u.player.team != team }
+		units.lazy.filter { [team = player.team] u in u.player.team != team }
 	}
 }
 

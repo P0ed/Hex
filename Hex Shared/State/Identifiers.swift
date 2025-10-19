@@ -23,8 +23,8 @@ struct PlayerID: Hashable, Codable, ExpressibleByIntegerLiteral {
 		self = PlayerID(value: UInt8(value))
 	}
 
-	static var axis: Self { 0 }
-	static var allies: Self { 1 }
+	static var deu: Self { 0 }
+	static var usa: Self { 1 }
 }
 
 //struct CityID: Hashable, Codable, ExpressibleByIntegerLiteral {
