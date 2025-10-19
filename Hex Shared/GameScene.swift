@@ -20,11 +20,16 @@ final class GameScene: SKScene {
 			cursor: addCursor(),
 			camera: addCamera(),
 			map: addMap(state.map),
-			menu: addMenu()
+			menu: addMenu(),
+			status: addStatus()
 		)
 		state.initialize()
 
 		hid.inputStream = { [weak self] input in self?.apply(input) }
+	}
+
+	override func didChangeSize(_ oldSize: CGSize) {
+		nodes?.layout(size: size)
 	}
 
 	func apply(_ input: Input) {
@@ -50,6 +55,7 @@ final class GameScene: SKScene {
 		nodes?.cursor.position = state.cursor.point
 		camera?.position = state.camera.point
 		updateFogIfNeeded(oldValue)
+		updateStatus()
 		if state.isCursorTooFar { state.alignCamera() }
 
 		Task {
@@ -69,5 +75,6 @@ final class GameScene: SKScene {
 		} else if let menuState {
 			nodes?.updateMenu(menuState)
 		}
+		updateStatus()
 	}
 }

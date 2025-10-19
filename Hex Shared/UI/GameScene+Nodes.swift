@@ -9,14 +9,22 @@ extension GameScene {
 		var flags: SKTileMapNode
 		var grid: SKTileMapNode
 		var menu: SKNode
+		var status: SKLabelNode
 		var units: [UnitID: SKNode]
 
-		init(cursor: SKNode, camera: SKCameraNode, map: MapNodes, menu: SKNode) {
+		init(
+			cursor: SKNode,
+			camera: SKCameraNode,
+			map: MapNodes,
+			menu: SKNode,
+			status: SKLabelNode
+		) {
 			self.cursor = cursor
 			self.camera = camera
 			self.fog = map.fog
 			self.flags = map.flags
 			self.grid = map.grid
+			self.status = status
 			self.menu = menu
 			self.units = [:]
 		}
@@ -102,6 +110,17 @@ extension GameScene {
 		return cursor
 	}
 
+	func addStatus() -> SKLabelNode {
+		let label = SKLabelNode(text: "xxx")
+		camera?.addChild(label)
+		label.fontName = "Menlo"
+		label.fontSize = 11.0
+		label.fontColor = .white
+		label.zPosition = 10.0
+		label.setScale(0.5)
+		return label
+	}
+
 	func updateFogIfNeeded(_ oldValue: GameState) {
 		guard state.visible != oldValue.visible || state.selectable != oldValue.selectable
 		else { return }
@@ -128,6 +147,10 @@ extension GameScene {
 			)
 		}
 	}
+
+	func updateStatus() {
+		nodes?.status.text = menuState?.statusText ?? state.statusText
+	}
 }
 
 @MainActor
@@ -147,6 +170,10 @@ extension GameScene.Nodes {
 		width: itemSize.width * 5 + spacing * 4 + inset * 2,
 		height: itemSize.height * 3 + spacing * 2 + inset * 2
 	)
+
+	func layout(size: CGSize) {
+		status.position = CGPoint(x: 0, y: Self.inset - size.height / 2.0)
+	}
 
 	func showMenu(_ menuState: MenuState) {
 		menu.isHidden = false
@@ -226,4 +253,22 @@ extension SKNode {
 	var menuInspectorLabel: SKLabelNode? {
 		childNode(withName: "inspector")?.childNode(withName: "label") as? SKLabelNode
 	}
+}
+
+extension GameState {
+
+	var statusText: String {
+		if let selectedUnit, let unit = self[selectedUnit] {
+			unit.description
+		} else if let city = map.cities[cursor] {
+			city.name
+		} else {
+			"\(map[cursor])"
+		}
+	}
+}
+
+extension MenuState {
+
+	var statusText: String { items[cursor].text }
 }

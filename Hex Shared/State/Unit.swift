@@ -154,6 +154,10 @@ extension Unit {
 		}
 	}
 
+	var status: String {
+		"\(stats.unitType)"
+	}
+
 	var description: String {
 		"""
 		\(stats.unitType)

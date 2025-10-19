@@ -51,10 +51,10 @@ extension Terrain {
 		}
 	}
 
-	var defBonus: Int {
+	var defBonus: UInt8 {
 		switch self {
-		case .forest, .hills: 2
-		case .mountains, .trenches, .city: 3
+		case .forest, .hills: 1
+		case .mountains, .trenches, .city: 2
 		default: 0
 		}
 	}

@@ -130,6 +130,12 @@ extension GameState {
 		} ?? []
 	}
 
+	mutating func damage(atk: UInt8, def: UInt8) -> UInt8 {
+		let dif = Int(atk) - Int(def)
+		
+		return dif > 0 ? atk : atk / 2
+	}
+
 	mutating func attack(src: UnitID, dst: UnitID) {
 		guard var src = self[src], var dst = self[dst],
 			  src.player == currentPlayer,
@@ -139,11 +145,14 @@ extension GameState {
 
 		src.stats.ap.decrement()
 		src.stats.ammo.decrement()
-		dst.stats.hp.decrement(by: src.stats.atk)
+		let terrainDef = map[dst.position].defBonus
+		let dmg = damage(atk: src.stats.atk, def: dst.stats.def + terrainDef)
+		dst.stats.hp.decrement(by: dmg)
 
 		if dst.stats.hp > 0, dst.stats.ammo > 0, dst.canHit(unit: src) {
 			dst.stats.ammo.decrement()
-			src.stats.hp.decrement(by: dst.stats.atk)
+			let dmg = damage(atk: dst.stats.atk, def: src.stats.def)
+			src.stats.hp.decrement(by: dmg)
 		}
 
 		self[src.id] = src.stats.hp == 0 ? .none : src
