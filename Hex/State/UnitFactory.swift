@@ -4,7 +4,7 @@ extension UnitID {
 	private(set) static var next: UnitID = 0
 
 	static func make() -> UnitID {
-		defer { next.value += 1 }
+		defer { next.rawValue += 1 }
 		return next
 	}
 }
@@ -40,7 +40,7 @@ extension Stats {
 			stats.atk = 6
 			stats.def = 4
 			stats.mov = 1
-			stats.rng = 4
+			stats.rng = 3
 			stats.unitType = .art
 			stats.moveType = .leg
 		}
