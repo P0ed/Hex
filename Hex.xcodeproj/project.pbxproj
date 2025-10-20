@@ -6,193 +6,21 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		5FB297492E79A39300FA039B /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 5FB297482E79A39000FA039B /* README.md */; };
-/* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		5FCB868B2E7714E300C2C69E /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5FCB86912E77243D00C2C69E /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5FCB86962E77244300C2C69E /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
+		5F6D70A42EA6BDDD009B88F0 /* Hex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FB297482E79A39000FA039B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		5FCB86352E77041800C2C69E /* Hex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hex.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5FCB86462E77041800C2C69E /* Hex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hex.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5FCB86562E77041800C2C69E /* Hex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		5FCB866C2E77041800C2C69E /* Exceptions for "Hex Shared" folder in "Hex iOS" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Assets.xcassets,
-				GameScene.swift,
-				Rules.md,
-				State/Arrays.swift,
-				State/GameState.swift,
-				"State/GameState+Actions.swift",
-				"State/GameState+AI.swift",
-				"State/GameState+Input.swift",
-				"State/GameState+Shop.swift",
-				State/GameStateFactory.swift,
-				State/Hex.swift,
-				State/Identifiers.swift,
-				State/Map.swift,
-				State/MenuState.swift,
-				State/Monoid.swift,
-				State/Unit.swift,
-				State/UnitFactory.swift,
-				UI/Animations.swift,
-				UI/Colors.swift,
-				"UI/GameScene+Event.swift",
-				"UI/GameScene+macOS.swift",
-				"UI/GameScene+Nodes.swift",
-				UI/HIDController.swift,
-				UI/Shapes.swift,
-				UI/TileSprites.swift,
-				UI/UnitSprites.swift,
-			);
-			target = 5FCB86342E77041800C2C69E /* Hex iOS */;
-		};
-		5FCB86702E77041800C2C69E /* Exceptions for "Hex Shared" folder in "Hex tvOS" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Assets.xcassets,
-				GameScene.swift,
-				Rules.md,
-				State/Arrays.swift,
-				State/GameState.swift,
-				"State/GameState+Actions.swift",
-				"State/GameState+AI.swift",
-				"State/GameState+Input.swift",
-				"State/GameState+Shop.swift",
-				State/GameStateFactory.swift,
-				State/Hex.swift,
-				State/Identifiers.swift,
-				State/Map.swift,
-				State/MenuState.swift,
-				State/Monoid.swift,
-				State/Unit.swift,
-				State/UnitFactory.swift,
-				UI/Animations.swift,
-				UI/Colors.swift,
-				"UI/GameScene+Event.swift",
-				"UI/GameScene+macOS.swift",
-				"UI/GameScene+Nodes.swift",
-				UI/HIDController.swift,
-				UI/Shapes.swift,
-				UI/TileSprites.swift,
-				UI/UnitSprites.swift,
-			);
-			target = 5FCB86452E77041800C2C69E /* Hex tvOS */;
-		};
-		5FCB86742E77041800C2C69E /* Exceptions for "Hex Shared" folder in "Hex macOS" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Assets.xcassets,
-				GameScene.swift,
-				Rules.md,
-				State/Arrays.swift,
-				State/GameState.swift,
-				"State/GameState+Actions.swift",
-				"State/GameState+AI.swift",
-				"State/GameState+Input.swift",
-				"State/GameState+Shop.swift",
-				State/GameStateFactory.swift,
-				State/Hex.swift,
-				State/Identifiers.swift,
-				State/Map.swift,
-				State/MenuState.swift,
-				State/Monoid.swift,
-				State/Unit.swift,
-				State/UnitFactory.swift,
-				UI/Animations.swift,
-				UI/Colors.swift,
-				"UI/GameScene+Event.swift",
-				"UI/GameScene+macOS.swift",
-				"UI/GameScene+Nodes.swift",
-				UI/HIDController.swift,
-				UI/Shapes.swift,
-				UI/TileSprites.swift,
-				UI/UnitSprites.swift,
-			);
-			target = 5FCB86552E77041800C2C69E /* Hex macOS */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5FCB862C2E77041400C2C69E /* Hex Shared */ = {
+		5F6D70A52EA6BDDD009B88F0 /* Hex */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				5FCB866C2E77041800C2C69E /* Exceptions for "Hex Shared" folder in "Hex iOS" target */,
-				5FCB86702E77041800C2C69E /* Exceptions for "Hex Shared" folder in "Hex tvOS" target */,
-				5FCB86742E77041800C2C69E /* Exceptions for "Hex Shared" folder in "Hex macOS" target */,
-			);
-			path = "Hex Shared";
-			sourceTree = "<group>";
-		};
-		5FCB86372E77041800C2C69E /* Hex iOS */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Hex iOS";
-			sourceTree = "<group>";
-		};
-		5FCB86472E77041800C2C69E /* Hex tvOS */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Hex tvOS";
-			sourceTree = "<group>";
-		};
-		5FCB86572E77041800C2C69E /* Hex macOS */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Hex macOS";
+			path = Hex;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		5FCB86322E77041800C2C69E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5FCB86432E77041800C2C69E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5FCB86532E77041800C2C69E /* Frameworks */ = {
+		5F6D70A12EA6BDDD009B88F0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -206,11 +34,7 @@
 			isa = PBXGroup;
 			children = (
 				5FB297482E79A39000FA039B /* README.md */,
-				5FCB862C2E77041400C2C69E /* Hex Shared */,
-				5FCB86372E77041800C2C69E /* Hex iOS */,
-				5FCB86472E77041800C2C69E /* Hex tvOS */,
-				5FCB86572E77041800C2C69E /* Hex macOS */,
-				5FCB868C2E77243D00C2C69E /* Frameworks */,
+				5F6D70A52EA6BDDD009B88F0 /* Hex */,
 				5FCB86362E77041800C2C69E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -218,90 +42,34 @@
 		5FCB86362E77041800C2C69E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5FCB86352E77041800C2C69E /* Hex.app */,
-				5FCB86462E77041800C2C69E /* Hex.app */,
-				5FCB86562E77041800C2C69E /* Hex.app */,
+				5F6D70A42EA6BDDD009B88F0 /* Hex.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		5FCB868C2E77243D00C2C69E /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5FCB86342E77041800C2C69E /* Hex iOS */ = {
+		5F6D70A32EA6BDDD009B88F0 /* Hex */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5FCB866D2E77041800C2C69E /* Build configuration list for PBXNativeTarget "Hex iOS" */;
+			buildConfigurationList = 5F6D70AE2EA6BDDD009B88F0 /* Build configuration list for PBXNativeTarget "Hex" */;
 			buildPhases = (
-				5FCB86312E77041800C2C69E /* Sources */,
-				5FCB86322E77041800C2C69E /* Frameworks */,
-				5FCB86332E77041800C2C69E /* Resources */,
-				5FCB86912E77243D00C2C69E /* Embed Frameworks */,
+				5F6D70A02EA6BDDD009B88F0 /* Sources */,
+				5F6D70A12EA6BDDD009B88F0 /* Frameworks */,
+				5F6D70A22EA6BDDD009B88F0 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				5FCB86372E77041800C2C69E /* Hex iOS */,
+				5F6D70A52EA6BDDD009B88F0 /* Hex */,
 			);
-			name = "Hex iOS";
+			name = Hex;
 			packageProductDependencies = (
 			);
-			productName = "Hex iOS";
-			productReference = 5FCB86352E77041800C2C69E /* Hex.app */;
-			productType = "com.apple.product-type.application";
-		};
-		5FCB86452E77041800C2C69E /* Hex tvOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5FCB86712E77041800C2C69E /* Build configuration list for PBXNativeTarget "Hex tvOS" */;
-			buildPhases = (
-				5FCB86422E77041800C2C69E /* Sources */,
-				5FCB86432E77041800C2C69E /* Frameworks */,
-				5FCB86442E77041800C2C69E /* Resources */,
-				5FCB86962E77244300C2C69E /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				5FCB86472E77041800C2C69E /* Hex tvOS */,
-			);
-			name = "Hex tvOS";
-			packageProductDependencies = (
-			);
-			productName = "Hex tvOS";
-			productReference = 5FCB86462E77041800C2C69E /* Hex.app */;
-			productType = "com.apple.product-type.application";
-		};
-		5FCB86552E77041800C2C69E /* Hex macOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5FCB86752E77041800C2C69E /* Build configuration list for PBXNativeTarget "Hex macOS" */;
-			buildPhases = (
-				5FCB86522E77041800C2C69E /* Sources */,
-				5FCB86532E77041800C2C69E /* Frameworks */,
-				5FCB86542E77041800C2C69E /* Resources */,
-				5FCB868B2E7714E300C2C69E /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				5FCB86572E77041800C2C69E /* Hex macOS */,
-			);
-			name = "Hex macOS";
-			packageProductDependencies = (
-			);
-			productName = "Hex macOS";
-			productReference = 5FCB86562E77041800C2C69E /* Hex.app */;
+			productName = Hex;
+			productReference = 5F6D70A42EA6BDDD009B88F0 /* Hex.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -311,17 +79,11 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1640;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
-					5FCB86342E77041800C2C69E = {
-						CreatedOnToolsVersion = 16.4;
-					};
-					5FCB86452E77041800C2C69E = {
-						CreatedOnToolsVersion = 16.4;
-					};
-					5FCB86552E77041800C2C69E = {
-						CreatedOnToolsVersion = 16.4;
+					5F6D70A32EA6BDDD009B88F0 = {
+						CreatedOnToolsVersion = 26.0.1;
 					};
 				};
 			};
@@ -339,29 +101,13 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5FCB86342E77041800C2C69E /* Hex iOS */,
-				5FCB86452E77041800C2C69E /* Hex tvOS */,
-				5FCB86552E77041800C2C69E /* Hex macOS */,
+				5F6D70A32EA6BDDD009B88F0 /* Hex */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		5FCB86332E77041800C2C69E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5FCB86442E77041800C2C69E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5FCB86542E77041800C2C69E /* Resources */ = {
+		5F6D70A22EA6BDDD009B88F0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -371,22 +117,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		5FCB86312E77041800C2C69E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5FB297492E79A39300FA039B /* README.md in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5FCB86422E77041800C2C69E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5FCB86522E77041800C2C69E /* Sources */ = {
+		5F6D70A02EA6BDDD009B88F0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -396,165 +127,87 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		5FCB866E2E77041800C2C69E /* Debug */ = {
+		5F6D70AC2EA6BDDD009B88F0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = poed.Hex;
-				PRODUCT_NAME = Hex;
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		5FCB866F2E77041800C2C69E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = poed.Hex;
-				PRODUCT_NAME = Hex;
-				SDKROOT = iphoneos;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		5FCB86722E77041800C2C69E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "tvOS App Icon & Top Shelf Image";
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = poed.Hex;
-				PRODUCT_NAME = Hex;
-				SDKROOT = appletvos;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = 3;
-			};
-			name = Debug;
-		};
-		5FCB86732E77041800C2C69E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "tvOS App Icon & Top Shelf Image";
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = poed.Hex;
-				PRODUCT_NAME = Hex;
-				SDKROOT = appletvos;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = 3;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		5FCB86762E77041800C2C69E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Hex macOS/Hex_macOS.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
+				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMainStoryboardFile = Main;
-				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = poed.Hex;
-				PRODUCT_NAME = Hex;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
-				SDKROOT = macosx;
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Debug;
 		};
-		5FCB86772E77041800C2C69E /* Release */ = {
+		5F6D70AD2EA6BDDD009B88F0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Hex macOS/Hex_macOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
 				ENABLE_APP_SANDBOX = YES;
+				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMainStoryboardFile = Main;
-				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = poed.Hex;
-				PRODUCT_NAME = Hex;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
-				SDKROOT = macosx;
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
 		};
@@ -687,38 +340,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5F6D70AE2EA6BDDD009B88F0 /* Build configuration list for PBXNativeTarget "Hex" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5F6D70AC2EA6BDDD009B88F0 /* Debug */,
+				5F6D70AD2EA6BDDD009B88F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5FCB862B2E77041300C2C69E /* Build configuration list for PBXProject "Hex" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5FCB86782E77041800C2C69E /* Debug */,
 				5FCB86792E77041800C2C69E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		5FCB866D2E77041800C2C69E /* Build configuration list for PBXNativeTarget "Hex iOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5FCB866E2E77041800C2C69E /* Debug */,
-				5FCB866F2E77041800C2C69E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		5FCB86712E77041800C2C69E /* Build configuration list for PBXNativeTarget "Hex tvOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5FCB86722E77041800C2C69E /* Debug */,
-				5FCB86732E77041800C2C69E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		5FCB86752E77041800C2C69E /* Build configuration list for PBXNativeTarget "Hex macOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5FCB86762E77041800C2C69E /* Debug */,
-				5FCB86772E77041800C2C69E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

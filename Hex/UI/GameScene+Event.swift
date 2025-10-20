@@ -1,3 +1,5 @@
+import SpriteKit
+
 extension GameScene {
 
 	func processEvent(_ event: Event) async {

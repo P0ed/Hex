@@ -14,7 +14,7 @@ final class GameScene: SKScene {
 
 	override func sceneDidLoad() {
 		backgroundColor = .black
-		scaleMode = .aspectFill
+		scaleMode = .aspectFit
 
 		nodes = Nodes(
 			cursor: addCursor(),
