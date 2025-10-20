@@ -43,11 +43,27 @@ enum Terrain: Hashable, Codable {
 
 extension Terrain {
 
-	var moveCost: Int {
-		switch self {
-		case .city, .airfield, .road, .bridge, .field: 1
-		case .forest, .hills, .trenches: 2
-		case .mountains, .river: 3
+	func moveCost(_ stats: Stats) -> UInt8 {
+		switch stats.moveType {
+		case .none: .max
+		case .leg:
+			switch self {
+			case .city, .airfield, .road, .bridge, .field: 1
+			case .forest, .hills, .trenches: min(stats.mov, 2)
+			case .mountains, .river: stats.mov
+			}
+		case .wheel:
+			switch self {
+			case .city, .airfield, .road, .bridge: 1
+			case .forest, .hills, .trenches, .field: 2
+			case .mountains, .river: stats.mov
+			}
+		case .track:
+			switch self {
+			case .city, .airfield, .road, .bridge, .field: 1
+			case .forest, .hills, .trenches: 2
+			case .mountains, .river: stats.mov
+			}
 		}
 	}
 

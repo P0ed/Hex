@@ -12,23 +12,19 @@ extension GameState {
 	}
 
 	func moves(for unit: Unit) -> Set<Hex> {
-		.make { hs in
-			if unit.stats.unitType == .air {
-				hs.formUnion(unit.position.circle(Int(unit.stats.mov)))
-			} else {
-				var front = [(unit.position, Int(unit.stats.mov))] as [(Hex, Int)]
-				repeat {
-					front = front.flatMap { fx, mp in
-						fx.circle(1).compactMap { hx in
-							let mpLeft = mp - map[hx].moveCost
-							return hs.contains(hx) || mpLeft < 0
-							? nil
-							: (hx, mpLeft)
-						}
+		.make { hxs in
+			var front = [(unit.position, unit.stats.mov)]
+			repeat {
+				front = front.flatMap { fx, mp in
+					fx.circle(1).compactMap { hx in
+						let moveCost = map[hx].moveCost(unit.stats)
+						return !hxs.contains(hx) && moveCost <= mp
+						? (hx, mp - moveCost)
+						: .none
 					}
-					hs.formUnion(front.map(\.0))
-				} while !front.isEmpty
-			}
+				}
+				hxs.formUnion(front.map(\.0))
+			} while !front.isEmpty
 		}
 		.subtracting(units.map(\.position))
 	}
