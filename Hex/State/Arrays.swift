@@ -25,4 +25,10 @@ extension Array {
 	func mapInPlace(_ transform: (inout Element) -> Void) -> Self {
 		map { e in modifying(e, transform) }
 	}
+
+	mutating func fastRemove(at index: Int) {
+		let last = count - 1
+		if index != last { self[index] = self[last] }
+		remove(at: last)
+	}
 }

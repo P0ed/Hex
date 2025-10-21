@@ -53,11 +53,10 @@ final class GameScene: SKScene {
 	}
 
 	private func didSetState(oldValue: GameState) {
-		nodes?.cursor.position = state.cursor.point
-		camera?.position = state.camera.point
+		update(cursor: state.cursor, camera: state.camera, scale: state.scale)
 		updateFogIfNeeded(oldValue)
 		updateStatus()
-		if state.isCursorTooFar { state.alignCamera() }
+		if state.isCursorTooFar { return state.alignCamera() }
 
 		Task {
 			for event in state.events { await processEvent(event) }

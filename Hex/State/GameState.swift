@@ -12,6 +12,7 @@ struct GameState: Hashable, Codable {
 	var camera: Hex = .zero
 	var selectedUnit: UnitID?
 	var selectable: Set<Hex>?
+	var scale: Double = 1.0
 
 	var events: [Event] = []
 }
@@ -69,7 +70,7 @@ extension GameState {
 				if let newValue {
 					units[idx] = newValue
 				} else {
-					units.remove(at: idx)
+					units.fastRemove(at: idx)
 				}
 			}
 		}

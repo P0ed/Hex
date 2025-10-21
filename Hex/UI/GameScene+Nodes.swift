@@ -90,7 +90,6 @@ extension GameScene {
 
 	func addCamera() -> SKCameraNode {
 		let camera = SKCameraNode()
-		camera.setScale(2.0)
 		addChild(camera)
 		self.camera = camera
 		return camera
@@ -121,6 +120,21 @@ extension GameScene {
 		label.horizontalAlignmentMode = .left
 		label.verticalAlignmentMode = .bottom
 		return label
+	}
+
+	func update(cursor: Hex, camera: Hex, scale: Double) {
+		let cursorPosition = state.cursor.point
+		if nodes?.cursor.position != cursorPosition {
+			nodes?.cursor.position = cursorPosition
+		}
+		let cameraPosition = state.camera.point
+		if nodes?.camera.position != cameraPosition {
+			nodes?.camera.run(.move(to: cameraPosition, duration: 0.15))
+		}
+		let cameraScale = CGFloat(state.scale)
+		if nodes?.camera.xScale != cameraScale {
+			nodes?.camera.run(.scale(to: cameraScale, duration: 0.15))
+		}
 	}
 
 	func updateFogIfNeeded(_ oldValue: GameState) {

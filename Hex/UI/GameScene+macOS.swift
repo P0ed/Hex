@@ -24,10 +24,10 @@ extension GameScene {
 		case "s": apply(.action(.b))
 		case "d": apply(.action(.c))
 		case "f": apply(.action(.d))
-		case "z": camera?.run(
-			.scale(to: (camera?.xScale ?? 1.0) > 3.0 ? 2.0 : 4.0, duration: 0.15)
-		)
-		case "x": nodes?.grid.isHidden.toggle()
+		case "z": apply(.scale(1.0))
+		case "x": apply(.scale(2.0))
+		case "c": apply(.scale(4.0))
+		case "v": nodes?.grid.isHidden.toggle()
 		default: break
 		}
 	}

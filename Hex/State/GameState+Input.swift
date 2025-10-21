@@ -3,7 +3,13 @@ enum Target { case prev, next }
 enum Action { case a, b, c, d }
 
 enum Input {
-	case direction(Direction), target(Target), action(Action), menu, hex(Hex), index(Int)
+	case direction(Direction)
+	case target(Target)
+	case action(Action)
+	case menu
+	case hex(Hex)
+	case index(Int)
+	case scale(Double)
 }
 
 @MainActor
@@ -26,6 +32,7 @@ extension GameState {
 		case .target(.next): nextUnit()
 		case .hex(let hex): select(hex)
 		case .index: break
+		case .scale(let value): scale = value
 		}
 	}
 }

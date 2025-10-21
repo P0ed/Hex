@@ -166,8 +166,8 @@ extension GameState {
 		if dst.stats.hp == 0 { events.append(.kill(dst.id)) }
 	}
 
-	private var tooFarX: Bool { abs(camera.pt.x - cursor.pt.x) > 16.0 }
-	private var tooFarY: Bool { abs(camera.pt.y - cursor.pt.y) > 9.0 }
+	private var tooFarX: Bool { abs(camera.pt.x - cursor.pt.x) > 9.0 * scale }
+	private var tooFarY: Bool { abs(camera.pt.y - cursor.pt.y) > 5.0 * scale }
 
 	var isCursorTooFar: Bool { tooFarX || tooFarY }
 

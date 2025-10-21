@@ -55,7 +55,8 @@ extension Terrain {
 		case .wheel:
 			switch self {
 			case .city, .airfield, .road, .bridge: 1
-			case .forest, .hills, .trenches, .field: 2
+			case .field: 2
+			case .forest, .hills, .trenches: 3
 			case .mountains, .river: stats.mov
 			}
 		case .track:
