@@ -53,6 +53,7 @@ private extension GameScene {
 		else { return }
 
 		show(MenuState(
+			layout: .inspector,
 			items: state.unitTemplates.map { template in
 				MenuItem(
 					icon: template.imageName,
@@ -62,28 +63,36 @@ private extension GameScene {
 						state.buy(template, at: hex)
 					}
 				)
-			},
-			inspector: true
+			}
 		))
 	}
 
 	func processMenu() {
-		show(MenuState(
-			items: [.init(
-				icon: "Restart", text: "Restart",
-				action: { [weak self] _ in self?.restartGame() }
-			)],
-			inspector: false
-		))
+		if state.selectedUnit != nil {
+			show(MenuState(layout: .compact, items: state.unitMenuActions))
+		} else {
+			show(MenuState(
+				layout: .compact,
+				items: [
+					.init(icon: "End", text: "End turn", action: { state in
+						state.endTurn()
+					}),
+					.init(
+						icon: "Restart", text: "Restart",
+						action: { [weak self] _ in self?.restartGame() }
+					)
+				]
+			))
+		}
 	}
 
 	func processGameOver() {
 		show(MenuState(
+			layout: .compact,
 			items: [.init(
 				icon: "Restart", text: "Restart",
 				action: { [weak self] _ in self?.restartGame() }
-			)],
-			inspector: false
+			)]
 		))
 	}
 

@@ -26,7 +26,7 @@ extension GameState {
 		case .menu: endTurn()
 		case .action(.a): primaryAction()
 		case .action(.b): secondaryAction()
-		case .action(.c): break
+		case .action(.c): events.append(.menu)
 		case .action(.d): break
 		case .target(.prev): prevUnit()
 		case .target(.next): nextUnit()

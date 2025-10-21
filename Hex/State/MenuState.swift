@@ -1,8 +1,12 @@
 struct MenuState {
+	var layout: MenuLayout
 	var items: [MenuItem]
-	var inspector: Bool
 	var cursor: Int = 0
 	var action: MenuAction?
+}
+
+enum MenuLayout {
+	case compact, inspector
 }
 
 enum MenuAction {
@@ -18,18 +22,15 @@ struct MenuItem {
 
 extension MenuState {
 
-	var cols: Int { inspector ? 3 : 5 }
+	var rows: Int { layout == .compact ? 1 : 3 }
+	var cols: Int { layout == .inspector ? 3 : 5 }
 
 	mutating func apply(_ input: Input) {
 		switch input {
-		case .direction(let direction):
-			moveCursor(direction)
-		case .action(.a):
-			action = .apply(items[cursor].action)
-		case .action(.b):
-			action = .close
-		case .index(let idx):
-			cursor = idx
+		case .direction(let direction): moveCursor(direction)
+		case .action(.a): action = .apply(items[cursor].action)
+		case .action(.b): action = .close
+		case .index(let idx): cursor = idx
 		default: break
 		}
 	}

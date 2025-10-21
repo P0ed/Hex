@@ -67,7 +67,7 @@ extension GameState {
 
 		if nextIdx == 0 {
 			players = players.mapInPlace { p in p.visible = vision(for: p.id) }
-			units = units.mapInPlace { u in u.nextTurn() }
+			units = units.mapInPlace { u in u.nextTurn(map[u.position]) }
 		}
 	}
 
@@ -177,6 +177,22 @@ extension GameState {
 		}
 		while tooFarY {
 			camera = camera.neighbor((camera.pt.y - cursor.pt.y) > 0.0 ? .down : .up)
+		}
+	}
+
+	var unitMenuActions: [MenuItem] {
+		if let selectedUnit {
+			[
+				.init(icon: "Reinforce", text: "Reinforce", action: { state in
+					state[selectedUnit]?.reinforce()
+					// TODO: Update label
+				}),
+				.init(icon: "Refuel", text: "Resupply", action: { state in
+					state[selectedUnit]?.resupply()
+				}),
+			]
+		} else {
+			[]
 		}
 	}
 }

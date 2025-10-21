@@ -118,6 +118,7 @@ enum UnitType: UInt8, Hashable, Codable {
 }
 
 extension Unit {
+	var untouched: Bool { stats.mp != 0 && stats.ap != 0 }
 	var hasActions: Bool { canMove || canFire }
 	var canMove: Bool { stats.mp != 0 }
 	var canFire: Bool { stats.ap != 0 && stats.ammo != 0 }
@@ -126,23 +127,27 @@ extension Unit {
 		position.distance(to: unit.position) <= stats.rng
 	}
 
-	mutating func nextTurn() {
-		if stats.mp != 0, stats.ap != 0 {
-			resupply()
-			stats.ent.increment(by: 1, cap: 7)
-		}
+	mutating func nextTurn(_ terrain: Terrain) {
+		if untouched { stats.ent.increment(by: 1, cap: 7) }
+		if untouched || terrain == .city { resupply() }
 		stats.mp = 1
 		stats.ap = 1
 	}
 
-	mutating func heal() {
+	mutating func reinforce() {
+		guard untouched else { return }
 		stats.hp.increment(by: 15 / 2, cap: 15)
 		resupply()
+		stats.ap = 0
+		stats.mp = 0
 	}
 
 	mutating func resupply() {
+		guard untouched else { return }
 		stats.ammo.increment(by: 15 / 2, cap: 15)
 		stats.fuel.increment(by: 15 / 2, cap: 15)
+		stats.ap = 0
+		stats.mp = 0
 	}
 
 	var cost: UInt16 {
@@ -167,7 +172,6 @@ extension Unit {
 		DEF: \(stats.def) - \(stats.armor)
 		MOV: \(stats.mov) - \(stats.moveType)
 		RNG: \(stats.rng)
-		
 		
 		
 		
