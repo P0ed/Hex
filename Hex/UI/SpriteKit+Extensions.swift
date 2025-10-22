@@ -1,5 +1,15 @@
 import SpriteKit
 
+extension SKColor {
+	static var baseSelection: SKColor { .init(white: 0.33, alpha: 0.47) }
+	static var baseCursor: SKColor { .init(white: 0.22, alpha: 0.33) }
+
+	static var lineSelection: SKColor { .init(white: 0.22, alpha: 0.47) }
+	static var lineCursor: SKColor { .init(white: 0.33, alpha: 0.82) }
+
+	static var textDefault: SKColor { .init(white: 0.01, alpha: 1.0) }
+}
+
 extension SKShapeNode {
 
 	convenience init(hex: Hex, base: SKColor, line: SKColor) {
@@ -9,6 +19,34 @@ extension SKShapeNode {
 		strokeColor = line
 	}
 }
+
+extension SKLabelNode {
+
+	enum Size: UInt8 {
+		case s = 14
+		case m = 16
+		case l = 22
+	}
+
+	convenience init(size: Size, color: SKColor = .white) {
+		self.init()
+		fontName = "Menlo"
+		fontSize = CGFloat(size.rawValue)
+		fontColor = color
+		setScale(0.5)
+	}
+}
+
+extension SKAction {
+
+	static func hit() -> SKAction {
+		.sequence([
+			.scale(to: 0.9, duration: 0.1),
+			.scale(to: 1.0, duration: 0.1)
+		])
+	}
+}
+
 
 extension CGPath {
 

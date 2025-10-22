@@ -45,26 +45,23 @@ extension Terrain {
 
 	func moveCost(_ stats: Stats) -> UInt8 {
 		switch stats.moveType {
-		case .none: .max
-		case .leg:
-			switch self {
-			case .city, .airfield, .road, .bridge, .field: 1
-			case .forest, .hills, .trenches: min(stats.mov, 2)
-			case .mountains, .river: stats.mov
-			}
-		case .wheel:
-			switch self {
-			case .city, .airfield, .road, .bridge: 1
-			case .field: 2
-			case .forest, .hills, .trenches: 3
-			case .mountains, .river: stats.mov
-			}
-		case .track:
-			switch self {
-			case .city, .airfield, .road, .bridge, .field: 1
-			case .forest, .hills, .trenches: 2
-			case .mountains, .river: stats.mov
-			}
+		case .leg: switch self {
+		case .city, .airfield, .road, .bridge, .field: 1
+		case .forest, .hills, .trenches: min(stats.mov, 2)
+		case .mountains, .river: stats.mov
+		}
+		case .wheel: switch self {
+		case .city, .airfield, .road, .bridge: 1
+		case .field: 2
+		case .forest, .hills, .trenches: 3
+		case .mountains, .river: stats.mov
+		}
+		case .track: switch self {
+		case .city, .airfield, .road, .bridge, .field: 1
+		case .forest, .hills, .trenches: 2
+		case .mountains, .river: stats.mov
+		}
+		case .air: 1
 		}
 	}
 

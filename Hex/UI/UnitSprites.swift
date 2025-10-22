@@ -9,8 +9,7 @@ extension Unit {
 		node.zPosition = 4.0
 
 		let sprite = SKSpriteNode(imageNamed: imageName)
-		sprite.xScale = player.team == .axis ? 0.5 : -0.5
-		sprite.yScale = 0.5
+		sprite.xScale = player.team == .axis ? 1.0 : -1.0
 		sprite.texture?.filteringMode = .nearest
 		node.addChild(sprite)
 
@@ -20,9 +19,8 @@ extension Unit {
 		plate.texture?.filteringMode = .nearest
 		node.addChild(plate)
 
-		let label = SKLabelNode(fontNamed: "Menlo")
+		let label = SKLabelNode(size: .m, color: .textDefault)
 		label.name = "hp"
-		label.fontSize = 8.0
 		label.fontColor = .textDefault
 		label.text = "\(stats.hp)"
 		label.position = CGPoint(x: 0, y: -24.5)
@@ -40,6 +38,8 @@ extension Unit {
 		case .art: "Art"
 		case .antiAir: "AA"
 		case .air: "Fighter"
+		case .worker: "Crane"
+		case .building: "Mammut"
 		}
 	}
 }

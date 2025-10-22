@@ -12,7 +12,7 @@ extension GameState {
 	private var nextAttackMove: (UnitID, UnitID)? {
 		playerUnits.reduce(nil) { r, u in
 			if let r { return r }
-			if u.canFire, let t = targets(unit: u.id).first { return (u.id, t.id) }
+			if u.canAttack, let t = targets(unit: u.id).first { return (u.id, t.id) }
 			return nil
 		}
 	}

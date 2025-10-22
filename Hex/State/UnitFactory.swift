@@ -11,6 +11,14 @@ extension UnitID {
 
 extension Stats {
 
+	static var builder: Self {
+		.make { stats in
+			stats.mov = 5
+			stats.unitType = .worker
+			stats.moveType = .wheel
+		}
+	}
+
 	static var inf: Self {
 		.make { stats in
 			stats.atk = 4
@@ -27,7 +35,7 @@ extension Stats {
 			stats.atk = 7
 			stats.def = 9
 			stats.mov = 5
-			stats.rng = 2
+			stats.rng = 1
 			stats.armor = 2
 			stats.hardAttack = 1
 			stats.unitType = .tank
@@ -55,6 +63,20 @@ extension Stats {
 			stats.rng = 1
 			stats.unitType = .recon
 			stats.moveType = .track
+		}
+	}
+
+	static var radar: Self {
+		.make { stats in
+			stats.armor = 1
+			stats.unitType = .building
+		}
+	}
+
+	static var bunker: Self {
+		.make { stats in
+			stats.armor = 1
+			stats.unitType = .building
 		}
 	}
 }

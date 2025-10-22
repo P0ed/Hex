@@ -12,17 +12,16 @@ final class GameScene: SKScene {
 
 	private let hid = HIDController()
 
+	override func becomeFirstResponder() -> Bool {
+		super.becomeFirstResponder()
+		return true
+	}
+
 	override func sceneDidLoad() {
 		backgroundColor = .black
 		scaleMode = .aspectFit
 
-		nodes = Nodes(
-			cursor: addCursor(),
-			camera: addCamera(),
-			map: addMap(state.map),
-			menu: addMenu(),
-			status: addStatus()
-		)
+		nodes = addNodes()
 		state.initialize()
 		nodes?.layout(size: size)
 
@@ -57,6 +56,15 @@ final class GameScene: SKScene {
 		updateFogIfNeeded(oldValue)
 		updateStatus()
 		if state.isCursorTooFar { return state.alignCamera() }
+
+//		let sn = SKAudioNode(fileNamed: "boom-s.wav")
+//		sn.autoplayLooped = false
+//		addChild(sn)
+//		sn.run(.sequence([
+//			.play(),
+//			.wait(forDuration: 2.0),
+//			.removeFromParent()
+//		]))
 
 		Task {
 			for event in state.events { await processEvent(event) }

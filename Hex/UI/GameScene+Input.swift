@@ -1,6 +1,5 @@
 import SpriteKit
 
-#if os(OSX)
 extension GameScene {
 
 	override func keyDown(with event: NSEvent) {
@@ -10,6 +9,7 @@ extension GameScene {
 		default: break
 		}
 		switch event.specialKey {
+		case .tab: apply(.menu)
 		case .leftArrow: apply(.direction(.left))
 		case .rightArrow: apply(.direction(.right))
 		case .downArrow: apply(.direction(.down))
@@ -17,9 +17,8 @@ extension GameScene {
 		default: break
 		}
 		switch event.characters {
-		case "q": apply(.target(.prev))
-		case "w": apply(.target(.next))
-		case "e": apply(.menu)
+		case "[": apply(.target(.prev))
+		case "]": apply(.target(.next))
 		case "a": apply(.action(.a))
 		case "s": apply(.action(.b))
 		case "d": apply(.action(.c))
@@ -28,6 +27,7 @@ extension GameScene {
 		case "x": apply(.scale(2.0))
 		case "c": apply(.scale(4.0))
 		case "v": nodes?.grid.isHidden.toggle()
+		case "q" where event.modifierFlags.contains(.command): exit(0)
 		default: break
 		}
 	}
@@ -63,4 +63,3 @@ private extension CGSize {
 		abs(point.x) < width / 2.0 && abs(point.y) < height / 2.0
 	}
 }
-#endif

@@ -113,7 +113,8 @@ extension GameState {
 		else { return }
 
 		unit.position = position
-		unit.stats.mp.decrement()
+		unit.stats.mp = 0
+		if unit.stats.unitType == .art { unit.stats.ap = 0 }
 
 		self[unit.id] = unit
 		let vision = vision(for: unit)
@@ -140,7 +141,7 @@ extension GameState {
 		guard var src = self[src], var dst = self[dst],
 			  src.player == player,
 			  src.player.team != dst.player.team,
-			  src.canFire, src.canHit(unit: dst)
+			  src.canAttack, src.canHit(unit: dst)
 		else { return }
 
 		let terrainDef = map[dst.position].defBonus

@@ -5,29 +5,21 @@ extension GameScene {
 	struct Nodes {
 		var cursor: SKNode
 		var camera: SKCameraNode
-		var fog: SKTileMapNode
-		var flags: SKTileMapNode
-		var grid: SKTileMapNode
+		var map: MapNodes
 		var menu: SKNode
 		var status: SKLabelNode
-		var units: [UnitID: SKNode]
+		var sounds: SoundNodes
+		var units: [UnitID: SKNode] = [:]
 
-		init(
-			cursor: SKNode,
-			camera: SKCameraNode,
-			map: MapNodes,
-			menu: SKNode,
-			status: SKLabelNode
-		) {
-			self.cursor = cursor
-			self.camera = camera
-			self.fog = map.fog
-			self.flags = map.flags
-			self.grid = map.grid
-			self.status = status
-			self.menu = menu
-			self.units = [:]
-		}
+		var fog: SKTileMapNode { map.fog }
+		var flags: SKTileMapNode { map.flags }
+		var grid: SKTileMapNode { map.grid }
+	}
+
+	struct SoundNodes {
+		var boomS: SKAudioNode
+		var boomM: SKAudioNode
+		var boomL: SKAudioNode
 	}
 
 	struct MapNodes {
@@ -36,7 +28,31 @@ extension GameScene {
 		var grid: SKTileMapNode
 	}
 
-	func addMap(_ map: Map) -> MapNodes {
+	func addNodes() -> Nodes {
+		Nodes(
+			cursor: addCursor(),
+			camera: addCamera(),
+			map: addMap(state.map),
+			menu: addMenu(),
+			status: addStatus(),
+			sounds: addSounds()
+		)
+	}
+
+	private func addSounds() -> SoundNodes {
+		let boomS = SKAudioNode(fileNamed: "boom-s")
+		boomS.autoplayLooped = false
+		let boomM = SKAudioNode(fileNamed: "boom-m")
+		boomM.autoplayLooped = false
+		let boomL = SKAudioNode(fileNamed: "boom-l")
+		boomL.autoplayLooped = false
+
+		[boomS, boomM, boomL].forEach(addChild)
+
+		return SoundNodes(boomS: boomS, boomM: boomM, boomL: boomL)
+	}
+
+	private func addMap(_ map: Map) -> MapNodes {
 		let flags = SKTileMapNode(tiles: .flags, radius: map.radius)
 		flags.zPosition = 0.1
 
@@ -75,35 +91,31 @@ extension GameScene {
 		)
 	}
 
-	func addCamera() -> SKCameraNode {
+	private func addCamera() -> SKCameraNode {
 		let camera = SKCameraNode()
 		addChild(camera)
 		self.camera = camera
 		return camera
 	}
 
-	func addSelected() -> SKNode {
+	private func addSelected() -> SKNode {
 		let selected = SKShapeNode(hex: .zero, base: .baseSelection, line: .lineSelection)
 		selected.zPosition = 2.0
 		addChild(selected)
 		return selected
 	}
 
-	func addCursor() -> SKNode {
+	private func addCursor() -> SKNode {
 		let cursor = SKShapeNode(hex: .zero, base: .baseCursor, line: .lineCursor)
 		cursor.zPosition = 3.0
 		addChild(cursor)
 		return cursor
 	}
 
-	func addStatus() -> SKLabelNode {
-		let label = SKLabelNode()
+	private func addStatus() -> SKLabelNode {
+		let label = SKLabelNode(size: .s)
 		camera?.addChild(label)
-		label.fontName = "Menlo"
-		label.fontSize = 11.0
-		label.fontColor = .white
 		label.zPosition = 10.0
-		label.setScale(0.5)
 		label.horizontalAlignmentMode = .left
 		label.verticalAlignmentMode = .baseline
 		return label
@@ -162,7 +174,7 @@ extension GameState {
 		if let selectedUnit, let unit = self[selectedUnit] {
 			unit.status
 		} else if let city = map.cities[cursor] {
-			city.name
+			"\(city.name)\t\tcontroller: \(city.controller.team)"
 		} else {
 			"\(map[cursor])"
 		}

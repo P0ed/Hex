@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5FCB86342E77041800C2C69E"
+               BlueprintIdentifier = "5F919D2B2EA9564A0037A208"
                BuildableName = "Hex.app"
-               BlueprintName = "Hex iOS"
+               BlueprintName = "Hex"
                ReferencedContainer = "container:Hex.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,9 +44,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5FCB86342E77041800C2C69E"
+            BlueprintIdentifier = "5F919D2B2EA9564A0037A208"
             BuildableName = "Hex.app"
-            BlueprintName = "Hex iOS"
+            BlueprintName = "Hex"
             ReferencedContainer = "container:Hex.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -61,9 +61,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5FCB86342E77041800C2C69E"
+            BlueprintIdentifier = "5F919D2B2EA9564A0037A208"
             BuildableName = "Hex.app"
-            BlueprintName = "Hex iOS"
+            BlueprintName = "Hex"
             ReferencedContainer = "container:Hex.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

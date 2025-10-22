@@ -12,7 +12,7 @@ extension GameState {
 			],
 			units: [
 				Unit(id: .make(), player: .deu, position: Hex(-4, 0), stats: .base >< .inf),
-				Unit(id: .make(), player: .deu, position: Hex(1, -2), stats: .base >< .inf),
+				Unit(id: .make(), player: .deu, position: Hex(1, -2), stats: .base >< .builder),
 				Unit(id: .make(), player: .deu, position: Hex(0, -1), stats: .base >< .tank),
 				Unit(id: .make(), player: .deu, position: Hex(-4, 1), stats: .base >< .recon),
 				Unit(id: .make(), player: .deu, position: Hex(-1, 1), stats: .base >< .art),

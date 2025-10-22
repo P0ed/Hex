@@ -7,6 +7,7 @@ extension GameState {
 			Unit(id: .next, player: player, position: .zero, stats: .shop >< .recon),
 			Unit(id: .next, player: player, position: .zero, stats: .shop >< .tank),
 			Unit(id: .next, player: player, position: .zero, stats: .shop >< .art),
+			Unit(id: .next, player: player, position: .zero, stats: .shop >< .builder),
 		]
 	}
 

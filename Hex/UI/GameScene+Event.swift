@@ -35,7 +35,11 @@ private extension GameScene {
 	}
 
 	func processAttack(src: UnitID, dst: UnitID) async {
+		nodes?.sounds.boomS.removeAllActions()
+		await nodes?.sounds.boomS.run(.play())
 		await nodes?.units[src]?.run(.hit())
+		nodes?.sounds.boomM.removeAllActions()
+		await nodes?.sounds.boomM.run(.play())
 		await nodes?.units[dst]?.run(.hit())
 
 		if let srcUnit = state[src] {

@@ -86,7 +86,7 @@ extension GameScene.Nodes {
 		)
 		menu.addChild(frame)
 
-		let label = SKLabelNode()
+		let label = SKLabelNode(size: .l)
 		label.verticalAlignmentMode = .top
 		label.horizontalAlignmentMode = .left
 		label.position = CGPoint(
@@ -95,8 +95,6 @@ extension GameScene.Nodes {
 		)
 		label.zPosition = 0.1
 		label.name = "label"
-		label.fontSize = 11.0
-		label.fontName = "Menlo"
 		label.numberOfLines = 0
 		frame.addChild(label)
 	}

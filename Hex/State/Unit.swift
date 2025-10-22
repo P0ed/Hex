@@ -76,7 +76,7 @@ extension Stats {
 	}
 
 	var moveType: MoveType {
-		get { MoveType(rawValue: get(width: 2, offset: 25)) ?? .none }
+		get { MoveType(rawValue: get(width: 2, offset: 25)) ?? .leg }
 		set { set(newValue.rawValue, width: 2, offset: 25) }
 	}
 	var armor: UInt8 {
@@ -110,18 +110,18 @@ extension Stats {
 }
 
 enum MoveType: UInt8, Hashable, Codable {
-	case none, leg, wheel, track
+	case leg, wheel, track, air
 }
 
 enum UnitType: UInt8, Hashable, Codable {
-	case inf, recon, tank, art, antiAir, air
+	case inf, recon, tank, art, antiAir, air, worker, building
 }
 
 extension Unit {
 	var untouched: Bool { stats.mp != 0 && stats.ap != 0 }
-	var hasActions: Bool { canMove || canFire }
+	var hasActions: Bool { canMove || canAttack }
 	var canMove: Bool { stats.mp != 0 }
-	var canFire: Bool { stats.ap != 0 && stats.ammo != 0 }
+	var canAttack: Bool { stats.ap != 0 && stats.ammo != 0 }
 
 	func canHit(unit: Unit) -> Bool {
 		position.distance(to: unit.position) <= stats.rng
@@ -161,7 +161,7 @@ extension Unit {
 	}
 
 	var status: String {
-		"\(stats.unitType)"
+		"\(stats.unitType)\t\tammo: \(stats.ammo)\t\tfuel: \(stats.fuel)"
 	}
 
 	var description: String {
