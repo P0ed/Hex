@@ -33,11 +33,16 @@ extension Map {
 	init(radius: Int, seed: Int) {
 		self = Map(radius: radius)
 
-		let noise = GKNoiseMap.terrain(radius: radius, seed: seed)
+		let height = GKNoiseMap.height(radius: radius, seed: seed)
+		let humidity = GKNoiseMap.humidity(radius: radius, seed: seed + 1)
+
 		let pairs = [Hex].circle(radius).map { hex in
 			let (x, y) = converting(hex)
 			let pos = SIMD2<Int32>(Int32(x), Int32(y))
-			return (hex, Terrain.terrain(at: noise.value(at: pos)))
+			return (hex, Terrain.terrain(
+				at: height.value(at: pos),
+				humidity: humidity.value(at: pos)
+			))
 		}
 		terrain = Dictionary(pairs, uniquingKeysWith: { _, r in r })
 

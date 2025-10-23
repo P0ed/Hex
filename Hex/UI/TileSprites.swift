@@ -27,12 +27,12 @@ extension SKTileGroup {
 @MainActor
 extension Terrain {
 
-	static func terrain(at height: Float) -> Terrain {
-		switch (height + 1.0) / 2.0 {
-		case 0.0 ..< 0.4: .field
-		case 0.4 ..< 0.7: .forest
-		case 0.7 ..< 0.9: .hills
-		case 0.9 ... 1.0: .mountains
+	static func terrain(at height: Float, humidity: Float) -> Terrain {
+		switch height {
+		case 0.0 ..< 0.3: .forest
+		case 0.3 ..< 0.6: humidity > 0 ? .forest : .hills
+		case 0.6 ..< 0.8: .hills
+		case 0.8 ... 1.0: .mountains
 		default: .field
 		}
 	}
@@ -81,36 +81,32 @@ extension SKTileMapNode {
 @MainActor
 extension GKNoiseMap {
 
-	static func terrain(radius: Int, seed: Int) -> GKNoiseMap {
-
-		let perlin = GKNoise(GKPerlinNoiseSource(
-			frequency: 10.0,
-			octaveCount: 6,
-			persistence: 0.47,
-			lacunarity: 0.68,
-			seed: Int32(seed)
-		))
-//		let ridged = GKNoise(GKRidgedNoiseSource(
-//			frequency: 8.2,
-//			octaveCount: 5,
-//			lacunarity: 0.82,
-//			seed: Int32(seed)
-//		))
-//		let voronoi = GKNoise(GKVoronoiNoiseSource(
-//			frequency: 6.8,
-//			displacement: 1.0,
-//			distanceEnabled: false,
-//			seed: Int32(seed)
-//		))
-
-		let noiseMap = GKNoiseMap(
-			perlin,
+	private static func map(radius: Int, source: GKNoiseSource) -> GKNoiseMap {
+		GKNoiseMap(
+			GKNoise(source),
 			size: .one,
 			origin: .zero,
 			sampleCount: SIMD2<Int32>(Int32(radius) * 2, Int32(radius) * 2),
 			seamless: false
 		)
+	}
 
-		return noiseMap
+	static func height(radius: Int, seed: Int) -> GKNoiseMap {
+		.map(radius: radius, source: GKPerlinNoiseSource(
+			frequency: 10.0,
+			octaveCount: 6,
+			persistence: 0.47,
+			lacunarity: 0.68,
+			seed: Int32(bitPattern: UInt32(seed & Int(UInt32.max)))
+		))
+	}
+
+	static func humidity(radius: Int, seed: Int) -> GKNoiseMap {
+		.map(radius: radius, source: GKVoronoiNoiseSource(
+			frequency: 6.8,
+			displacement: 1.0,
+			distanceEnabled: false,
+			seed: Int32(bitPattern: UInt32(seed & Int(UInt32.max)))
+		))
 	}
 }

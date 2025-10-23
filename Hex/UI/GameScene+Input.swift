@@ -43,23 +43,15 @@ extension GameScene {
 				)
 			))
 		} else {
-			let location = event.location(in: nodes.menu)
-			guard Nodes.menuSize.contains(location) else { return apply(.action(.b)) }
+			guard self.nodes(at: event.location(in: self))
+				.contains(where: { n in n == nodes.menu })
+			else { return apply(.action(.b)) }
 
-			let idx = nodes.menu.nodes(at: location)
+			nodes.menu.nodes(at: event.location(in: nodes.menu))
 				.compactMap { n in n as? SKShapeNode }.first
 				.flatMap { n in n.name == nil ? n : nil }
 				.flatMap(nodes.menu.children.firstIndex)
-			if let idx {
-				apply(.index(idx))
-			}
+				.map { idx in apply(.index(idx)) }
 		}
-	}
-}
-
-private extension CGSize {
-
-	func contains(_ point: CGPoint) -> Bool {
-		abs(point.x) < width / 2.0 && abs(point.y) < height / 2.0
 	}
 }

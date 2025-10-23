@@ -1,3 +1,5 @@
+func identity<A>(_ x: A) -> A { x }
+
 func modifying<A>(_ value: A, _ tfm: (inout A) -> Void) -> A {
 	var value = value
 	tfm(&value)
@@ -34,4 +36,9 @@ extension Set: Monoid {
 extension Array: Monoid {
 	static var empty: Array { [] }
 	mutating func combine(_ other: Array) { self += other }
+}
+
+extension String: Monoid {
+	static var empty: String { "" }
+	mutating func combine(_ other: String) { self += other }
 }

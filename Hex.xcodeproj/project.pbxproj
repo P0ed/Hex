@@ -35,6 +35,8 @@
 		5F919D6D2EA959FA0037A208 /* boom-s.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5F2A33A62EA93AC3008A0A95 /* boom-s.wav */; };
 		5F919D6E2EA959FA0037A208 /* boom-m.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5F2A33A52EA93AC3008A0A95 /* boom-m.wav */; };
 		5F919D6F2EA959FD0037A208 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F2A33C32EA93AC3008A0A95 /* Assets.xcassets */; };
+		5FCABBC82EAA701D008EE894 /* mov.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5FCABBC72EAA701D008EE894 /* mov.wav */; };
+		5FCABBCA2EAA787D008EE894 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FCABBC92EAA787B008EE894 /* Strings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +71,8 @@
 		5F919D2C2EA9564A0037A208 /* Hex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F919D702EA95ADF0037A208 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5FB297482E79A39000FA039B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		5FCABBC72EAA701D008EE894 /* mov.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = mov.wav; sourceTree = "<group>"; };
+		5FCABBC92EAA787B008EE894 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +92,7 @@
 				5F2A33A62EA93AC3008A0A95 /* boom-s.wav */,
 				5F2A33A52EA93AC3008A0A95 /* boom-m.wav */,
 				5F2A33A42EA93AC3008A0A95 /* boom-l.wav */,
+				5FCABBC72EAA701D008EE894 /* mov.wav */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -124,6 +129,7 @@
 				5F2A33BE2EA93AC3008A0A95 /* SpriteKit+Extensions.swift */,
 				5F2A33BF2EA93AC3008A0A95 /* TileSprites.swift */,
 				5F2A33C02EA93AC3008A0A95 /* UnitSprites.swift */,
+				5FCABBC92EAA787B008EE894 /* Strings.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -223,6 +229,7 @@
 				5F919D6C2EA959FA0037A208 /* boom-l.wav in Resources */,
 				5F919D6D2EA959FA0037A208 /* boom-s.wav in Resources */,
 				5F919D6F2EA959FD0037A208 /* Assets.xcassets in Resources */,
+				5FCABBC82EAA701D008EE894 /* mov.wav in Resources */,
 				5F919D6E2EA959FA0037A208 /* boom-m.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,6 +248,7 @@
 				5F919D612EA9596E0037A208 /* Arrays.swift in Sources */,
 				5F919D622EA9596E0037A208 /* Identifiers.swift in Sources */,
 				5F919D632EA9596E0037A208 /* Monoid.swift in Sources */,
+				5FCABBCA2EAA787D008EE894 /* Strings.swift in Sources */,
 				5F919D642EA9596E0037A208 /* MenuState.swift in Sources */,
 				5F919D652EA9596E0037A208 /* GameStateFactory.swift in Sources */,
 				5F919D662EA9596E0037A208 /* GameState+Shop.swift in Sources */,

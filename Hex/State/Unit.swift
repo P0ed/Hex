@@ -114,7 +114,7 @@ enum MoveType: UInt8, Hashable, Codable {
 }
 
 enum UnitType: UInt8, Hashable, Codable {
-	case inf, recon, tank, art, antiAir, air, worker, building
+	case inf, recon, tank, art, antiAir, air, engineer, building
 }
 
 extension Unit {
@@ -158,26 +158,6 @@ extension Unit {
 		case .art: 160
 		default: 120
 		}
-	}
-
-	var status: String {
-		"\(stats.unitType)\t\tammo: \(stats.ammo)\t\tfuel: \(stats.fuel)"
-	}
-
-	var description: String {
-		"""
-		\(stats.unitType)
-		
-		ATK: \(stats.atk) - \(stats.hardAttack)
-		DEF: \(stats.def) - \(stats.armor)
-		MOV: \(stats.mov) - \(stats.moveType)
-		RNG: \(stats.rng)
-		
-		
-		
-		- - - - - - - -
-		Cost: \(cost)
-		"""
 	}
 }
 

@@ -5,6 +5,7 @@ extension GameScene {
 	func processEvent(_ event: Event) async {
 		switch event {
 		case let .spawn(uid): processSpawn(uid: uid)
+		case let .update(uid): processUpdate(uid: uid)
 		case let .kill(uid): processKill(uid: uid)
 		case let .move(uid): await processMove(uid: uid)
 		case let .attack(src, dst): await processAttack(src: src, dst: dst)
@@ -25,21 +26,28 @@ private extension GameScene {
 		addUnit(uid, node: sprite)
 	}
 
+	func processUpdate(uid: UnitID) {
+		guard let unit = state[uid], let sprite = nodes?.units[uid]
+		else { return processSpawn(uid: uid) }
+
+		sprite.update(unit)
+		sprite.isHidden = !state.visible.contains(unit.position)
+	}
+
 	func processKill(uid: UnitID) {
 		removeUnit(uid)
 	}
 
 	func processMove(uid: UnitID) async {
 		guard let unit = state[uid] else { return }
+		nodes?.sounds.mov.play()
 		await nodes?.units[uid]?.run(.move(to: unit.position.point, duration: 0.2))
 	}
 
 	func processAttack(src: UnitID, dst: UnitID) async {
-		nodes?.sounds.boomS.removeAllActions()
-		await nodes?.sounds.boomS.run(.play())
+		nodes?.sounds.boomS.play()
 		await nodes?.units[src]?.run(.hit())
-		nodes?.sounds.boomM.removeAllActions()
-		await nodes?.sounds.boomM.run(.play())
+		nodes?.sounds.boomM.play()
 		await nodes?.units[dst]?.run(.hit())
 
 		if let srcUnit = state[src] {

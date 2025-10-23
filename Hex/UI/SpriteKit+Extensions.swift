@@ -37,6 +37,14 @@ extension SKLabelNode {
 	}
 }
 
+extension SKAudioNode {
+
+	func play() {
+		removeAllActions()
+		run(.play())
+	}
+}
+
 extension SKAction {
 
 	static func hit() -> SKAction {

@@ -13,7 +13,7 @@ struct UnitID: RawRepresentable, Hashable, Codable, ExpressibleByIntegerLiteral 
 struct PlayerID: RawRepresentable, Hashable, Codable, ExpressibleByIntegerLiteral {
 	var rawValue: UInt8
 
-	var team: Team { rawValue & 1 == 0 ? .axis : .allies }
+	var team: Team { Team(rawValue: rawValue & 0b11) ?? .neutral }
 
 	init(rawValue: RawValue) {
 		self.rawValue = rawValue

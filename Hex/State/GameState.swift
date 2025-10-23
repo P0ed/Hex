@@ -25,10 +25,11 @@ struct Player: Hashable, Codable {
 	var visible: Set<Hex> = []
 }
 
-enum Team: Hashable, Codable { case axis, allies }
+enum Team: UInt8, Hashable, Codable { case axis, allies, soviet, neutral }
 
 enum Event: Hashable, Codable {
 	case spawn(UnitID)
+	case update(UnitID)
 	case kill(UnitID)
 	case move(UnitID)
 	case attack(UnitID, UnitID)

@@ -14,7 +14,7 @@ extension Stats {
 	static var builder: Self {
 		.make { stats in
 			stats.mov = 5
-			stats.unitType = .worker
+			stats.unitType = .engineer
 			stats.moveType = .wheel
 		}
 	}

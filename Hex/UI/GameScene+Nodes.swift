@@ -20,6 +20,7 @@ extension GameScene {
 		var boomS: SKAudioNode
 		var boomM: SKAudioNode
 		var boomL: SKAudioNode
+		var mov: SKAudioNode
 	}
 
 	struct MapNodes {
@@ -40,16 +41,20 @@ extension GameScene {
 	}
 
 	private func addSounds() -> SoundNodes {
-		let boomS = SKAudioNode(fileNamed: "boom-s")
-		boomS.autoplayLooped = false
-		let boomM = SKAudioNode(fileNamed: "boom-m")
-		boomM.autoplayLooped = false
-		let boomL = SKAudioNode(fileNamed: "boom-l")
-		boomL.autoplayLooped = false
+		let mk = { name in
+			let node = SKAudioNode(fileNamed: name)
+			node.autoplayLooped = false
+			node.isPositional = false
+			return node
+		}
+		let boomS = mk("boom-s")
+		let boomM = mk("boom-m")
+		let boomL = mk("boom-l")
+		let mov = mk("mov")
 
-		[boomS, boomM, boomL].forEach(addChild)
+		[boomS, boomM, boomL, mov].forEach(addChild)
 
-		return SoundNodes(boomS: boomS, boomM: boomM, boomL: boomL)
+		return SoundNodes(boomS: boomS, boomM: boomM, boomL: boomL, mov: mov)
 	}
 
 	private func addMap(_ map: Map) -> MapNodes {
@@ -166,22 +171,4 @@ extension GameScene {
 	func updateStatus() {
 		nodes?.status.text = menuState?.statusText ?? state.statusText
 	}
-}
-
-extension GameState {
-
-	var statusText: String {
-		if let selectedUnit, let unit = self[selectedUnit] {
-			unit.status
-		} else if let city = map.cities[cursor] {
-			"\(city.name)\t\tcontroller: \(city.controller.team)"
-		} else {
-			"\(map[cursor])"
-		}
-	}
-}
-
-extension MenuState {
-
-	var statusText: String { items[cursor].text }
 }

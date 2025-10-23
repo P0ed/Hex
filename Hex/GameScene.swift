@@ -57,15 +57,6 @@ final class GameScene: SKScene {
 		updateStatus()
 		if state.isCursorTooFar { return state.alignCamera() }
 
-//		let sn = SKAudioNode(fileNamed: "boom-s.wav")
-//		sn.autoplayLooped = false
-//		addChild(sn)
-//		sn.run(.sequence([
-//			.play(),
-//			.wait(forDuration: 2.0),
-//			.removeFromParent()
-//		]))
-
 		Task {
 			for event in state.events { await processEvent(event) }
 			if !state.events.isEmpty { return state.events = [] }

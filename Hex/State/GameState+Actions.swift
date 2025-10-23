@@ -186,7 +186,7 @@ extension GameState {
 			[
 				.init(icon: "Reinforce", text: "Reinforce", action: { state in
 					state[selectedUnit]?.reinforce()
-					// TODO: Update label
+					state.events.append(.update(selectedUnit))
 				}),
 				.init(icon: "Refuel", text: "Resupply", action: { state in
 					state[selectedUnit]?.resupply()
