@@ -29,23 +29,6 @@ extension Stats {
 		rawValue |= RawValue(value) << offset & mask
 	}
 
-	static var base: Self {
-		.make { stats in
-			stats.hp = 15
-			stats.mp = 1
-			stats.ap = 1
-			stats.ammo = 15
-			stats.fuel = 15
-		}
-	}
-
-	static var shop: Self {
-		modifying(.base) { stats in
-			stats.mp = 0
-			stats.ap = 0
-		}
-	}
-
 	var hp: UInt8 {
 		get { get(width: 4, offset: 0) }
 		set { set(newValue, width: 4, offset: 0) }
@@ -127,9 +110,11 @@ extension Unit {
 		position.distance(to: unit.position) <= stats.rng
 	}
 
-	mutating func nextTurn(_ terrain: Terrain) {
-		if untouched { stats.ent.increment(by: 1, cap: 7) }
-		if untouched || terrain == .city { resupply() }
+	mutating func nextTurn() {
+		if untouched {
+			stats.ent.increment(by: 1, cap: 7)
+			resupply()
+		}
 		stats.mp = 1
 		stats.ap = 1
 	}

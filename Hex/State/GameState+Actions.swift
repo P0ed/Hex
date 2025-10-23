@@ -6,8 +6,8 @@ extension GameState {
 	}
 
 	var income: UInt16 {
-		min(.max - prestige, map.cities.values.reduce(into: 0) { r, c in
-			r += c.controller == player ? 48 : 0
+		min(.max - prestige, buildings.values.reduce(into: 0) { r, c in
+			r += c.player == player ? 48 : 0
 		})
 	}
 
@@ -43,8 +43,8 @@ extension GameState {
 			guard u.player == player else { return }
 			v.formUnion(vision(for: u))
 		}
-		.union(map.cities.flatMap { hex, city in
-			city.controller == player ? hex.circle(1) : []
+		.union(buildings.flatMap { hex, building in
+			building.player == player ? hex.circle(1) : []
 		})
 	}
 
@@ -67,14 +67,14 @@ extension GameState {
 
 		if nextIdx == 0 {
 			players = players.mapInPlace { p in p.visible = vision(for: p.id) }
-			units = units.mapInPlace { u in u.nextTurn(map[u.position]) }
+			units = units.mapInPlace { u in u.nextTurn() }
 		}
 	}
 
 	private mutating func captureCities() {
 		let reflag = units.reduce(into: false) { reflag, u in
-			if let city = map.cities[u.position], city.controller != u.player {
-				map.cities[u.position]?.controller = u.player
+			if let city = buildings[u.position], city.player != u.player {
+				buildings[u.position]?.player = u.player
 				reflag = true
 			}
 		}
@@ -86,8 +86,8 @@ extension GameState {
 
 	private mutating func eliminatePlayers() {
 		players.removeAll { player in
-			!map.cities.values.contains { city in
-				city.controller == player.id
+			!buildings.values.contains { building in
+				building.type == .city && building.player == player.id
 			}
 		}
 		if Set(players.map(\.id.team)).count == 1 {

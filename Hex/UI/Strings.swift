@@ -30,10 +30,10 @@ extension GameState {
 	var statusText: String {
 		if let selectedUnit, let unit = self[selectedUnit] {
 			unit.status
-		} else if let city = map.cities[cursor] {
+		} else if let building = buildings[cursor] {
 			.makeStatus { add in
-				add(city.name)
-				add("controller: \(city.controller.team)")
+				add("\(building.type)")
+				add("controller: \(building.player.team)")
 			}
 		} else {
 			"\(map[cursor])"

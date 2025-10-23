@@ -62,13 +62,13 @@ private extension GameState {
 				}
 			} else if unit.canMove {
 				move(unit: unit.id, to: cursor)
-			} else if map.cities[cursor]?.controller == player {
+			} else if buildings[cursor]?.player == player {
 				events.append(.shop)
 			}
 		} else {
 			if let u = units[cursor], u.player == player {
 				selectUnit(u.id)
-			} else if map.cities[cursor]?.controller == player {
+			} else if buildings[cursor]?.player == player {
 				events.append(.shop)
 			}
 		}

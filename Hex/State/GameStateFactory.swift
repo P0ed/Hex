@@ -10,9 +10,14 @@ extension GameState {
 				Player(id: .deu),
 				Player(id: .usa, ai: true),
 			],
+			buildings: [
+				Hex(-1, -2): .init(player: .deu, type: .city),
+				Hex(2, 3): .init(player: .usa, type: .city),
+				Hex(-2, 5): .init(player: .usa, type: .city),
+			],
 			units: [
-				Unit(id: .make(), player: .deu, position: Hex(-4, 0), stats: .base >< .inf),
 				Unit(id: .make(), player: .deu, position: Hex(1, -2), stats: .base >< .builder),
+				Unit(id: .make(), player: .deu, position: Hex(-4, 0), stats: .base >< .inf),
 				Unit(id: .make(), player: .deu, position: Hex(0, -1), stats: .base >< .tank),
 				Unit(id: .make(), player: .deu, position: Hex(-4, 1), stats: .base >< .recon),
 				Unit(id: .make(), player: .deu, position: Hex(-1, 1), stats: .base >< .art),
@@ -45,15 +50,5 @@ extension Map {
 			))
 		}
 		terrain = Dictionary(pairs, uniquingKeysWith: { _, r in r })
-
-		terrain[Hex(1, -3)] = .city
-		terrain[Hex(2, 3)] = .city
-		terrain[Hex(-2, 5)] = .city
-
-		cities = [
-			Hex(1, -3): City(name: "Berlin", controller: .deu),
-			Hex(2, 3): City(name: "Washington", controller: .usa),
-			Hex(-2, 5): City(name: "London", controller: .usa),
-		]
 	}
 }

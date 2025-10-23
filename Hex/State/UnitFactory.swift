@@ -11,6 +11,23 @@ extension UnitID {
 
 extension Stats {
 
+	static var base: Self {
+		.make { stats in
+			stats.hp = 15
+			stats.mp = 1
+			stats.ap = 1
+			stats.ammo = 15
+			stats.fuel = 15
+		}
+	}
+
+	static var shop: Self {
+		modifying(.base) { stats in
+			stats.mp = 0
+			stats.ap = 0
+		}
+	}
+
 	static var builder: Self {
 		.make { stats in
 			stats.mov = 5

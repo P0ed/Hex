@@ -2,6 +2,7 @@ struct GameState: Hashable, Codable {
 	var map: Map
 
 	var players: [Player]
+	var buildings: [Hex: Building]
 	var units: [Unit]
 	var d20: D20 = .init(seed: 0)
 
@@ -17,11 +18,19 @@ struct GameState: Hashable, Codable {
 	var events: [Event] = []
 }
 
+struct Building: Hashable, Codable {
+	var player: PlayerID
+	var type: BuildingType
+}
+
+enum BuildingType: UInt8, Hashable, Codable {
+	case city, barracks, factory, airfield, radar
+}
+
 struct Player: Hashable, Codable {
 	var id: PlayerID
 	var ai: Bool = false
 	var prestige: UInt16 = 0
-	var science: UInt16 = 0
 	var visible: Set<Hex> = []
 }
 

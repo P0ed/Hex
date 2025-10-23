@@ -33,7 +33,7 @@ extension GameScene {
 		Nodes(
 			cursor: addCursor(),
 			camera: addCamera(),
-			map: addMap(state.map),
+			map: addMap(),
 			menu: addMenu(),
 			status: addStatus(),
 			sounds: addSounds()
@@ -57,33 +57,38 @@ extension GameScene {
 		return SoundNodes(boomS: boomS, boomM: boomM, boomL: boomL, mov: mov)
 	}
 
-	private func addMap(_ map: Map) -> MapNodes {
-		let flags = SKTileMapNode(tiles: .flags, radius: map.radius)
-		flags.zPosition = 0.1
+	private func addMap() -> MapNodes {
+		let buildings = SKTileMapNode(tiles: .buildings, radius: state.map.radius)
+		buildings.zPosition = 0.1
 
-		let grid = SKTileMapNode(tiles: .cells, radius: map.radius)
-		grid.zPosition = 0.2
+		let flags = SKTileMapNode(tiles: .flags, radius: state.map.radius)
+		flags.zPosition = 0.2
+
+		let grid = SKTileMapNode(tiles: .cells, radius: state.map.radius)
+		grid.zPosition = 0.3
 		grid.isHidden = true
 
-		let fog = SKTileMapNode(tiles: .cells, radius: map.radius)
-		fog.zPosition = 0.3
+		let fog = SKTileMapNode(tiles: .cells, radius: state.map.radius)
+		fog.zPosition = 0.4
 
-		let terrain = SKTileMapNode(tiles: .terrain, radius: map.radius)
+		let terrain = SKTileMapNode(tiles: .terrain, radius: state.map.radius)
 		terrain.position = .init(x: -.hexR * 1.5, y: .hexR * 0.31)
-		terrain.addChild(flags)
-		terrain.addChild(grid)
-		terrain.addChild(fog)
+		[buildings, flags, grid, fog].forEach(terrain.addChild)
 		addChild(terrain)
 
-		map.cells.forEach { hex in
-			let (x, y) = map.converting(hex)
-			let tileGroup = map[hex].tileGroup
+		state.map.cells.forEach { hex in
+			let (x, y) = state.map.converting(hex)
+			let tileGroup = state.map[hex].tileGroup
 			terrain.setTileGroup(tileGroup, forColumn: x, row: y)
 			grid.setTileGroup(.grid, forColumn: x, row: y)
 
-			if let city = map.cities[hex] {
+			if let building = state.buildings[hex] {
+				buildings.setTileGroup(
+					.city,
+					forColumn: x, row: y
+				)
 				flags.setTileGroup(
-					city.controller == .deu ? .axis : .allies,
+					building.player == .deu ? .axis : .allies,
 					forColumn: x, row: y
 				)
 			}
@@ -159,10 +164,10 @@ extension GameScene {
 	}
 
 	func updateFlags() {
-		state.map.cities.forEach { hex, city in
+		state.buildings.forEach { hex, building in
 			let (x, y) = state.map.converting(hex)
 			nodes?.flags.setTileGroup(
-				city.controller == .deu ? .axis : .allies,
+				building.player == .deu ? .axis : .allies,
 				forColumn: x, row: y
 			)
 		}

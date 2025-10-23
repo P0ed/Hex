@@ -1,7 +1,6 @@
 struct Map: Hashable, Codable {
 	var radius: Int
 	var terrain: [Hex: Terrain] = [:]
-	var cities: [Hex: City] = [:]
 
 	var cells: [Hex] { .circle(radius) }
 
@@ -32,13 +31,8 @@ extension [Hex] {
 	}
 }
 
-struct City: Hashable, Codable {
-	var name: String
-	var controller: PlayerID
-}
-
 enum Terrain: Hashable, Codable {
-	case city, airfield, trenches, road, river, bridge, field, forest, hills, mountains
+	case field, forest, hills, mountains
 }
 
 extension Terrain {
@@ -46,20 +40,19 @@ extension Terrain {
 	func moveCost(_ stats: Stats) -> UInt8 {
 		switch stats.moveType {
 		case .leg: switch self {
-		case .city, .airfield, .road, .bridge, .field: 1
-		case .forest, .hills, .trenches: min(stats.mov, 2)
-		case .mountains, .river: stats.mov
+		case .field: 1
+		case .forest, .hills: min(stats.mov, 2)
+		case .mountains: stats.mov
 		}
 		case .wheel: switch self {
-		case .city, .airfield, .road, .bridge: 1
 		case .field: 2
-		case .forest, .hills, .trenches: 3
-		case .mountains, .river: stats.mov
+		case .forest, .hills: 3
+		case .mountains: stats.mov
 		}
 		case .track: switch self {
-		case .city, .airfield, .road, .bridge, .field: 1
-		case .forest, .hills, .trenches: 2
-		case .mountains, .river: stats.mov
+		case .field: 1
+		case .forest, .hills: 2
+		case .mountains: stats.mov
 		}
 		case .air: 1
 		}
@@ -68,7 +61,7 @@ extension Terrain {
 	var defBonus: UInt8 {
 		switch self {
 		case .forest, .hills: 1
-		case .mountains, .trenches, .city: 2
+		case .mountains: 2
 		default: 0
 		}
 	}

@@ -13,15 +13,18 @@ extension SKTileGroup {
 		)
 	}
 
+	static let city = make(.city)
+
 	static let axis = make(.axisFlag)
 	static let allies = make(.alliesFlag)
+
 	static let grid = make(.grid)
 	static let fog = make(.fog)
+
 	static let field = make(.field)
 	static let forest = make(.forest)
 	static let hills = make(.hills)
 	static let mountains = make(.mountains)
-	static let city = make(.city)
 }
 
 @MainActor
@@ -43,8 +46,6 @@ extension Terrain {
 		case .forest: .forest
 		case .hills: .hills
 		case .mountains: .mountains
-		case .city: .city
-		default: .field
 		}
 	}
 }
@@ -57,7 +58,11 @@ extension SKTileSet {
 		tileSetType: .hexagonalFlat
 	)
 	static let terrain = SKTileSet(
-		tileGroups: [.field, .forest, .hills, .mountains, .city],
+		tileGroups: [.field, .forest, .hills, .mountains],
+		tileSetType: .hexagonalFlat
+	)
+	static let buildings = SKTileSet(
+		tileGroups: [.city],
 		tileSetType: .hexagonalFlat
 	)
 	static let flags = SKTileSet(
