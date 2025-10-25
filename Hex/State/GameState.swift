@@ -2,7 +2,7 @@ struct GameState: Hashable, Codable {
 	var map: Map
 
 	var players: [Player]
-	var buildings: [Hex: Building]
+	var buildings: [Building]
 	var units: [Unit]
 	var d20: D20 = .init(seed: 0)
 
@@ -20,6 +20,7 @@ struct GameState: Hashable, Codable {
 
 struct Building: Hashable, Codable {
 	var player: PlayerID
+	var position: Hex
 	var type: BuildingType
 }
 
@@ -89,14 +90,24 @@ extension GameState {
 	var playerUnits: LazyFilterSequence<[Unit]> {
 		units.lazy.filter { [player] u in u.player == player }
 	}
-
 	var enemyUnits: LazyFilterSequence<[Unit]> {
 		units.lazy.filter { [team = player.team] u in u.player.team != team }
+	}
+
+	var playerBuildings: LazyFilterSequence<[Building]> {
+		buildings.lazy.filter { [team = player.team] b in b.player.team == team }
+	}
+	var enemyBuildings: LazyFilterSequence<[Building]> {
+		buildings.lazy.filter { [team = player.team] b in b.player.team != team }
 	}
 }
 
 extension [Unit] {
 	subscript(_ hex: Hex) -> Unit? { first { u in u.position == hex } }
+}
+
+extension [Building] {
+	subscript(_ hex: Hex) -> Building? { first { u in u.position == hex } }
 }
 
 extension D20: RandomNumberGenerator {

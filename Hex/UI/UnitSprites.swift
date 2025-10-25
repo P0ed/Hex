@@ -44,6 +44,18 @@ extension Unit {
 	}
 }
 
+@MainActor
+extension BuildingType {
+
+	var tile: SKTileGroup {
+		switch self {
+		case .city: .city
+		case .radar: .mammut
+		default: .city
+		}
+	}
+}
+
 extension SKNode {
 
 	var unitHP: SKLabelNode? {

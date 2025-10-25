@@ -6,13 +6,13 @@ extension GameState {
 	}
 
 	var income: UInt16 {
-		min(.max - prestige, buildings.values.reduce(into: 0) { r, c in
+		min(.max - prestige, buildings.reduce(into: 0) { r, c in
 			r += c.player == player ? 48 : 0
 		})
 	}
 
 	func moves(for unit: Unit) -> Set<Hex> {
-		.make { hxs in
+		!unit.canMove ? [] : .make { hxs in
 			var front = [(unit.position, unit.stats.mov)]
 			repeat {
 				front = front.flatMap { fx, mp in
@@ -43,8 +43,8 @@ extension GameState {
 			guard u.player == player else { return }
 			v.formUnion(vision(for: u))
 		}
-		.union(buildings.flatMap { hex, building in
-			building.player == player ? hex.circle(1) : []
+		.union(buildings.flatMap { building in
+			building.player == player ? building.position.circle(1) : []
 		})
 	}
 
@@ -73,8 +73,11 @@ extension GameState {
 
 	private mutating func captureCities() {
 		let reflag = units.reduce(into: false) { reflag, u in
-			if let city = buildings[u.position], city.player != u.player {
-				buildings[u.position]?.player = u.player
+
+			let idx = buildings.firstIndex { b in b.position == u.position }
+
+			if let idx, buildings[idx].player.team != u.player.team {
+				buildings[idx].player = u.player
 				reflag = true
 			}
 		}
@@ -86,7 +89,7 @@ extension GameState {
 
 	private mutating func eliminatePlayers() {
 		players.removeAll { player in
-			!buildings.values.contains { building in
+			!buildings.contains { building in
 				building.type == .city && building.player == player.id
 			}
 		}
@@ -123,12 +126,10 @@ extension GameState {
 		events.append(.move(unit.id))
 	}
 
-	func targets(unit: UnitID) -> [Unit] {
-		self[unit].map { u in
-			enemyUnits
-				.filter { u in visible.contains(u.position) }
-				.filter(u.canHit)
-		} ?? []
+	func targets(unit: Unit) -> [Unit] {
+		!unit.canAttack ? [] : enemyUnits.filter { u in
+			visible.contains(u.position) && unit.canHit(unit: u)
+		}
 	}
 
 	mutating func damage(atk: UInt8, def: UInt8) -> UInt8 {

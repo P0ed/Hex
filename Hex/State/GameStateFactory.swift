@@ -11,9 +11,9 @@ extension GameState {
 				Player(id: .usa, ai: true),
 			],
 			buildings: [
-				Hex(-1, -2): .init(player: .deu, type: .city),
-				Hex(2, 3): .init(player: .usa, type: .city),
-				Hex(-2, 5): .init(player: .usa, type: .city),
+				Building(player: .deu, position: Hex(-1, -2), type: .city),
+				Building(player: .usa, position: Hex(2, 3), type: .city),
+				Building(player: .usa, position: Hex(-2, 5), type: .city),
 			],
 			units: [
 				Unit(id: .make(), player: .deu, position: Hex(1, -2), stats: .base >< .builder),

@@ -14,6 +14,7 @@ extension SKTileGroup {
 	}
 
 	static let city = make(.city)
+	static let mammut = make(.mammut)
 
 	static let axis = make(.axisFlag)
 	static let allies = make(.alliesFlag)
@@ -62,7 +63,7 @@ extension SKTileSet {
 		tileSetType: .hexagonalFlat
 	)
 	static let buildings = SKTileSet(
-		tileGroups: [.city],
+		tileGroups: [.city, .mammut],
 		tileSetType: .hexagonalFlat
 	)
 	static let flags = SKTileSet(

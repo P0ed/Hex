@@ -164,8 +164,8 @@ extension GameScene {
 	}
 
 	func updateFlags() {
-		state.buildings.forEach { hex, building in
-			let (x, y) = state.map.converting(hex)
+		state.buildings.forEach { building in
+			let (x, y) = state.map.converting(building.position)
 			nodes?.flags.setTileGroup(
 				building.player == .deu ? .axis : .allies,
 				forColumn: x, row: y

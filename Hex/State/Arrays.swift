@@ -31,4 +31,6 @@ extension Array {
 		if index != last { self[index] = self[last] }
 		remove(at: last)
 	}
+
+//	func firstMap 
 }
