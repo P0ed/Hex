@@ -11,6 +11,7 @@ extension GameScene {
 		case let .attack(src, dst): await processAttack(src: src, dst: dst)
 		case .reflag: updateFlags()
 		case .shop: processShop()
+		case .build: processBuild()
 		case .menu: processMenu()
 		case .gameOver: processGameOver()
 		}
@@ -73,6 +74,26 @@ private extension GameScene {
 					description: template.description + " / \(state.prestige)",
 					action: { [hex = state.cursor] state in
 						state.buy(template, at: hex)
+					}
+				)
+			}
+		))
+	}
+
+	func processBuild() {
+		guard let engineer = state.units[state.cursor],
+			  engineer.stats.unitType == .engineer
+		else { return }
+
+		show(MenuState(
+			layout: .inspector,
+			items: state.buildingTemplates.map { template in
+				MenuItem(
+					icon: template.type.imageName,
+					text: template.type.imageName,
+					description: "0" + " / \(state.prestige)",
+					action: { [hex = state.cursor] state in
+						state.build(template, at: hex)
 					}
 				)
 			}

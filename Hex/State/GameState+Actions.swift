@@ -40,8 +40,7 @@ extension GameState {
 
 	func vision(for player: PlayerID) -> Set<Hex> {
 		units.reduce(into: [] as Set<Hex>) { v, u in
-			guard u.player == player else { return }
-			v.formUnion(vision(for: u))
+			if u.player == player { v.formUnion(vision(for: u)) }
 		}
 		.union(buildings.flatMap { building in
 			building.player == player ? building.position.circle(1) : []

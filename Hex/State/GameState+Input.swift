@@ -57,6 +57,8 @@ private extension GameState {
 			if let dst = units[cursor] {
 				if dst.player.team != unit.player.team {
 					attack(src: unit.id, dst: dst.id)
+				} else if dst == unit, unit.stats.unitType == .engineer, unit.untouched {
+					events.append(.build)
 				} else {
 					selectUnit(dst == unit ? .none : dst.id)
 				}

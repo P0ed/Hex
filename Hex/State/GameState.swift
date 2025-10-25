@@ -45,6 +45,7 @@ enum Event: Hashable, Codable {
 	case attack(UnitID, UnitID)
 	case reflag
 	case shop
+	case build
 	case menu
 	case gameOver
 }

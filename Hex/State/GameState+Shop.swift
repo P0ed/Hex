@@ -11,12 +11,27 @@ extension GameState {
 		]
 	}
 
+	var buildingTemplates: [Building] {
+		[
+			Building(player: player, position: .zero, type: .barracks),
+			Building(player: player, position: .zero, type: .factory),
+		]
+	}
+
 	mutating func buy(_ template: Unit, at position: Hex) {
-		guard prestige >= template.cost else { return }
+		guard prestige >= template.cost, units[position] == nil else { return }
 		let unit = template.buy(at: position)
 		prestige -= template.cost
 		units.append(unit)
 		events.append(.spawn(unit.id))
+	}
+
+	mutating func build(_ template: Building, at position: Hex) {
+		guard buildings[position] == nil else { return }
+
+		let building = modifying(template) { b in b.position = position }
+		buildings.append(building)
+		events.append(.reflag)
 	}
 }
 

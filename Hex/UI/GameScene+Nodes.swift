@@ -11,6 +11,7 @@ extension GameScene {
 		var sounds: SoundNodes
 		var units: [UnitID: SKNode] = [:]
 
+		var buildings: SKTileMapNode { map.buildings }
 		var fog: SKTileMapNode { map.fog }
 		var flags: SKTileMapNode { map.flags }
 		var grid: SKTileMapNode { map.grid }
@@ -24,6 +25,7 @@ extension GameScene {
 	}
 
 	struct MapNodes {
+		var buildings: SKTileMapNode
 		var fog: SKTileMapNode
 		var flags: SKTileMapNode
 		var grid: SKTileMapNode
@@ -95,6 +97,7 @@ extension GameScene {
 		}
 
 		return MapNodes(
+			buildings: buildings,
 			fog: fog,
 			flags: flags,
 			grid: grid
@@ -166,6 +169,11 @@ extension GameScene {
 	func updateFlags() {
 		state.buildings.forEach { building in
 			let (x, y) = state.map.converting(building.position)
+
+			nodes?.buildings.setTileGroup(
+				building.type.tile,
+				forColumn: x, row: y
+			)
 			nodes?.flags.setTileGroup(
 				building.player == .deu ? .axis : .allies,
 				forColumn: x, row: y

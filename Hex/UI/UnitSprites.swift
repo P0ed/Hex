@@ -44,18 +44,6 @@ extension Unit {
 	}
 }
 
-@MainActor
-extension BuildingType {
-
-	var tile: SKTileGroup {
-		switch self {
-		case .city: .city
-		case .radar: .mammut
-		default: .city
-		}
-	}
-}
-
 extension SKNode {
 
 	var unitHP: SKLabelNode? {
@@ -64,5 +52,29 @@ extension SKNode {
 
 	func update(_ unit: Unit) {
 		unitHP?.text = "\(unit.stats.hp)"
+	}
+}
+
+@MainActor
+extension BuildingType {
+
+	var imageName: String {
+		switch self {
+		case .city: "City"
+		case .radar: "Mammut"
+		case .barracks: "Barracks"
+		case .factory: "Factory"
+		default: "City"
+		}
+	}
+
+	var tile: SKTileGroup {
+		switch self {
+		case .city: .city
+		case .radar: .mammut
+		case .barracks: .barracks
+		case .factory: .factory
+		default: .city
+		}
 	}
 }
