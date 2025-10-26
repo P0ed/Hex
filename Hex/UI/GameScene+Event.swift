@@ -7,7 +7,7 @@ extension GameScene {
 		case let .spawn(uid): processSpawn(uid: uid)
 		case let .update(uid): processUpdate(uid: uid)
 		case let .move(uid): await processMove(uid: uid)
-		case let .attack(src, dst): await processAttack(src: src, dst: dst)
+		case let .attack(src, dst, kill): await processAttack(src: src, dst: dst, kill: kill)
 		case .reflag: updateFlags()
 		case .shop: processShop()
 		case .build: processBuild()
@@ -43,10 +43,10 @@ private extension GameScene {
 		await nodes?.units[uid]?.run(.move(to: unit.position.point, duration: 0.2))
 	}
 
-	func processAttack(src: UnitID, dst: UnitID) async {
+	func processAttack(src: UnitID, dst: UnitID, kill: Bool) async {
 		nodes?.sounds.boomS.play()
 		await nodes?.units[src]?.run(.hit())
-		nodes?.sounds.boomM.play()
+		if kill { nodes?.sounds.boomL.play() } else { nodes?.sounds.boomM.play() }
 		await nodes?.units[dst]?.run(.hit())
 
 		processUpdate(uid: src)

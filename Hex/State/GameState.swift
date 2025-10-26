@@ -41,7 +41,7 @@ enum Event: Hashable, Codable {
 	case spawn(UnitID)
 	case update(UnitID)
 	case move(UnitID)
-	case attack(UnitID, UnitID)
+	case attack(UnitID, UnitID, Bool)
 	case reflag
 	case shop
 	case build

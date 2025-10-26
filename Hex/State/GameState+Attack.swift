@@ -28,6 +28,10 @@ extension GameState {
 		units[src].stats.ammo.decrement()
 		units[dst].stats.hp.decrement(by: dmg)
 		units[dst].stats.ent.decrement()
+
+		if dmg > 0 {
+			events.append(.attack(units[src].id, units[dst].id, units[dst].stats.hp == 0))
+		}
 	}
 
 	mutating func attack(src: Ref<Unit>, dst: Ref<Unit>) {
@@ -52,7 +56,6 @@ extension GameState {
 		}
 
 		selectUnit(units[src].hasActions && units[src].stats.hp > 0 ? units[src].id : .none)
-		events.append(.attack(units[src].id, units[dst].id))
 
 		if units[src].stats.hp == 0 {
 			units.fastRemove(at: src.index)
