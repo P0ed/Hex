@@ -53,6 +53,19 @@ extension SKNode {
 	func update(_ unit: Unit) {
 		unitHP?.text = "\(unit.stats.hp)"
 	}
+
+	func showSight() {
+		let sight = SKSpriteNode(imageNamed: "Sight")
+		sight.texture?.filteringMode = .nearest
+		sight.setScale(0.1)
+		addChild(sight)
+
+		sight.run(.sequence([
+			.scale(to: 1.0, duration: 0.22),
+			.wait(forDuration: 0.68),
+			.removeFromParent()
+		]))
+	}
 }
 
 @MainActor

@@ -85,7 +85,7 @@ extension GameState {
 			let unit = units[unitRef]
 			selectedUnit = unit.id
 			cursor = unit.position
-			selectable = unit.canMove ? moves(for: unit) : .none
+			selectable = unit.canMove ? moves(for: unit) : [unit.position]
 		} else {
 			selectedUnit = .none
 			selectable = .none
@@ -111,23 +111,22 @@ extension GameState {
 	}
 
 	mutating func move(unit: UnitID, to position: Hex) {
-		let unitRef = units[unit]
-		var unit = units[unitRef]
+		let ref = units[unit]
 
-		guard unit.player == player,
-			  unit.canMove, moves(for: unit).contains(position)
+		guard units[ref].player == player,
+			  units[ref].canMove, moves(for: units[ref]).contains(position)
 		else { return }
 
-		unit.position = position
-		unit.stats.mp = 0
-		unit.stats.ent = 0
-		if unit.stats.unitType == .art { unit.stats.ap = 0 }
+		let distance = units[ref].position.distance(to: position)
+		units[ref].position = position
+		units[ref].stats.mp = 0
+		units[ref].stats.ent = 0
+		if units[ref].stats.unitType == .art { units[ref].stats.ap = 0 }
 
-		units[unitRef] = unit
-		let vision = vision(for: unit)
+		let vision = vision(for: units[ref])
 		players[player].visible.formUnion(vision)
-		selectUnit(unit.hasActions ? unit.id : .none)
-		events.append(.move(unit.id))
+		selectUnit(units[ref].hasActions ? units[ref].id : .none)
+		events.append(.move(units[ref].id, distance))
 	}
 
 	private var tooFarX: Bool { abs(camera.pt.x - cursor.pt.x) > 9.0 * scale }

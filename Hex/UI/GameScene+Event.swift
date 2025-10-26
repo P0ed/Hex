@@ -6,7 +6,7 @@ extension GameScene {
 		switch event {
 		case let .spawn(uid): processSpawn(uid: uid)
 		case let .update(uid): processUpdate(uid: uid)
-		case let .move(uid): await processMove(uid: uid)
+		case let .move(uid, distance): await processMove(uid: uid, distance: distance)
 		case let .attack(src, dst, kill): await processAttack(src: src, dst: dst, kill: kill)
 		case .reflag: updateFlags()
 		case .shop: processShop()
@@ -37,19 +37,23 @@ private extension GameScene {
 		}
 	}
 
-	func processMove(uid: UnitID) async {
+	func processMove(uid: UnitID, distance: Int) async {
 		let unit = state.units[state.units[uid]]
 		nodes?.sounds.mov.play()
-		await nodes?.units[uid]?.run(.move(to: unit.position.point, duration: 0.2))
+		await nodes?.units[uid]?.run(.move(
+			to: unit.position.point,
+			duration: CGFloat(distance) * 0.1
+		))
 	}
 
 	func processAttack(src: UnitID, dst: UnitID, kill: Bool) async {
-		nodes?.sounds.boomS.play()
-		await nodes?.units[src]?.run(.hit())
-		if kill { nodes?.sounds.boomL.play() } else { nodes?.sounds.boomM.play() }
-		await nodes?.units[dst]?.run(.hit())
+		nodes?.units[src]?.showSight()
+		await run(.wait(forDuration: 0.47))
+		nodes?.units[dst]?.showSight()
+		await run(.wait(forDuration: 0.47))
 
-		processUpdate(uid: src)
+		if kill { nodes?.sounds.boomL.play() } else { nodes?.sounds.boomM.play() }
+
 		processUpdate(uid: dst)
 	}
 
@@ -86,8 +90,8 @@ private extension GameScene {
 					icon: template.type.imageName,
 					text: template.type.imageName,
 					description: "0" + " / \(state.prestige)",
-					action: { [hex = state.cursor] state in
-						state.build(template, at: hex)
+					action: { state in
+						state.build(template, by: engineerRef)
 					}
 				)
 			}

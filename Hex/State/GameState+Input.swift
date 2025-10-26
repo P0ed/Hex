@@ -68,6 +68,8 @@ private extension GameState {
 				move(unit: unit.id, to: cursor)
 			} else if buildings[cursor]?.player == player {
 				events.append(.shop)
+			} else {
+				selectUnit(.none)
 			}
 		} else {
 			if let ref = units[cursor], units[ref].player == player {

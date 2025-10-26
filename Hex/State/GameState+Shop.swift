@@ -26,12 +26,18 @@ extension GameState {
 		events.append(.spawn(unit.id))
 	}
 
-	mutating func build(_ template: Building, at position: Hex) {
-		guard buildings[position] == nil else { return }
+	mutating func build(_ template: Building, by engineer: Ref<Unit>) {
+		guard units[engineer].stats.unitType == .engineer,
+			  units[engineer].untouched,
+			  buildings[units[engineer].position] == nil
+		else { return }
 
-		let building = modifying(template) { b in b.position = position }
+		let building = modifying(template) { b in b.position = units[engineer].position }
 		buildings.append(building)
 		events.append(.reflag)
+		units[engineer].stats.mp = 0
+		units[engineer].stats.ap = 0
+		selectUnit(.none)
 	}
 }
 
