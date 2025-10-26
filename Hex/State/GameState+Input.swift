@@ -23,10 +23,10 @@ extension GameState {
 
 		switch input {
 		case .direction(let direction): moveCursor(direction)
-		case .menu: endTurn()
+		case .menu: events.append(.menu)
 		case .action(.a): primaryAction()
 		case .action(.b): secondaryAction()
-		case .action(.c): events.append(.menu)
+		case .action(.c): break
 		case .action(.d): break
 		case .target(.prev): prevUnit()
 		case .target(.next): nextUnit()

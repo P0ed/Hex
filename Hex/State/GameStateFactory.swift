@@ -8,7 +8,7 @@ extension GameState {
 			map: Map(radius: radius, seed: seed),
 			players: [
 				Player(id: .deu),
-				Player(id: .usa, ai: true),
+				Player(id: .usa, ai: false),
 			],
 			buildings: [
 				Building(player: .deu, position: Hex(-1, -3), type: .city),

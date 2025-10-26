@@ -95,22 +95,20 @@ private extension GameScene {
 	}
 
 	func processMenu() {
-		if state.selectedUnit != nil {
-			show(MenuState(layout: .compact, items: state.unitMenuActions))
-		} else {
-			show(MenuState(
-				layout: .compact,
-				items: [
-					.init(icon: "End", text: "End turn", action: { state in
-						state.endTurn()
-					}),
-					.init(
-						icon: "Restart", text: "Restart",
-						action: { [weak self] _ in self?.restartGame() }
-					)
-				]
-			))
-		}
+		guard case .none = menuState else { return show(.none) }
+
+		show(MenuState(
+			layout: .compact,
+			items: [
+				.init(icon: "End", text: "End turn", action: { state in
+					state.endTurn()
+				}),
+				.init(
+					icon: "Restart", text: "Restart",
+					action: { [weak self] _ in self?.restartGame() }
+				)
+			]
+		))
 	}
 
 	func processGameOver() {

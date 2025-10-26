@@ -31,6 +31,7 @@ extension MenuState {
 		case .action(.a): action = .apply(items[cursor].action)
 		case .action(.b): action = .close
 		case .index(let idx): cursor = idx
+		case .menu: action = .close
 		default: break
 		}
 	}

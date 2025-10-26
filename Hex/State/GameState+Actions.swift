@@ -143,20 +143,4 @@ extension GameState {
 			camera = camera.neighbor((camera.pt.y - cursor.pt.y) > 0.0 ? .down : .up)
 		}
 	}
-
-	var unitMenuActions: [MenuItem] {
-		if let selectedUnit {
-			[
-				.init(icon: "Reinforce", text: "Reinforce", action: { state in
-					state.units[state.units[selectedUnit]].reinforce()
-					state.events.append(.update(selectedUnit))
-				}),
-				.init(icon: "Refuel", text: "Resupply", action: { state in
-					state.units[state.units[selectedUnit]].resupply()
-				}),
-			]
-		} else {
-			[]
-		}
-	}
 }

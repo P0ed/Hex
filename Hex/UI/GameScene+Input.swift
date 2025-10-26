@@ -3,13 +3,16 @@ import SpriteKit
 extension GameScene {
 
 	override func keyDown(with event: NSEvent) {
+		let flags = event.modifierFlags
+
 		switch event.keyCode {
 		case 36, 49: apply(.action(.a))
-		case 51, 53: apply(.action(.b))
+		case 51: apply(.action(.b))
+		case 53: apply(.menu)
 		default: break
 		}
 		switch event.specialKey {
-		case .tab: apply(.menu)
+		case .tab: apply(.target(flags.contains(.shift) ? .prev : .next))
 		case .leftArrow: apply(.direction(.left))
 		case .rightArrow: apply(.direction(.right))
 		case .downArrow: apply(.direction(.down))
@@ -21,13 +24,13 @@ extension GameScene {
 		case "]": apply(.target(.next))
 		case "a": apply(.action(.a))
 		case "s": apply(.action(.b))
-		case "d": apply(.action(.c))
-		case "f": apply(.action(.d))
 		case "z": apply(.scale(1.0))
 		case "x": apply(.scale(2.0))
 		case "c": apply(.scale(4.0))
 		case "v": nodes?.grid.isHidden.toggle()
-		case "q" where event.modifierFlags.contains(.command): exit(0)
+
+		case "f" where flags.contains(.command): view?.window?.toggleFullScreen(nil)
+		case "q" where flags.contains(.command): exit(0)
 		default: break
 		}
 	}

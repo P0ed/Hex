@@ -52,10 +52,6 @@ extension SKNode {
 
 	func update(_ unit: Unit) {
 		unitHP?.text = "\(unit.stats.hp)"
-
-		if unit.stats.hp == 0 {
-
-		}
 	}
 }
 
