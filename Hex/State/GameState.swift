@@ -40,7 +40,6 @@ enum Team: UInt8, Hashable, Codable { case axis, allies, soviet, neutral }
 enum Event: Hashable, Codable {
 	case spawn(UnitID)
 	case update(UnitID)
-	case kill(UnitID)
 	case move(UnitID)
 	case attack(UnitID, UnitID)
 	case reflag
@@ -56,37 +55,7 @@ struct D20: Hashable, Codable {
 
 extension GameState {
 
-	var visible: Set<Hex> { self[player]?.visible ?? [] }
-
-	subscript(_ pid: PlayerID) -> Player? {
-		get {
-			players.first(where: { p in p.id == pid })
-		}
-		set {
-			if let idx = players.firstIndex(where: { p in p.id == pid }) {
-				if let newValue {
-					players[idx] = newValue
-				} else {
-					players.remove(at: idx)
-				}
-			}
-		}
-	}
-
-	subscript(_ uid: UnitID) -> Unit? {
-		get {
-			units.first(where: { u in u.id == uid })
-		}
-		set {
-			if let idx = units.firstIndex(where: { u in u.id == uid }) {
-				if let newValue {
-					units[idx] = newValue
-				} else {
-					units.fastRemove(at: idx)
-				}
-			}
-		}
-	}
+	var visible: Set<Hex> { players[player].visible }
 
 	var playerUnits: LazyFilterSequence<[Unit]> {
 		units.lazy.filter { [player] u in u.player == player }
@@ -104,11 +73,33 @@ extension GameState {
 }
 
 extension [Unit] {
-	subscript(_ hex: Hex) -> Unit? { first { u in u.position == hex } }
+
+	subscript(_ hex: Hex) -> Ref<Unit>? {
+		firstIndex { u in u.position == hex }.map(Ref.init)
+	}
+
+	subscript(_ uid: UnitID) -> Ref<Unit> {
+		Ref(index: firstIndex { u in u.id == uid }!)
+	}
 }
 
 extension [Building] {
-	subscript(_ hex: Hex) -> Building? { first { u in u.position == hex } }
+
+	subscript(_ hex: Hex) -> Building? {
+		first { u in u.position == hex }
+	}
+}
+
+extension [Player] {
+
+	subscript(_ pid: PlayerID) -> Player {
+		get {
+			first { p in p.id == pid }!
+		}
+		set {
+			self[firstIndex { p in p.id == pid }!] = newValue
+		}
+	}
 }
 
 extension D20: RandomNumberGenerator {

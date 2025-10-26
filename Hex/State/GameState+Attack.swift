@@ -1,0 +1,63 @@
+extension GameState {
+
+	func targets(unit: Unit) -> [Unit] {
+		!unit.canAttack ? [] : enemyUnits.filter { u in
+			visible.contains(u.position) && unit.canHit(unit: u)
+		}
+	}
+
+	func artSupport(for defender: Ref<Unit>, attacker: Ref<Unit>) -> Ref<Unit>? {
+		units[attacker].stats.unitType == .art
+		? nil
+		: units[defender].position.neighbors.firstMap { hx in
+			units[hx].flatMap { ref in
+				let u = units[ref]
+
+				return u.player.team == units[defender].player.team
+				&& u.stats.unitType == .art
+				&& u.canHit(unit: units[attacker])
+				? ref : nil
+			}
+		}
+	}
+
+	mutating func fire(src: Ref<Unit>, dst: Ref<Unit>, defBonus: UInt8 = 0) {
+		let dif = Int(units[src].stats.atk) - Int(units[dst].stats.def + defBonus)
+		let dmg = dif > 0 ? units[src].stats.atk : units[src].stats.atk / 2
+
+		units[src].stats.ammo.decrement()
+		units[dst].stats.hp.decrement(by: dmg)
+		units[dst].stats.ent.decrement()
+	}
+
+	mutating func attack(src: Ref<Unit>, dst: Ref<Unit>) {
+		guard units[src].player == player,
+			  units[src].player.team != units[dst].player.team,
+			  units[src].canAttack, units[src].canHit(unit: units[dst])
+		else { return }
+
+		if let art = artSupport(for: dst, attacker: src) {
+			fire(src: art, dst: src)
+		}
+		if units[src].stats.hp > 0 {
+			let defBonus = units[dst].stats.ent + map[units[dst].position].defBonus
+			fire(src: src, dst: dst, defBonus: defBonus)
+			units[src].stats.ap.decrement()
+		}
+		if units[dst].stats.hp > 0,
+		   units[dst].canHit(unit: units[src]),
+		   units[src].stats.unitType != .art {
+
+			fire(src: dst, dst: src)
+		}
+
+		selectUnit(units[src].hasActions && units[src].stats.hp > 0 ? units[src].id : .none)
+		events.append(.attack(units[src].id, units[dst].id))
+
+		if units[src].stats.hp == 0 {
+			units.fastRemove(at: src.index)
+		} else if units[dst].stats.hp == 0 {
+			units.fastRemove(at: dst.index)
+		}
+	}
+}

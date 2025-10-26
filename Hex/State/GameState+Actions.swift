@@ -1,8 +1,8 @@
 extension GameState {
 
 	var prestige: UInt16 {
-		get { self[player]?.prestige ?? 0 }
-		set { self[player]?.prestige = newValue }
+		get { players[player].prestige }
+		set { players[player].prestige = newValue }
 	}
 
 	var income: UInt16 {
@@ -11,22 +11,9 @@ extension GameState {
 		})
 	}
 
-	func moves(for unit: Unit) -> Set<Hex> {
-		!unit.canMove ? [] : .make { hxs in
-			var front = [(unit.position, unit.stats.mov)]
-			repeat {
-				front = front.flatMap { fx, mp in
-					fx.circle(1).compactMap { hx in
-						let moveCost = map[hx].moveCost(unit.stats)
-						return !hxs.contains(hx) && moveCost <= mp
-						? (hx, mp - moveCost)
-						: .none
-					}
-				}
-				hxs.formUnion(front.map(\.0))
-			} while !front.isEmpty
-		}
-		.subtracting(units.map(\.position))
+	mutating func initialize() {
+		players = players.mapInPlace { p in p.visible = vision(for: p.id) }
+		events = units.map { u in .spawn(u.id) }
 	}
 
 	func vision(for unit: Unit) -> Set<Hex> {
@@ -45,11 +32,6 @@ extension GameState {
 		.union(buildings.flatMap { building in
 			building.player == player ? building.position.circle(1) : []
 		})
-	}
-
-	mutating func initialize() {
-		players = players.mapInPlace { p in p.visible = vision(for: p.id) }
-		events = units.map { u in .spawn(u.id) }
 	}
 
 	mutating func endTurn() {
@@ -98,7 +80,9 @@ extension GameState {
 	}
 
 	mutating func selectUnit(_ uid: UnitID?) {
-		if let uid, let unit = self[uid] {
+		if let uid {
+			let unitRef = units[uid]
+			let unit = units[unitRef]
 			selectedUnit = unit.id
 			cursor = unit.position
 			selectable = unit.canMove ? moves(for: unit) : .none
@@ -108,63 +92,42 @@ extension GameState {
 		}
 	}
 
+	func moves(for unit: Unit) -> Set<Hex> {
+		!unit.canMove ? [] : .make { hxs in
+			var front = [(unit.position, unit.stats.mov)]
+			repeat {
+				front = front.flatMap { fx, mp in
+					fx.circle(1).compactMap { hx in
+						let moveCost = map[hx].moveCost(unit.stats)
+						return !hxs.contains(hx) && moveCost <= mp
+						? (hx, mp - moveCost)
+						: .none
+					}
+				}
+				hxs.formUnion(front.map(\.0))
+			} while !front.isEmpty
+		}
+		.subtracting(units.map(\.position))
+	}
+
 	mutating func move(unit: UnitID, to position: Hex) {
-		guard var unit = self[unit],
-			  unit.player == player,
+		let unitRef = units[unit]
+		var unit = units[unitRef]
+
+		guard unit.player == player,
 			  unit.canMove, moves(for: unit).contains(position)
 		else { return }
 
 		unit.position = position
 		unit.stats.mp = 0
+		unit.stats.ent = 0
 		if unit.stats.unitType == .art { unit.stats.ap = 0 }
 
-		self[unit.id] = unit
+		units[unitRef] = unit
 		let vision = vision(for: unit)
-		self[player]?.visible.formUnion(vision)
+		players[player].visible.formUnion(vision)
 		selectUnit(unit.hasActions ? unit.id : .none)
 		events.append(.move(unit.id))
-	}
-
-	func targets(unit: Unit) -> [Unit] {
-		!unit.canAttack ? [] : enemyUnits.filter { u in
-			visible.contains(u.position) && unit.canHit(unit: u)
-		}
-	}
-
-	mutating func damage(atk: UInt8, def: UInt8) -> UInt8 {
-		let dif = Int(atk) - Int(def)
-		
-		return dif > 0 ? atk : atk / 2
-	}
-
-	mutating func attack(src: UnitID, dst: UnitID) {
-		guard var src = self[src], var dst = self[dst],
-			  src.player == player,
-			  src.player.team != dst.player.team,
-			  src.canAttack, src.canHit(unit: dst)
-		else { return }
-
-		let terrainDef = map[dst.position].defBonus
-		let dmg = damage(atk: src.stats.atk, def: dst.stats.def + dst.stats.ent + terrainDef)
-		dst.stats.hp.decrement(by: dmg)
-		dst.stats.ent.decrement()
-		src.stats.ap.decrement()
-		src.stats.ammo.decrement()
-
-		if dst.stats.hp > 0, dst.canHit(unit: src), src.stats.unitType != .art {
-			let dmg = damage(atk: dst.stats.atk, def: src.stats.def)
-			src.stats.hp.decrement(by: dmg)
-			dst.stats.ammo.decrement()
-		}
-
-		self[src.id] = src.stats.hp == 0 ? .none : src
-		self[dst.id] = dst.stats.hp == 0 ? .none : dst
-
-		selectUnit(src.hasActions && src.stats.hp > 0 ? src.id : .none)
-		events.append(.attack(src.id, dst.id))
-
-		if src.stats.hp == 0 { events.append(.kill(src.id)) }
-		if dst.stats.hp == 0 { events.append(.kill(dst.id)) }
 	}
 
 	private var tooFarX: Bool { abs(camera.pt.x - cursor.pt.x) > 9.0 * scale }
@@ -185,11 +148,11 @@ extension GameState {
 		if let selectedUnit {
 			[
 				.init(icon: "Reinforce", text: "Reinforce", action: { state in
-					state[selectedUnit]?.reinforce()
+					state.units[state.units[selectedUnit]].reinforce()
 					state.events.append(.update(selectedUnit))
 				}),
 				.init(icon: "Refuel", text: "Resupply", action: { state in
-					state[selectedUnit]?.resupply()
+					state.units[state.units[selectedUnit]].resupply()
 				}),
 			]
 		} else {

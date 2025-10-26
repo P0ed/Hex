@@ -28,8 +28,8 @@ extension Unit {
 extension GameState {
 
 	var statusText: String {
-		if let selectedUnit, let unit = self[selectedUnit] {
-			unit.status
+		if let selectedUnit {
+			units[units[selectedUnit]].status
 		} else if let building = buildings[cursor] {
 			.makeStatus { add in
 				add("\(building.type)")

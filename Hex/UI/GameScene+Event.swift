@@ -6,7 +6,6 @@ extension GameScene {
 		switch event {
 		case let .spawn(uid): processSpawn(uid: uid)
 		case let .update(uid): processUpdate(uid: uid)
-		case let .kill(uid): processKill(uid: uid)
 		case let .move(uid): await processMove(uid: uid)
 		case let .attack(src, dst): await processAttack(src: src, dst: dst)
 		case .reflag: updateFlags()
@@ -21,26 +20,25 @@ extension GameScene {
 private extension GameScene {
 
 	func processSpawn(uid: UnitID) {
-		guard let unit = state[uid] else { return }
+		let unit = state.units[state.units[uid]]
 		let sprite = unit.sprite
 		sprite.isHidden = !state.visible.contains(unit.position)
 		addUnit(uid, node: sprite)
 	}
 
 	func processUpdate(uid: UnitID) {
-		guard let unit = state[uid], let sprite = nodes?.units[uid]
-		else { return processSpawn(uid: uid) }
+		guard let sprite = nodes?.units[uid] else { return }
 
-		sprite.update(unit)
-		sprite.isHidden = !state.visible.contains(unit.position)
-	}
-
-	func processKill(uid: UnitID) {
-		removeUnit(uid)
+		if let unit = state.units.first(where: { u in u.id == uid }) {
+			sprite.update(unit)
+			sprite.isHidden = !state.visible.contains(unit.position)
+		} else {
+			removeUnit(uid)
+		}
 	}
 
 	func processMove(uid: UnitID) async {
-		guard let unit = state[uid] else { return }
+		let unit = state.units[state.units[uid]]
 		nodes?.sounds.mov.play()
 		await nodes?.units[uid]?.run(.move(to: unit.position.point, duration: 0.2))
 	}
@@ -51,12 +49,8 @@ private extension GameScene {
 		nodes?.sounds.boomM.play()
 		await nodes?.units[dst]?.run(.hit())
 
-		if let srcUnit = state[src] {
-			nodes?.units[src]?.update(srcUnit)
-		}
-		if let dstUnit = state[dst] {
-			nodes?.units[dst]?.update(dstUnit)
-		}
+		processUpdate(uid: src)
+		processUpdate(uid: dst)
 	}
 
 	func processShop() {
@@ -81,8 +75,8 @@ private extension GameScene {
 	}
 
 	func processBuild() {
-		guard let engineer = state.units[state.cursor],
-			  engineer.stats.unitType == .engineer
+		guard let engineerRef = state.units[state.cursor],
+			  state.units[engineerRef].stats.unitType == .engineer
 		else { return }
 
 		show(MenuState(

@@ -1,11 +1,11 @@
 extension GameState {
 
 	mutating func runAI() {
-		let target = enemyBuildings.first?.position
+		guard let target = enemyBuildings.first?.position else { return }
 
 		if let nextAttack {
-			attack(src: nextAttack.0, dst: nextAttack.1)
-		} else if let target, let nextMove = nextMove(target: target) {
+			attack(src: units[nextAttack.0], dst: units[nextAttack.1])
+		} else if let nextMove = nextMove(target: target) {
 			move(unit: nextMove.0, to: nextMove.1)
 		} else {
 			endTurn()

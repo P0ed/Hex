@@ -15,7 +15,7 @@ enum Input {
 @MainActor
 extension GameState {
 
-	var isHuman: Bool { self[player]?.ai == false }
+	var isHuman: Bool { !players[player].ai }
 	var canHandleInput: Bool { isHuman && events.isEmpty }
 
 	mutating func apply(_ input: Input) {
@@ -53,10 +53,14 @@ private extension GameState {
 	}
 
 	mutating func primaryAction() {
-		if let selectedID = selectedUnit, let unit = self[selectedID] {
-			if let dst = units[cursor] {
+		if let selectedID = selectedUnit {
+			let unitRef = units[selectedID]
+			let unit = units[unitRef]
+
+			if let dstRef = units[cursor] {
+				let dst = units[dstRef]
 				if dst.player.team != unit.player.team {
-					attack(src: unit.id, dst: dst.id)
+					attack(src: unitRef, dst: dstRef)
 				} else if dst == unit, unit.stats.unitType == .engineer, unit.untouched {
 					events.append(.build)
 				} else {
@@ -68,8 +72,8 @@ private extension GameState {
 				events.append(.shop)
 			}
 		} else {
-			if let u = units[cursor], u.player == player {
-				selectUnit(u.id)
+			if let ref = units[cursor], units[ref].player == player {
+				selectUnit(units[ref].id)
 			} else if buildings[cursor]?.player == player {
 				events.append(.shop)
 			}

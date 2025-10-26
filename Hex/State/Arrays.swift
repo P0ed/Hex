@@ -1,15 +1,39 @@
 extension InlineArray {
 
-	func map(_ transform: (Element) -> Element) -> Self {
+	func mapInPlace(_ transform: (inout Element) -> Void) -> Self {
 		var arr = self
-		for i in self.indices { arr[i] = transform(arr[i]) }
+		for i in indices { transform(&arr[i]) }
 		return arr
 	}
 
-	func mapInPlace(_ transform: (inout Element) -> Void) -> Self {
+	func map(_ transform: (Element) -> Element) -> Self {
 		var arr = self
-		for i in self.indices { transform(&arr[i]) }
+		for i in indices { arr[i] = transform(arr[i]) }
 		return arr
+	}
+
+	func map<A>(_ transform: (Element) -> A) -> [A] {
+		var arr = [] as [A]
+		arr.reserveCapacity(count)
+		for i in indices { arr.append(transform(self[i])) }
+		return arr
+	}
+
+	func firstMap<A>(_ transform: (Element) -> A?) -> A? {
+		for i in indices {
+			if let some = transform(self[i]) { return some }
+		}
+		return nil
+	}
+}
+
+extension Sequence {
+
+	func firstMap<A>(_ transform: (Element) -> A?) -> A? {
+		for e in self {
+			if let some = transform(e) { return some }
+		}
+		return nil
 	}
 }
 
@@ -32,5 +56,12 @@ extension Array {
 		remove(at: last)
 	}
 
-//	func firstMap 
+	subscript(_ ref: Ref<Element>) -> Element {
+		get { self[ref.index] }
+		set { self[ref.index] = newValue }
+	}
+}
+
+struct Ref<Element> {
+	var index: Int
 }
