@@ -19,8 +19,6 @@ extension GameState {
 	var canHandleInput: Bool { isHuman && events.isEmpty }
 
 	mutating func apply(_ input: Input) {
-		guard canHandleInput else { return }
-
 		switch input {
 		case .direction(let direction): moveCursor(direction)
 		case .menu: events.append(.menu)

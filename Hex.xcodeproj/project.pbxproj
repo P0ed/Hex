@@ -124,6 +124,7 @@
 		5F2A33C12EA93AC3008A0A95 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				5F2A33C42EA93AC3008A0A95 /* GameScene.swift */,
 				5F2A33B92EA93AC3008A0A95 /* GameScene+Event.swift */,
 				5F2A33BA2EA93AC3008A0A95 /* GameScene+Input.swift */,
 				5F2A33BB2EA93AC3008A0A95 /* GameScene+Menu.swift */,
@@ -143,7 +144,6 @@
 				5F2A33B62EA93AC3008A0A95 /* State */,
 				5F2A33C12EA93AC3008A0A95 /* UI */,
 				5F2A33A72EA93AC3008A0A95 /* Sounds */,
-				5F2A33C42EA93AC3008A0A95 /* GameScene.swift */,
 				5F24DC322EA95FE50085FDDC /* main.swift */,
 				5F2A33C32EA93AC3008A0A95 /* Assets.xcassets */,
 				5F919D702EA95ADF0037A208 /* Info.plist */,

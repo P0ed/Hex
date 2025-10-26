@@ -33,8 +33,11 @@ final class GameScene: SKScene {
 	}
 
 	func apply(_ input: Input) {
-		if case .none = menuState { state.apply(input) }
-		else { menuState?.apply(input) }
+		if case .some = menuState {
+			menuState?.apply(input)
+		} else if state.canHandleInput {
+			state.apply(input)
+		}
 	}
 
 	func show(_ menu: MenuState?) {
