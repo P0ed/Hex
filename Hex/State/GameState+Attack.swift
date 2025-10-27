@@ -50,7 +50,7 @@ extension GameState {
 			fire(src: src, dst: dst, defBonus: defBonus)
 			units[src].stats.ap.decrement()
 		}
-		if units[dst].alive,
+		if units[dst].alive, units[src].alive,
 		   units[dst].canHit(unit: units[src]),
 		   units[src].stats.unitType != .art {
 

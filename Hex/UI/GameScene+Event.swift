@@ -35,9 +35,9 @@ private extension GameScene {
 	}
 
 	func processAttack(src: UnitID, dst: Unit) async {
-		nodes?.units[src]?.showSight()
+		nodes?.units[src]?.showSight(for: 1.0)
 		await run(.wait(forDuration: 0.47))
-		nodes?.units[dst.id]?.showSight()
+		nodes?.units[dst.id]?.showSight(for: 1.0 - 0.47)
 		await run(.wait(forDuration: 0.47))
 
 		if dst.alive {

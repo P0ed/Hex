@@ -54,15 +54,13 @@ extension SKNode {
 		unitHP?.text = "\(unit.stats.hp)"
 	}
 
-	func showSight() {
+	func showSight(for duration: TimeInterval) {
 		let sight = SKSpriteNode(imageNamed: "Sight")
 		sight.texture?.filteringMode = .nearest
-		sight.setScale(0.1)
 		addChild(sight)
 
 		sight.run(.sequence([
-			.scale(to: 1.0, duration: 0.22),
-			.wait(forDuration: 0.68),
+			.wait(forDuration: duration),
 			.removeFromParent()
 		]))
 	}

@@ -41,7 +41,7 @@ extension SKLabelNode {
 extension SKAudioNode {
 
 	func play() {
-		removeAllActions()
+		run(.stop())
 		run(.play())
 	}
 }
