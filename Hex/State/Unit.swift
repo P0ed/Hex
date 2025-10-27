@@ -90,6 +90,10 @@ extension Stats {
 		get { get(width: 3, offset: 48) }
 		set { set(newValue, width: 3, offset: 48) }
 	}
+
+	var stars: UInt8 {
+		modifying(4) { stars in stars.decrement(by: UInt8(exp.leadingZeroBitCount)) }
+	}
 }
 
 enum MoveType: UInt8, Hashable, Codable {
@@ -97,7 +101,7 @@ enum MoveType: UInt8, Hashable, Codable {
 }
 
 enum UnitType: UInt8, Hashable, Codable {
-	case inf, recon, tank, art, antiAir, air, engineer, building
+	case inf, recon, tank, art, antiAir, air, engineer, supply
 }
 
 extension Unit {
@@ -149,7 +153,7 @@ extension Unit {
 extension UInt8 {
 
 	@discardableResult
-	mutating func increment(by amount: UInt8, cap: UInt8) -> UInt8 {
+	mutating func increment(by amount: UInt8, cap: UInt8 = .max) -> UInt8 {
 		let old = self
 		self = UInt8(Swift.min(UInt16(cap), UInt16(self + amount)))
 		return self - old

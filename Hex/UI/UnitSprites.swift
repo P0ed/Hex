@@ -23,7 +23,7 @@ extension Unit {
 		label.name = "hp"
 		label.fontColor = .textDefault
 		label.text = "\(stats.hp)"
-		label.position = CGPoint(x: 0, y: -24.5)
+		label.position = CGPoint(x: 0, y: -26.0)
 		label.zPosition = 0.2
 		node.addChild(label)
 
@@ -39,7 +39,7 @@ extension Unit {
 		case .antiAir: "AA"
 		case .air: "Fighter"
 		case .engineer: "Crane"
-		case .building: "Mammut"
+		case .supply: "Truck"
 		}
 	}
 }

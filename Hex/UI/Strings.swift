@@ -5,6 +5,8 @@ extension Unit {
 			add("\(stats.unitType)")
 			add(stats.atk > 0 ? "ammo: \(stats.ammo)" : "")
 			add(stats.moveType != .leg ? "fuel: \(stats.fuel)" : "")
+			add("ent: \(stats.ent)")
+			add("exp: \(stats.starsString)")
 		}
 	}
 
@@ -18,10 +20,39 @@ extension Unit {
 		RNG: \(stats.rng)
 		
 		
-		
 		- - - - - - - -
 		Cost: \(cost)
 		"""
+	}
+}
+
+extension Stats {
+
+	var starsString: String {
+		switch stars {
+		case 4: "★★★★"
+		case 3: "★★★☆"
+		case 2: "★★☆☆"
+		case 1: "★☆☆☆"
+		default: "☆☆☆☆"
+		}
+	}
+}
+
+extension Building {
+
+	var description: String {
+		"\(type)\n\(cost)"
+	}
+
+	var cost: UInt16 {
+		switch type {
+		case .city: 1600
+		case .barracks: 300
+		case .factory: 500
+		case .airfield: 700
+		case .radar: 400
+		}
 	}
 }
 

@@ -18,8 +18,12 @@ extension SKTileGroup {
 	static let barracks = make(.barracks)
 	static let factory = make(.factory)
 
-	static let axis = make(.axisFlag)
-	static let allies = make(.alliesFlag)
+	static let ukr = make(.UKR)
+	static let usa = make(.USA)
+	static let rus = make(.RUS)
+	static let lnr = make(.LNR)
+	static let dnr = make(.DNR)
+	static let irn = make(.IRN)
 
 	static let grid = make(.grid)
 	static let fog = make(.fog)
@@ -54,6 +58,23 @@ extension Terrain {
 }
 
 @MainActor
+extension PlayerID {
+
+	var flag: SKTileGroup {
+		switch self {
+		case .dnr: .dnr
+		case .lnr: .lnr
+		case .irn: .irn
+		case .isr: .usa
+		case .rus: .rus
+		case .swe: .ukr
+		case .ukr: .ukr
+		case .usa: .usa
+		}
+	}
+}
+
+@MainActor
 extension SKTileSet {
 
 	static let cells = SKTileSet(
@@ -69,7 +90,7 @@ extension SKTileSet {
 		tileSetType: .hexagonalFlat
 	)
 	static let flags = SKTileSet(
-		tileGroups: [.axis, .allies],
+		tileGroups: [.ukr, .usa, .dnr, .lnr, .rus, .irn],
 		tileSetType: .hexagonalFlat
 	)
 }

@@ -30,10 +30,11 @@ extension SKLabelNode {
 
 	convenience init(size: Size, color: SKColor = .white) {
 		self.init()
-		fontName = "Menlo"
+		fontName = "Monaco"
 		fontSize = CGFloat(size.rawValue)
 		fontColor = color
 		setScale(0.5)
+		numberOfLines = 0
 	}
 }
 

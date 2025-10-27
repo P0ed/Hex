@@ -1,15 +1,24 @@
+@MainActor
 extension GameState {
 
 	mutating func runAI() {
 		guard let target = enemyBuildings.first?.position else { return }
 
-		if let nextAttack {
+		if let nextPurchase {
+			buy(nextPurchase.0, at: nextPurchase.1)
+		} else if let nextAttack {
 			attack(src: units[nextAttack.0], dst: units[nextAttack.1])
 		} else if let nextMove = nextMove(target: target) {
 			move(unit: nextMove.0, to: nextMove.1)
 		} else {
 			endTurn()
 		}
+	}
+
+	private var nextPurchase: (Unit, Hex)? {
+		prestige < 500 ? .none : playerBuildings
+			.first { b in b.type == .city && units[b.position] == nil }
+			.map { b in (unitTemplates[0], b.position) }
 	}
 
 	private var nextAttack: (UnitID, UnitID)? {

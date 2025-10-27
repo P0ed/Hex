@@ -8,6 +8,7 @@ extension GameState {
 			Unit(id: .next, player: player, position: .zero, stats: .shop >< .tank),
 			Unit(id: .next, player: player, position: .zero, stats: .shop >< .art),
 			Unit(id: .next, player: player, position: .zero, stats: .shop >< .builder),
+			Unit(id: .next, player: player, position: .zero, stats: .shop >< .truck),
 		]
 	}
 
@@ -20,8 +21,12 @@ extension GameState {
 
 	mutating func buy(_ template: Unit, at position: Hex) {
 		guard prestige >= template.cost, units[position] == nil else { return }
-		let unit = template.buy(at: position)
-		prestige -= template.cost
+
+		let unit = modifying(template) { u in
+			u.id = .make()
+			u.position = position
+		}
+		prestige -= unit.cost
 		units.append(unit)
 		events.append(.spawn(unit.id))
 	}
@@ -38,16 +43,5 @@ extension GameState {
 		units[engineer].stats.mp = 0
 		units[engineer].stats.ap = 0
 		selectUnit(.none)
-	}
-}
-
-@MainActor
-extension Unit {
-
-	func buy(at position: Hex) -> Unit {
-		modifying(self) { u in
-			u.id = .make()
-			u.position = position
-		}
 	}
 }

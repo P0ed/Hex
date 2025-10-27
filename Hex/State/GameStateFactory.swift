@@ -7,20 +7,21 @@ extension GameState {
 		.init(
 			map: Map(radius: radius, seed: seed),
 			players: [
-				Player(id: .deu),
-				Player(id: .usa, ai: false),
+				Player(id: .ukr),
+				Player(id: .usa, ai: true),
 			],
 			buildings: [
-				Building(player: .deu, position: Hex(-1, -3), type: .city),
+				Building(player: .ukr, position: Hex(-1, -3), type: .city),
 				Building(player: .usa, position: Hex(2, 4), type: .city),
 				Building(player: .usa, position: Hex(-2, 6), type: .city),
 			],
 			units: [
-				Unit(id: .make(), player: .deu, position: Hex(0, -3), stats: .base >< .builder),
-				Unit(id: .make(), player: .deu, position: Hex(-4, 0), stats: .base >< .inf),
-				Unit(id: .make(), player: .deu, position: Hex(0, -1), stats: .base >< .tank),
-				Unit(id: .make(), player: .deu, position: Hex(-4, 1), stats: .base >< .recon),
-				Unit(id: .make(), player: .deu, position: Hex(-1, -1), stats: .base >< .art),
+				Unit(id: .make(), player: .ukr, position: Hex(0, -3), stats: .base >< .builder),
+				Unit(id: .make(), player: .ukr, position: Hex(0, -4), stats: .base >< .truck),
+				Unit(id: .make(), player: .ukr, position: Hex(-4, 0), stats: .base >< .inf),
+				Unit(id: .make(), player: .ukr, position: Hex(0, -1), stats: .base >< .tank),
+				Unit(id: .make(), player: .ukr, position: Hex(-4, 1), stats: .base >< .recon),
+				Unit(id: .make(), player: .ukr, position: Hex(-1, -1), stats: .base >< .art),
 
 				Unit(id: .make(), player: .usa, position: Hex(0, 3), stats: .base >< .inf),
 				Unit(id: .make(), player: .usa, position: Hex(3, 1), stats: .base >< .inf),

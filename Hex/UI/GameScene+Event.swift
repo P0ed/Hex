@@ -89,7 +89,7 @@ private extension GameScene {
 				MenuItem(
 					icon: template.type.imageName,
 					text: template.type.imageName,
-					description: "0" + " / \(state.prestige)",
+					description: "\(template.description)" + " / \(state.prestige)",
 					action: { state in
 						state.build(template, by: engineerRef)
 					}

@@ -22,15 +22,19 @@ extension GameState {
 	}
 
 	mutating func fire(src: Ref<Unit>, dst: Ref<Unit>, defBonus: UInt8 = 0) {
-		let dif = Int(units[src].stats.atk) - Int(units[dst].stats.def + defBonus)
-		let dmg = dif > 0 ? units[src].stats.atk : units[src].stats.atk / 2
+		let atk = Int(units[src].stats.atk + units[src].stats.stars)
+		let def = Int(units[dst].stats.def + units[dst].stats.stars + defBonus)
 
-		units[src].stats.ammo.decrement()
-		units[dst].stats.hp.decrement(by: dmg)
+		let dmg = UInt8(atk - def > 0 ? atk : atk / 2)
+
+		let hpLeft = units[dst].stats.hp.decrement(by: dmg)
 		units[dst].stats.ent.decrement()
 
+		units[src].stats.ammo.decrement()
+		units[src].stats.exp.increment(by: hpLeft != 0 ? dmg : dmg + 4)
+
 		if dmg > 0 {
-			events.append(.attack(units[src].id, units[dst].id, units[dst].stats.hp == 0))
+			events.append(.attack(units[src].id, units[dst].id, hpLeft == 0))
 		}
 	}
 

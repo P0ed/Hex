@@ -95,7 +95,6 @@ extension GameScene.Nodes {
 		)
 		label.zPosition = 0.1
 		label.name = "label"
-		label.numberOfLines = 0
 		frame.addChild(label)
 	}
 

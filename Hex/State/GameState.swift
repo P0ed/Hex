@@ -6,7 +6,7 @@ struct GameState: Hashable, Codable {
 	var units: [Unit]
 	var d20: D20 = .init(seed: 0)
 
-	var player: PlayerID = .deu
+	var player: PlayerID = .ukr
 	var turn: UInt32 = 0
 
 	var cursor: Hex = .zero
@@ -31,7 +31,7 @@ enum BuildingType: UInt8, Hashable, Codable {
 struct Player: Hashable, Codable {
 	var id: PlayerID
 	var ai: Bool = false
-	var prestige: UInt16 = 0
+	var prestige: UInt16 = 1000
 	var visible: Set<Hex> = []
 }
 

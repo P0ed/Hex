@@ -10,19 +10,18 @@ struct UnitID: RawRepresentable, Hashable, Codable, ExpressibleByIntegerLiteral 
 	}
 }
 
-struct PlayerID: RawRepresentable, Hashable, Codable, ExpressibleByIntegerLiteral {
-	var rawValue: UInt8
+enum PlayerID: UInt8, Hashable, Codable {
+	case dnr, lnr, irn, isr, rus, swe, ukr, usa
+}
 
-	var team: Team { Team(rawValue: rawValue & 0b11) ?? .neutral }
+extension PlayerID {
 
-	init(rawValue: RawValue) {
-		self.rawValue = rawValue
+	var team: Team {
+		switch self {
+		case .swe, .ukr: .axis
+		case .isr, .usa: .allies
+		case .lnr, .dnr, .rus: .soviet
+		default: .neutral
+		}
 	}
-
-	init(integerLiteral value: IntegerLiteralType) {
-		self = PlayerID(rawValue: RawValue(value))
-	}
-
-	static var deu: Self { 0 }
-	static var usa: Self { 1 }
 }

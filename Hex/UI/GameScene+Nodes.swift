@@ -90,7 +90,7 @@ extension GameScene {
 					forColumn: x, row: y
 				)
 				flags.setTileGroup(
-					building.player == .deu ? .axis : .allies,
+					building.player.flag,
 					forColumn: x, row: y
 				)
 			}
@@ -175,7 +175,7 @@ extension GameScene {
 				forColumn: x, row: y
 			)
 			nodes?.flags.setTileGroup(
-				building.player == .deu ? .axis : .allies,
+				building.player.flag,
 				forColumn: x, row: y
 			)
 		}
@@ -184,4 +184,8 @@ extension GameScene {
 	func updateStatus() {
 		nodes?.status.text = menuState?.statusText ?? state.statusText
 	}
+}
+
+extension PlayerID {
+
 }
