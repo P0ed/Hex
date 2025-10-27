@@ -10,7 +10,12 @@ extension GameState {
 		let nextIdx = (idx + 1) % players.count
 		player = players[nextIdx].id
 		turn = nextIdx == 0 ? turn + 1 : turn
+
 		selectUnit(.none)
+
+		cursor = units.firstMap { u in u.player == player ? u.position : nil }
+		?? buildings.firstMap { b in b.player == player ? b.position : nil }
+		?? .zero
 
 		if nextIdx == 0 {
 			players = players.mapInPlace { p in p.visible = vision(for: p.id) }
