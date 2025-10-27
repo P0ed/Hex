@@ -28,6 +28,14 @@ extension Stats {
 		}
 	}
 
+	static var veteran: Self {
+		.make { stats in stats.exp = 0x10 }
+	}
+
+	static var elite: Self {
+		.make { stats in stats.exp = 0x20 }
+	}
+
 	static var builder: Self {
 		.make { stats in
 			stats.unitType = .engineer

@@ -109,6 +109,7 @@ extension Unit {
 	var hasActions: Bool { canMove || canAttack }
 	var canMove: Bool { stats.mp != 0 }
 	var canAttack: Bool { stats.ap != 0 && stats.ammo != 0 }
+	var alive: Bool { stats.hp > 0 }
 
 	func canHit(unit: Unit) -> Bool {
 		position.distance(to: unit.position) <= stats.rng

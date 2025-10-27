@@ -39,9 +39,8 @@ enum Team: UInt8, Hashable, Codable { case axis, allies, soviet, neutral }
 
 enum Event: Hashable, Codable {
 	case spawn(UnitID)
-	case update(UnitID)
 	case move(UnitID, Int)
-	case attack(UnitID, UnitID, Bool)
+	case attack(UnitID, Unit)
 	case reflag
 	case shop
 	case build

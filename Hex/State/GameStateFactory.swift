@@ -19,8 +19,8 @@ extension GameState {
 				Unit(id: .make(), player: .ukr, position: Hex(0, -3), stats: .base >< .builder),
 				Unit(id: .make(), player: .ukr, position: Hex(0, -4), stats: .base >< .truck),
 				Unit(id: .make(), player: .ukr, position: Hex(-4, 0), stats: .base >< .inf),
-				Unit(id: .make(), player: .ukr, position: Hex(0, -1), stats: .base >< .tank),
-				Unit(id: .make(), player: .ukr, position: Hex(-4, 1), stats: .base >< .recon),
+				Unit(id: .make(), player: .ukr, position: Hex(0, -1), stats: .base >< .tank >< .veteran),
+				Unit(id: .make(), player: .ukr, position: Hex(-4, 1), stats: .base >< .recon >< .elite),
 				Unit(id: .make(), player: .ukr, position: Hex(-1, -1), stats: .base >< .art),
 
 				Unit(id: .make(), player: .usa, position: Hex(0, 3), stats: .base >< .inf),

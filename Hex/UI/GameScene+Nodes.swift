@@ -119,7 +119,8 @@ extension GameScene {
 	}
 
 	private func addCursor() -> SKNode {
-		let cursor = SKShapeNode(hex: .zero, base: .baseCursor, line: .lineCursor)
+		let cursor = SKShapeNode(hex: .zero, base: .clear, line: .lineCursor)
+		cursor.lineWidth = 1.0
 		cursor.zPosition = 3.0
 		addChild(cursor)
 		return cursor

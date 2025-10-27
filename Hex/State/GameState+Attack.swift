@@ -33,9 +33,7 @@ extension GameState {
 		units[src].stats.ammo.decrement()
 		units[src].stats.exp.increment(by: hpLeft != 0 ? dmg : dmg + 4)
 
-		if dmg > 0 {
-			events.append(.attack(units[src].id, units[dst].id, hpLeft == 0))
-		}
+		events.append(.attack(units[src].id, units[dst]))
 	}
 
 	mutating func attack(src: Ref<Unit>, dst: Ref<Unit>) {
@@ -47,23 +45,23 @@ extension GameState {
 		if let art = artSupport(for: dst, attacker: src) {
 			fire(src: art, dst: src)
 		}
-		if units[src].stats.hp > 0 {
+		if units[src].alive {
 			let defBonus = units[dst].stats.ent + map[units[dst].position].defBonus
 			fire(src: src, dst: dst, defBonus: defBonus)
 			units[src].stats.ap.decrement()
 		}
-		if units[dst].stats.hp > 0,
+		if units[dst].alive,
 		   units[dst].canHit(unit: units[src]),
 		   units[src].stats.unitType != .art {
 
 			fire(src: dst, dst: src)
 		}
 
-		selectUnit(units[src].hasActions && units[src].stats.hp > 0 ? units[src].id : .none)
+		selectUnit(units[src].hasActions && units[src].alive ? units[src].id : .none)
 
-		if units[src].stats.hp == 0 {
+		if !units[src].alive {
 			units.fastRemove(at: src.index)
-		} else if units[dst].stats.hp == 0 {
+		} else if !units[dst].alive {
 			units.fastRemove(at: dst.index)
 		}
 	}

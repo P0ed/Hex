@@ -11,7 +11,12 @@ protocol Monoid {
 	mutating func combine(_ other: Self)
 }
 
-infix operator ><
+precedencegroup MonoidCompositionPrecedence {
+	associativity: left
+	higherThan: BitwiseShiftPrecedence
+}
+
+infix operator >< : MonoidCompositionPrecedence
 
 extension Monoid {
 
