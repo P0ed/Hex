@@ -21,6 +21,7 @@ final class GameScene: SKScene {
 
 		nodes = addNodes()
 		nodes?.layout(size: size)
+		updateBuildings()
 
 		state.events = state.units.map { u in .spawn(u.id) }
 

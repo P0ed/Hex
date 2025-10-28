@@ -71,6 +71,7 @@ enum Event: Hashable, Codable {
 	case move(UnitID, Int)
 	case attack(UnitID, Unit)
 	case reflag
+	case nextDay
 	case shop
 	case build
 	case menu

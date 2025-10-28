@@ -83,17 +83,6 @@ extension GameScene {
 			let tileGroup = state.map[hex].tileGroup
 			terrain.setTileGroup(tileGroup, forColumn: x, row: y)
 			grid.setTileGroup(.grid, forColumn: x, row: y)
-
-			if let building = state.buildings[hex] {
-				buildings.setTileGroup(
-					.city,
-					forColumn: x, row: y
-				)
-				flags.setTileGroup(
-					building.country.flag,
-					forColumn: x, row: y
-				)
-			}
 		}
 
 		return MapNodes(
@@ -167,18 +156,24 @@ extension GameScene {
 		return fog
 	}
 
-	func updateFlags() {
-		state.buildings.forEach { building in
-			let (x, y) = state.map.converting(building.position)
+	func updateBuildings() {
+		state.buildings.forEach { b in
+			let (x, y) = state.map.converting(b.position)
 
 			nodes?.buildings.setTileGroup(
-				building.type.tile,
+				b.type.tile,
 				forColumn: x, row: y
 			)
 			nodes?.flags.setTileGroup(
-				building.country.flag,
+				b.country.flag,
 				forColumn: x, row: y
 			)
+		}
+	}
+
+	func updateUnits() {
+		state.units.forEach { u in
+			nodes?.units[u.id]?.update(u)
 		}
 	}
 

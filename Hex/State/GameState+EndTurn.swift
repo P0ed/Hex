@@ -26,6 +26,7 @@ extension GameState {
 	private mutating func startNextDay() {
 		players = players.mapInPlace(endTurn)
 		units = units.mapInPlace(endTurn)
+		events.append(.nextDay)
 	}
 
 	private func income(for player: Player) -> UInt16 {
