@@ -1,19 +1,14 @@
 extension GameState {
 
 	var prestige: UInt16 {
-		get { players[player].prestige }
-		set { players[player].prestige = newValue }
+		get { players[country].prestige }
+		set { players[country].prestige = newValue }
 	}
 
 	var income: UInt16 {
 		min(.max - prestige, buildings.reduce(into: 0) { r, c in
-			r += c.player == player ? 48 : 0
+			r += c.country == country ? 48 : 0
 		})
-	}
-
-	mutating func initialize() {
-		players = players.mapInPlace { p in p.visible = vision(for: p.id) }
-		events = units.map { u in .spawn(u.id) }
 	}
 
 	func vision(for unit: Unit) -> Set<Hex> {
@@ -25,12 +20,12 @@ extension GameState {
 		return Set(unit.position.circle(range))
 	}
 
-	func vision(for player: PlayerID) -> Set<Hex> {
+	func vision(for player: Country) -> Set<Hex> {
 		units.reduce(into: [] as Set<Hex>) { v, u in
-			if u.player == player { v.formUnion(vision(for: u)) }
+			if u.country == player { v.formUnion(vision(for: u)) }
 		}
 		.union(buildings.flatMap { building in
-			building.player == player ? building.position.circle(1) : []
+			building.country == player ? building.position.circle(1) : []
 		})
 	}
 
@@ -68,7 +63,7 @@ extension GameState {
 	mutating func move(unit: UnitID, to position: Hex) {
 		let ref = units[unit]
 
-		guard units[ref].player == player,
+		guard units[ref].country == country,
 			  units[ref].canMove, moves(for: units[ref]).contains(position)
 		else { return }
 
@@ -79,7 +74,7 @@ extension GameState {
 		if units[ref].stats.unitType == .art { units[ref].stats.ap = 0 }
 
 		let vision = vision(for: units[ref])
-		players[player].visible.formUnion(vision)
+		players[country].visible.formUnion(vision)
 		selectUnit(units[ref].hasActions ? units[ref].id : .none)
 		events.append(.move(units[ref].id, distance))
 	}

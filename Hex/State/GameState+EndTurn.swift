@@ -1,24 +1,20 @@
 extension GameState {
 
 	mutating func endTurn() {
-		guard let idx = players.firstIndex(where: { p in p.id == player })
-		else { return }
-
-		players[idx].prestige += income
+		players[playerIndex].prestige += income
 		captureCities()
 
-		let nextIdx = (idx + 1) % players.count
-		player = players[nextIdx].id
-		turn = nextIdx == 0 ? turn + 1 : turn
+		repeat { turn += 1 } while !player.alive
 
 		selectUnit(.none)
 
-		cursor = units.firstMap { u in u.player == player ? u.position : nil }
-		?? buildings.firstMap { b in b.player == player ? b.position : nil }
+		cursor = units.firstMap { u in u.country == country ? u.position : nil }
+		?? buildings.firstMap { b in b.country == country ? b.position : nil }
 		?? .zero
+		camera = cursor
 
-		if nextIdx == 0 {
-			players = players.mapInPlace { p in p.visible = vision(for: p.id) }
+		if playerIndex == 0 {
+			players = players.mapInPlace { p in p.visible = vision(for: p.country) }
 			units = units.mapInPlace { u in u.nextTurn() }
 		}
 	}
@@ -28,8 +24,8 @@ extension GameState {
 
 			let idx = buildings.firstIndex { b in b.position == u.position }
 
-			if let idx, buildings[idx].player.team != u.player.team {
-				buildings[idx].player = u.player
+			if let idx, buildings[idx].country.team != u.country.team {
+				buildings[idx].country = u.country
 				reflag = true
 			}
 		}
@@ -40,13 +36,14 @@ extension GameState {
 	}
 
 	private mutating func eliminatePlayers() {
-		players.removeAll { player in
-			!buildings.contains { building in
-				building.type == .city && building.player == player.id
+		players = players.mapInPlace { player in
+			player.alive = !buildings.contains { building in
+				building.type == .city && building.country == player.country
 			}
 		}
-		if Set(players.map(\.id.team)).count == 1 {
-			events.append(.gameOver)
-		}
+		let aliveTeams = Set(players.compactMap { p in
+			p.alive ? p.country.team : nil
+		})
+		if aliveTeams.count == 1 { events.append(.gameOver) }
 	}
 }

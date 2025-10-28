@@ -3,19 +3,19 @@ extension GameState {
 
 	var unitTemplates: [Unit] {
 		[
-			Unit(id: .next, player: player, position: .zero, stats: .shop >< .inf),
-			Unit(id: .next, player: player, position: .zero, stats: .shop >< .recon),
-			Unit(id: .next, player: player, position: .zero, stats: .shop >< .tank),
-			Unit(id: .next, player: player, position: .zero, stats: .shop >< .art),
-			Unit(id: .next, player: player, position: .zero, stats: .shop >< .builder),
-			Unit(id: .next, player: player, position: .zero, stats: .shop >< .truck),
+			Unit(id: .next, country: country, position: .zero, stats: .shop >< .inf),
+			Unit(id: .next, country: country, position: .zero, stats: .shop >< .recon),
+			Unit(id: .next, country: country, position: .zero, stats: .shop >< .tank),
+			Unit(id: .next, country: country, position: .zero, stats: .shop >< .art),
+			Unit(id: .next, country: country, position: .zero, stats: .shop >< .builder),
+			Unit(id: .next, country: country, position: .zero, stats: .shop >< .truck),
 		]
 	}
 
 	var buildingTemplates: [Building] {
 		[
-			Building(player: player, position: .zero, type: .barracks),
-			Building(player: player, position: .zero, type: .factory),
+			Building(country: country, position: .zero, type: .barracks),
+			Building(country: country, position: .zero, type: .factory),
 		]
 	}
 

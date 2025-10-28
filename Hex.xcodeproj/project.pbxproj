@@ -21,7 +21,6 @@
 		5F919D5F2EA9596E0037A208 /* UnitFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33B52EA93AC3008A0A95 /* UnitFactory.swift */; };
 		5F919D602EA9596E0037A208 /* GameState+AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33AB2EA93AC3008A0A95 /* GameState+AI.swift */; };
 		5F919D612EA9596E0037A208 /* Arrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33A82EA93AC3008A0A95 /* Arrays.swift */; };
-		5F919D622EA9596E0037A208 /* Identifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33B02EA93AC3008A0A95 /* Identifiers.swift */; };
 		5F919D632EA9596E0037A208 /* Monoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33B32EA93AC3008A0A95 /* Monoid.swift */; };
 		5F919D642EA9596E0037A208 /* MenuState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33B22EA93AC3008A0A95 /* MenuState.swift */; };
 		5F919D652EA9596E0037A208 /* GameStateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33AE2EA93AC3008A0A95 /* GameStateFactory.swift */; };
@@ -54,7 +53,6 @@
 		5F2A33AD2EA93AC3008A0A95 /* GameState+Shop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+Shop.swift"; sourceTree = "<group>"; };
 		5F2A33AE2EA93AC3008A0A95 /* GameStateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateFactory.swift; sourceTree = "<group>"; };
 		5F2A33AF2EA93AC3008A0A95 /* Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hex.swift; sourceTree = "<group>"; };
-		5F2A33B02EA93AC3008A0A95 /* Identifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiers.swift; sourceTree = "<group>"; };
 		5F2A33B12EA93AC3008A0A95 /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		5F2A33B22EA93AC3008A0A95 /* MenuState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuState.swift; sourceTree = "<group>"; };
 		5F2A33B32EA93AC3008A0A95 /* Monoid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Monoid.swift; sourceTree = "<group>"; };
@@ -114,7 +112,6 @@
 				5F2A33AD2EA93AC3008A0A95 /* GameState+Shop.swift */,
 				5F2A33AE2EA93AC3008A0A95 /* GameStateFactory.swift */,
 				5F2A33AF2EA93AC3008A0A95 /* Hex.swift */,
-				5F2A33B02EA93AC3008A0A95 /* Identifiers.swift */,
 				5F2A33B12EA93AC3008A0A95 /* Map.swift */,
 				5F2A33B22EA93AC3008A0A95 /* MenuState.swift */,
 				5F2A33B32EA93AC3008A0A95 /* Monoid.swift */,
@@ -252,7 +249,6 @@
 				5F919D5F2EA9596E0037A208 /* UnitFactory.swift in Sources */,
 				5F919D602EA9596E0037A208 /* GameState+AI.swift in Sources */,
 				5F919D612EA9596E0037A208 /* Arrays.swift in Sources */,
-				5F919D622EA9596E0037A208 /* Identifiers.swift in Sources */,
 				5F919D632EA9596E0037A208 /* Monoid.swift in Sources */,
 				5FCABBCA2EAA787D008EE894 /* Strings.swift in Sources */,
 				5F919D642EA9596E0037A208 /* MenuState.swift in Sources */,

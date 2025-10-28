@@ -51,7 +51,7 @@ private extension GameScene {
 
 	func processShop() {
 		guard let building = state.buildings[state.cursor],
-			  building.player == state.player,
+			  building.country == state.country,
 			  state.units[state.cursor] == nil
 		else { return }
 

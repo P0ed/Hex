@@ -64,7 +64,7 @@ extension GameState {
 		} else if let building = buildings[cursor] {
 			.makeStatus { add in
 				add("\(building.type)")
-				add("controller: \(building.player.team)")
+				add("controller: \(building.country.team)")
 			}
 		} else {
 			"\(map[cursor])"

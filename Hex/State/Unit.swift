@@ -1,8 +1,27 @@
 struct Unit: Hashable, Codable {
 	var id: UnitID
-	var player: PlayerID
+	var country: Country
 	var position: Hex
 	var stats: Stats
+}
+
+struct UnitID: RawRepresentable, Hashable, Codable {
+	var rawValue: UInt16
+
+	init(rawValue: RawValue) {
+		self.rawValue = rawValue
+	}
+}
+
+@MainActor
+extension UnitID {
+
+	private(set) static var next = UnitID(rawValue: 0)
+
+	static func make() -> UnitID {
+		defer { next.rawValue += 1 }
+		return next
+	}
 }
 
 struct Stats: RawRepresentable, Hashable, Codable {

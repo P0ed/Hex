@@ -6,7 +6,6 @@ struct GameState: Hashable, Codable {
 	var units: [Unit]
 	var d20: D20 = .init(seed: 0)
 
-	var player: PlayerID = .ukr
 	var turn: UInt32 = 0
 
 	var cursor: Hex = .zero
@@ -18,8 +17,20 @@ struct GameState: Hashable, Codable {
 	var events: [Event] = []
 }
 
+extension GameState {
+
+	init(map: Map, players: [Player], buildings: [Building], units: [Unit]) {
+		self.map = map
+		self.players = players
+		self.buildings = buildings
+		self.units = units
+
+		self.players = players.mapInPlace { p in p.visible = vision(for: p.country) }
+	}
+}
+
 struct Building: Hashable, Codable {
-	var player: PlayerID
+	var country: Country
 	var position: Hex
 	var type: BuildingType
 }
@@ -29,13 +40,31 @@ enum BuildingType: UInt8, Hashable, Codable {
 }
 
 struct Player: Hashable, Codable {
-	var id: PlayerID
+	var country: Country
 	var ai: Bool = false
+	var alive: Bool = true
 	var prestige: UInt16 = 1000
 	var visible: Set<Hex> = []
 }
 
-enum Team: UInt8, Hashable, Codable { case axis, allies, soviet, neutral }
+enum Country: UInt8, Hashable, Codable {
+	case dnr, lnr, irn, isr, rus, swe, ukr, usa
+}
+
+enum Team: UInt8, Hashable, Codable {
+	case axis, allies, soviet
+}
+
+extension Country {
+
+	var team: Team {
+		switch self {
+		case .swe, .ukr: .axis
+		case .isr, .usa: .allies
+		case .dnr, .lnr, .irn, .rus: .soviet
+		}
+	}
+}
 
 enum Event: Hashable, Codable {
 	case spawn(UnitID)
@@ -54,20 +83,24 @@ struct D20: Hashable, Codable {
 
 extension GameState {
 
-	var visible: Set<Hex> { players[player].visible }
+	var playerIndex: Int { Int(turn) % players.count }
+	var player: Player { players[playerIndex] }
+	var country: Country { player.country }
+
+	var visible: Set<Hex> { players[country].visible }
 
 	var playerUnits: LazyFilterSequence<[Unit]> {
-		units.lazy.filter { [player] u in u.player == player }
+		units.lazy.filter { [country] u in u.country == country }
 	}
 	var enemyUnits: LazyFilterSequence<[Unit]> {
-		units.lazy.filter { [team = player.team] u in u.player.team != team }
+		units.lazy.filter { [team = country.team] u in u.country.team != team }
 	}
 
 	var playerBuildings: LazyFilterSequence<[Building]> {
-		buildings.lazy.filter { [team = player.team] b in b.player.team == team }
+		buildings.lazy.filter { [team = country.team] b in b.country.team == team }
 	}
 	var enemyBuildings: LazyFilterSequence<[Building]> {
-		buildings.lazy.filter { [team = player.team] b in b.player.team != team }
+		buildings.lazy.filter { [team = country.team] b in b.country.team != team }
 	}
 }
 
@@ -91,12 +124,12 @@ extension [Building] {
 
 extension [Player] {
 
-	subscript(_ pid: PlayerID) -> Player {
+	subscript(_ country: Country) -> Player {
 		get {
-			first { p in p.id == pid }!
+			first { p in p.country == country }!
 		}
 		set {
-			self[firstIndex { p in p.id == pid }!] = newValue
+			self[firstIndex { p in p.country == country }!] = newValue
 		}
 	}
 }

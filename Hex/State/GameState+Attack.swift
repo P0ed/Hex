@@ -13,7 +13,7 @@ extension GameState {
 			units[hx].flatMap { ref in
 				let u = units[ref]
 
-				return u.player.team == units[defender].player.team
+				return u.country.team == units[defender].country.team
 				&& u.stats.unitType == .art
 				&& u.canHit(unit: units[attacker])
 				? ref : nil
@@ -37,8 +37,8 @@ extension GameState {
 	}
 
 	mutating func attack(src: Ref<Unit>, dst: Ref<Unit>) {
-		guard units[src].player == player,
-			  units[src].player.team != units[dst].player.team,
+		guard units[src].country == country,
+			  units[src].country.team != units[dst].country.team,
 			  units[src].canAttack, units[src].canHit(unit: units[dst])
 		else { return }
 

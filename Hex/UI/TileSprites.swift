@@ -58,7 +58,7 @@ extension Terrain {
 }
 
 @MainActor
-extension PlayerID {
+extension Country {
 
 	var flag: SKTileGroup {
 		switch self {

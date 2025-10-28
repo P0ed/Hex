@@ -9,7 +9,7 @@ extension Unit {
 		node.zPosition = 4.0
 
 		let sprite = SKSpriteNode(imageNamed: imageName)
-		sprite.xScale = player.team == .axis ? 1.0 : -1.0
+		sprite.xScale = country.team == .axis ? 1.0 : -1.0
 		sprite.texture?.filteringMode = .nearest
 		node.addChild(sprite)
 
@@ -32,7 +32,7 @@ extension Unit {
 
 	var imageName: String {
 		switch stats.unitType {
-		case .inf: "Inf"
+		case .inf: country.team == .axis ? "Inf-Axis" : "Inf"
 		case .recon: "Recon"
 		case .tank: "Tank"
 		case .art: "Art"

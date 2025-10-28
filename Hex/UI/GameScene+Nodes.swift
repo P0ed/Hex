@@ -90,7 +90,7 @@ extension GameScene {
 					forColumn: x, row: y
 				)
 				flags.setTileGroup(
-					building.player.flag,
+					building.country.flag,
 					forColumn: x, row: y
 				)
 			}
@@ -150,21 +150,21 @@ extension GameScene {
 		}
 	}
 
-	func updateFogIfNeeded(_ oldValue: GameState) {
-		guard state.visible != oldValue.visible || state.selectable != oldValue.selectable
-		else { return }
-
+	func updateFogIfNeeded() -> Set<Hex> {
 		let fog = state.selectable ?? state.visible
-		state.map.cells.forEach { hex in
-			let (x, y) = state.map.converting(hex)
-			nodes?.fog.setTileGroup(
-				fog.contains(hex) ? nil : .fog,
-				forColumn: x, row: y
-			)
+		if self.fog != fog {
+			state.map.cells.forEach { hex in
+				let (x, y) = state.map.converting(hex)
+				nodes?.fog.setTileGroup(
+					fog.contains(hex) ? nil : .fog,
+					forColumn: x, row: y
+				)
+			}
+			state.units.forEach { u in
+				nodes?.units[u.id]?.isHidden = !state.visible.contains(u.position)
+			}
 		}
-		state.units.forEach { u in
-			nodes?.units[u.id]?.isHidden = !state.visible.contains(u.position)
-		}
+		return fog
 	}
 
 	func updateFlags() {
@@ -176,7 +176,7 @@ extension GameScene {
 				forColumn: x, row: y
 			)
 			nodes?.flags.setTileGroup(
-				building.player.flag,
+				building.country.flag,
 				forColumn: x, row: y
 			)
 		}
@@ -187,6 +187,6 @@ extension GameScene {
 	}
 }
 
-extension PlayerID {
+extension Country {
 
 }

@@ -1,14 +1,3 @@
-@MainActor
-extension UnitID {
-
-	private(set) static var next: UnitID = 0
-
-	static func make() -> UnitID {
-		defer { next.rawValue += 1 }
-		return next
-	}
-}
-
 extension Stats {
 
 	static var base: Self {

@@ -15,7 +15,7 @@ enum Input {
 @MainActor
 extension GameState {
 
-	var isHuman: Bool { !players[player].ai }
+	var isHuman: Bool { !players[country].ai }
 	var canHandleInput: Bool { isHuman && events.isEmpty }
 
 	mutating func apply(_ input: Input) {
@@ -57,7 +57,7 @@ private extension GameState {
 
 			if let dstRef = units[cursor] {
 				let dst = units[dstRef]
-				if dst.player.team != unit.player.team {
+				if dst.country.team != unit.country.team {
 					attack(src: unitRef, dst: dstRef)
 				} else if dst == unit, unit.stats.unitType == .engineer, unit.untouched {
 					events.append(.build)
@@ -66,15 +66,15 @@ private extension GameState {
 				}
 			} else if unit.canMove {
 				move(unit: unit.id, to: cursor)
-			} else if buildings[cursor]?.player == player {
+			} else if buildings[cursor]?.country == country {
 				events.append(.shop)
 			} else {
 				selectUnit(.none)
 			}
 		} else {
-			if let ref = units[cursor], units[ref].player == player {
+			if let ref = units[cursor], units[ref].country == country {
 				selectUnit(units[ref].id)
-			} else if buildings[cursor]?.player == player {
+			} else if buildings[cursor]?.country == country {
 				events.append(.shop)
 			}
 		}
@@ -89,7 +89,7 @@ private extension GameState {
 	}
 
 	mutating func nextUnit(reversed: Bool = false) {
-		let player = player
+		let player = country
 
 		let units: AnyRandomAccessCollection<Unit> = reversed
 		? .init(units.reversed())
@@ -100,7 +100,7 @@ private extension GameState {
 		}
 
 		let validUnit: (Unit) -> Bool = { u in
-			u.player == player && u.hasActions
+			u.country == player && u.hasActions
 		}
 
 		let nextUnit = idx.flatMap { idx in
