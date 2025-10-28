@@ -151,7 +151,7 @@ extension GameScene {
 	}
 
 	func updateFogIfNeeded() -> Set<Hex> {
-		let fog = state.selectable ?? state.visible
+		let fog = state.selectable ?? state.player.visible
 		if self.fog != fog {
 			state.map.cells.forEach { hex in
 				let (x, y) = state.map.converting(hex)
@@ -161,7 +161,7 @@ extension GameScene {
 				)
 			}
 			state.units.forEach { u in
-				nodes?.units[u.id]?.isHidden = !state.visible.contains(u.position)
+				nodes?.units[u.id]?.isHidden = !state.player.visible.contains(u.position)
 			}
 		}
 		return fog

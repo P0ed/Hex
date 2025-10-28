@@ -21,7 +21,7 @@ private extension GameScene {
 	func processSpawn(uid: UnitID) {
 		let unit = state.units[state.units[uid]]
 		let sprite = unit.sprite
-		sprite.isHidden = !state.visible.contains(unit.position)
+		sprite.isHidden = !state.player.visible.contains(unit.position)
 		addUnit(uid, node: sprite)
 	}
 
@@ -61,7 +61,7 @@ private extension GameScene {
 				MenuItem(
 					icon: template.imageName,
 					text: "\(template.stats.unitType)",
-					description: template.description + " / \(state.prestige)",
+					description: template.description + " / \(state.player.prestige)",
 					action: { [hex = state.cursor] state in
 						state.buy(template, at: hex)
 					}
@@ -81,7 +81,7 @@ private extension GameScene {
 				MenuItem(
 					icon: template.type.imageName,
 					text: template.type.imageName,
-					description: "\(template.description)" + " / \(state.prestige)",
+					description: "\(template.description)" + " / \(state.player.prestige)",
 					action: { state in
 						state.build(template, by: engineerRef)
 					}

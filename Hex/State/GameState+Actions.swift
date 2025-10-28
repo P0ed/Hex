@@ -1,16 +1,5 @@
 extension GameState {
 
-	var prestige: UInt16 {
-		get { players[country].prestige }
-		set { players[country].prestige = newValue }
-	}
-
-	var income: UInt16 {
-		min(.max - prestige, buildings.reduce(into: 0) { r, c in
-			r += c.country == country ? 48 : 0
-		})
-	}
-
 	func vision(for unit: Unit) -> Set<Hex> {
 		let range = switch unit.stats.unitType {
 		case .recon: 3
@@ -20,12 +9,12 @@ extension GameState {
 		return Set(unit.position.circle(range))
 	}
 
-	func vision(for player: Country) -> Set<Hex> {
+	func vision(for country: Country) -> Set<Hex> {
 		units.reduce(into: [] as Set<Hex>) { v, u in
-			if u.country == player { v.formUnion(vision(for: u)) }
+			if u.country == country { v.formUnion(vision(for: u)) }
 		}
 		.union(buildings.flatMap { building in
-			building.country == player ? building.position.circle(1) : []
+			building.country == country ? building.position.circle(1) : []
 		})
 	}
 
@@ -74,7 +63,7 @@ extension GameState {
 		if units[ref].stats.unitType == .art { units[ref].stats.ap = 0 }
 
 		let vision = vision(for: units[ref])
-		players[country].visible.formUnion(vision)
+		player.visible.formUnion(vision)
 		selectUnit(units[ref].hasActions ? units[ref].id : .none)
 		events.append(.move(units[ref].id, distance))
 	}

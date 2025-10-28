@@ -2,7 +2,7 @@ extension GameState {
 
 	func targets(unit: Unit) -> [Unit] {
 		!unit.canAttack ? [] : enemyUnits.filter { u in
-			visible.contains(u.position) && unit.canHit(unit: u)
+			player.visible.contains(u.position) && unit.canHit(unit: u)
 		}
 	}
 

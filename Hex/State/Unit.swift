@@ -134,31 +134,6 @@ extension Unit {
 		position.distance(to: unit.position) <= stats.rng
 	}
 
-	mutating func nextTurn() {
-		if untouched {
-			stats.ent.increment(by: 1, cap: 7)
-			resupply()
-		}
-		stats.mp = 1
-		stats.ap = 1
-	}
-
-	mutating func reinforce() {
-		guard untouched else { return }
-		stats.hp.increment(by: 15 / 2, cap: 15)
-		resupply()
-		stats.ap = 0
-		stats.mp = 0
-	}
-
-	mutating func resupply() {
-		guard untouched else { return }
-		stats.ammo.increment(by: 15 / 2, cap: 15)
-		stats.fuel.increment(by: 15 / 2, cap: 15)
-		stats.ap = 0
-		stats.mp = 0
-	}
-
 	var cost: UInt16 {
 		switch stats.unitType {
 		case .inf: 80

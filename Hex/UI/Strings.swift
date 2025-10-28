@@ -44,16 +44,6 @@ extension Building {
 	var description: String {
 		"\(type)\n\(cost)"
 	}
-
-	var cost: UInt16 {
-		switch type {
-		case .city: 1600
-		case .barracks: 300
-		case .factory: 500
-		case .airfield: 700
-		case .radar: 400
-		}
-	}
 }
 
 extension GameState {

@@ -16,7 +16,7 @@ extension GameState {
 	}
 
 	private var nextPurchase: (Unit, Hex)? {
-		prestige < 500 ? .none : playerBuildings
+		player.prestige < 500 ? .none : playerBuildings
 			.first { b in b.type == .city && units[b.position] == nil }
 			.map { b in (unitTemplates[0], b.position) }
 	}

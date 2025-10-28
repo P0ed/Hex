@@ -19,6 +19,14 @@ extension InlineArray {
 		return arr
 	}
 
+	func compactMap<A>(_ transform: (Element) -> A?) -> [A] {
+		var arr = [] as [A]
+		for i in indices {
+			if let value = transform(self[i]) { arr.append(value) }
+		}
+		return arr
+	}
+
 	func firstMap<A>(_ transform: (Element) -> A?) -> A? {
 		for i in indices {
 			if let some = transform(self[i]) { return some }

@@ -84,10 +84,12 @@ struct D20: Hashable, Codable {
 extension GameState {
 
 	var playerIndex: Int { Int(turn) % players.count }
-	var player: Player { players[playerIndex] }
-	var country: Country { player.country }
 
-	var visible: Set<Hex> { players[country].visible }
+	var player: Player {
+		get { players[playerIndex] }
+		set { players[playerIndex] = newValue }
+	}
+	var country: Country { player.country }
 
 	var playerUnits: LazyFilterSequence<[Unit]> {
 		units.lazy.filter { [country] u in u.country == country }
@@ -122,14 +124,22 @@ extension [Building] {
 	}
 }
 
-extension [Player] {
+extension Building {
 
-	subscript(_ country: Country) -> Player {
-		get {
-			first { p in p.country == country }!
+	var cost: UInt16 {
+		switch type {
+		case .city: 1600
+		case .barracks: 300
+		case .factory: 500
+		case .airfield: 700
+		case .radar: 400
 		}
-		set {
-			self[firstIndex { p in p.country == country }!] = newValue
+	}
+
+	var income: UInt16 {
+		switch type {
+		case .city: 40
+		default: 0
 		}
 	}
 }

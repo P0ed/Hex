@@ -20,13 +20,13 @@ extension GameState {
 	}
 
 	mutating func buy(_ template: Unit, at position: Hex) {
-		guard prestige >= template.cost, units[position] == nil else { return }
+		guard player.prestige >= template.cost, units[position] == nil else { return }
 
 		let unit = modifying(template) { u in
 			u.id = .make()
 			u.position = position
 		}
-		prestige -= unit.cost
+		player.prestige -= unit.cost
 		units.append(unit)
 		events.append(.spawn(unit.id))
 	}

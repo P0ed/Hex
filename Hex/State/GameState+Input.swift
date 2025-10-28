@@ -15,8 +15,7 @@ enum Input {
 @MainActor
 extension GameState {
 
-	var isHuman: Bool { !players[country].ai }
-	var canHandleInput: Bool { isHuman && events.isEmpty }
+	var canHandleInput: Bool { !player.ai && events.isEmpty }
 
 	mutating func apply(_ input: Input) {
 		switch input {

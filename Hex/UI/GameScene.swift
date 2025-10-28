@@ -62,7 +62,7 @@ final class GameScene: SKScene {
 		Task {
 			for event in state.events { await processEvent(event) }
 			if !state.events.isEmpty { return state.events = [] }
-			if !state.isHuman { return state.runAI() }
+			if state.player.ai { return state.runAI() }
 		}
 	}
 
