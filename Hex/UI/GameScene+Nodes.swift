@@ -9,7 +9,7 @@ extension GameScene {
 		var menu: SKNode
 		var status: SKLabelNode
 		var sounds: SoundNodes
-		var units: [UnitID: SKNode] = [:]
+		var units: [UID: SKNode] = [:]
 
 		var buildings: SKTileMapNode { map.buildings }
 		var fog: SKTileMapNode { map.fog }
@@ -149,8 +149,8 @@ extension GameScene {
 					forColumn: x, row: y
 				)
 			}
-			state.units.forEach { u in
-				nodes?.units[u.id]?.isHidden = !state.player.visible.contains(u.position)
+			state.units.forEach { i, u in
+				nodes?.units[i]?.isHidden = !state.player.visible.contains(u.position)
 			}
 		}
 		return fog
@@ -172,8 +172,8 @@ extension GameScene {
 	}
 
 	func updateUnits() {
-		state.units.forEach { u in
-			nodes?.units[u.id]?.update(u)
+		state.units.forEach { i, u in
+			nodes?.units[i]?.update(u)
 		}
 	}
 

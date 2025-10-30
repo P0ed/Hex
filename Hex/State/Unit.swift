@@ -1,28 +1,10 @@
 struct Unit: Hashable, Codable {
-	var id: UnitID
 	var country: Country
 	var position: Hex
 	var stats: Stats
 }
 
-struct UnitID: RawRepresentable, Hashable, Codable {
-	var rawValue: UInt16
-
-	init(rawValue: RawValue) {
-		self.rawValue = rawValue
-	}
-}
-
-@MainActor
-extension UnitID {
-
-	private(set) static var next = UnitID(rawValue: 0)
-
-	static func make() -> UnitID {
-		defer { next.rawValue += 1 }
-		return next
-	}
-}
+typealias UID = Int
 
 struct Stats: RawRepresentable, Hashable, Codable {
 	var rawValue: UInt64
@@ -123,12 +105,20 @@ enum UnitType: UInt8, Hashable, Codable {
 	case inf, recon, tank, art, antiAir, air, engineer, supply
 }
 
+extension Unit: DeadOrAlive {
+
+	static var dead: Unit {
+		.init(country: .dnr, position: .zero, stats: .init(rawValue: 0))
+	}
+
+	var alive: Bool { stats.hp > 0 }
+}
+
 extension Unit {
 	var untouched: Bool { stats.mp != 0 && stats.ap != 0 }
 	var hasActions: Bool { canMove || canAttack }
 	var canMove: Bool { stats.mp != 0 }
 	var canAttack: Bool { stats.ap != 0 && stats.ammo != 0 }
-	var alive: Bool { stats.hp > 0 }
 
 	func canHit(unit: Unit) -> Bool {
 		position.distance(to: unit.position) <= stats.rng
@@ -142,22 +132,5 @@ extension Unit {
 		case .art: 160
 		default: 120
 		}
-	}
-}
-
-extension UInt8 {
-
-	@discardableResult
-	mutating func increment(by amount: UInt8, cap: UInt8 = .max) -> UInt8 {
-		let old = self
-		self = UInt8(Swift.min(UInt16(cap), UInt16(self + amount)))
-		return self - old
-	}
-
-	@discardableResult
-	mutating func decrement(by amount: UInt8 = 1) -> UInt8 {
-		let old = self
-		self -= self < amount ? self : amount
-		return old - self
 	}
 }

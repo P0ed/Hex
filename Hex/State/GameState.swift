@@ -1,16 +1,16 @@
-struct GameState: Hashable, Codable {
+struct GameState: ~Copyable {
 	var map: Map
 
 	var players: [Player]
 	var buildings: [Building]
-	var units: [Unit]
+	var units: Speicher<1024, Unit>
 	var d20: D20 = .init(seed: 0)
 
 	var turn: UInt32 = 0
 
 	var cursor: Hex = .zero
 	var camera: Hex = .zero
-	var selectedUnit: UnitID?
+	var selectedUnit: UID?
 	var selectable: Set<Hex>?
 	var scale: Double = 1.0
 
@@ -23,7 +23,7 @@ extension GameState {
 		self.map = map
 		self.players = players
 		self.buildings = buildings
-		self.units = units
+		self.units = .init(array: units)
 
 		self.players = players.mapInPlace { p in p.visible = vision(for: p.country) }
 	}
@@ -67,9 +67,9 @@ extension Country {
 }
 
 enum Event: Hashable, Codable {
-	case spawn(UnitID)
-	case move(UnitID, Int)
-	case attack(UnitID, Unit)
+	case spawn(UID)
+	case move(UID, Int)
+	case attack(UID, UID, Unit)
 	case reflag
 	case nextDay
 	case shop
@@ -90,39 +90,8 @@ extension GameState {
 		get { players[playerIndex] }
 		set { players[playerIndex] = newValue }
 	}
+
 	var country: Country { player.country }
-
-	var playerUnits: LazyFilterSequence<[Unit]> {
-		units.lazy.filter { [country] u in u.country == country }
-	}
-	var enemyUnits: LazyFilterSequence<[Unit]> {
-		units.lazy.filter { [team = country.team] u in u.country.team != team }
-	}
-
-	var playerBuildings: LazyFilterSequence<[Building]> {
-		buildings.lazy.filter { [team = country.team] b in b.country.team == team }
-	}
-	var enemyBuildings: LazyFilterSequence<[Building]> {
-		buildings.lazy.filter { [team = country.team] b in b.country.team != team }
-	}
-}
-
-extension [Unit] {
-
-	subscript(_ hex: Hex) -> Ref<Unit>? {
-		firstIndex { u in u.position == hex }.map(Ref.init)
-	}
-
-	subscript(_ uid: UnitID) -> Ref<Unit> {
-		Ref(index: firstIndex { u in u.id == uid }!)
-	}
-}
-
-extension [Building] {
-
-	subscript(_ hex: Hex) -> Building? {
-		first { u in u.position == hex }
-	}
 }
 
 extension Building {

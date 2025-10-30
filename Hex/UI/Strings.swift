@@ -50,7 +50,7 @@ extension GameState {
 
 	var statusText: String {
 		if let selectedUnit {
-			units[units[selectedUnit]].status
+			units[selectedUnit].status
 		} else if let building = buildings[cursor] {
 			.makeStatus { add in
 				add("\(building.type)")

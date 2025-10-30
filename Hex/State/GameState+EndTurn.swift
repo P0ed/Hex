@@ -24,8 +24,12 @@ extension GameState {
 	}
 
 	private mutating func startNextDay() {
-		players = players.mapInPlace(endTurn)
-		units = units.mapInPlace(endTurn)
+		players = players.mapInPlace { player in
+			endTurn(player: &player)
+		}
+		for i in units.indices where units[i].alive {
+			endTurn(unit: i)
+		}
 		events.append(.nextDay)
 	}
 
@@ -38,18 +42,24 @@ extension GameState {
 	private mutating func resetUI() {
 		selectUnit(.none)
 
-		cursor = units.firstMap { u in u.country == country ? u.position : nil }
-		?? buildings.firstMap { b in b.country == country ? b.position : nil }
+		cursor = units.firstMap { [country] _, u in
+			u.country == country ? u.position : nil
+		}
+		?? buildings.firstMap { b in
+			b.country == country ? b.position : nil
+		}
 		?? .zero
+
 		camera = cursor
 	}
 
-	private func endTurn(for player: inout Player) {
+	private func endTurn(player: inout Player) {
 		player.visible = vision(for: player.country)
 		player.prestige.increment(by: income(for: player))
 	}
 
-	private func endTurn(for unit: inout Unit) {
+	private mutating func endTurn(unit id: UID) {
+		var unit = units[id]
 		let ns = neighbors(at: unit.position)
 
 		let noEnemy = !ns.contains { n in
@@ -76,21 +86,23 @@ extension GameState {
 			by: ((unit.untouched ? 4 : 0) + (hasSupport ? 4 : 0)) / (noEnemy ? 1 : 3),
 			cap: 0xF
 		)
-		let dxp = unit.stats.hp / (unit.stats.hp - dhp)
-		unit.stats.exp /= dxp
+		unit.stats.exp.decrement(by: dhp * 1 << unit.stats.stars)
 
 		unit.stats.mp = 1
 		unit.stats.ap = 1
+		units[id] = unit
 	}
 
-	func neighbors(at position: Hex) -> [Ref<Unit>] {
-		position.neighbors.compactMap { hx in units[hx] }
+	func neighbors(at position: Hex) -> [UID] {
+		position.neighbors.compactMap { hx in units[hx]?.0 }
 	}
 
 	private mutating func captureCities() {
-		let reflag = units.reduce(into: false) { reflag, u in
+		let reflag = units.reduce(into: false) { reflag, _, u in
 
-			let idx = buildings.firstIndex { b in b.position == u.position }
+			let idx = buildings.firstIndex { b in
+				b.position == u.position
+			}
 
 			if let idx, buildings[idx].country.team != u.country.team {
 				buildings[idx].country = u.country
@@ -109,22 +121,5 @@ extension GameState {
 				building.type == .city && building.country == player.country
 			}
 		}
-	}
-}
-
-extension UInt16 {
-
-	@discardableResult
-	mutating func increment(by amount: UInt16, cap: UInt16 = .max) -> UInt16 {
-		let old = self
-		self = UInt16(Swift.min(UInt32(cap), UInt32(self + amount)))
-		return self - old
-	}
-
-	@discardableResult
-	mutating func decrement(by amount: UInt16 = 1) -> UInt16 {
-		let old = self
-		self -= self < amount ? self : amount
-		return old - self
 	}
 }

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5F24DC332EA95FE60085FDDC /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F24DC322EA95FE50085FDDC /* main.swift */; };
+		5F8E87312EB3BEEC0023B28F /* Speicher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8E87302EB3BEEC0023B28F /* Speicher.swift */; };
+		5F8E87332EB3E1DD0023B28F /* Integers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8E87322EB3E1DA0023B28F /* Integers.swift */; };
 		5F919D532EA9595D0037A208 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33C42EA93AC3008A0A95 /* GameScene.swift */; };
 		5F919D542EA959670037A208 /* HIDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33BD2EA93AC3008A0A95 /* HIDController.swift */; };
 		5F919D562EA959670037A208 /* UnitSprites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33C02EA93AC3008A0A95 /* UnitSprites.swift */; };
@@ -68,6 +70,8 @@
 		5F2A33C02EA93AC3008A0A95 /* UnitSprites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitSprites.swift; sourceTree = "<group>"; };
 		5F2A33C32EA93AC3008A0A95 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5F2A33C42EA93AC3008A0A95 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		5F8E87302EB3BEEC0023B28F /* Speicher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speicher.swift; sourceTree = "<group>"; };
+		5F8E87322EB3E1DA0023B28F /* Integers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Integers.swift; sourceTree = "<group>"; };
 		5F919D2C2EA9564A0037A208 /* Hex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F919D702EA95ADF0037A208 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5FB297482E79A39000FA039B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -102,20 +106,18 @@
 		5F2A33B62EA93AC3008A0A95 /* State */ = {
 			isa = PBXGroup;
 			children = (
-				5F2A33A82EA93AC3008A0A95 /* Arrays.swift */,
 				5F2A33A92EA93AC3008A0A95 /* GameState.swift */,
+				5F2A33AF2EA93AC3008A0A95 /* Hex.swift */,
+				5F2A33B12EA93AC3008A0A95 /* Map.swift */,
+				5F2A33B42EA93AC3008A0A95 /* Unit.swift */,
 				5F2A33AA2EA93AC3008A0A95 /* GameState+Actions.swift */,
 				5FB4D1252EAFABCB0010E702 /* GameState+EndTurn.swift */,
 				5FB4D0D42EAE261E0010E702 /* GameState+Attack.swift */,
 				5F2A33AB2EA93AC3008A0A95 /* GameState+AI.swift */,
 				5F2A33AC2EA93AC3008A0A95 /* GameState+Input.swift */,
 				5F2A33AD2EA93AC3008A0A95 /* GameState+Shop.swift */,
-				5F2A33AE2EA93AC3008A0A95 /* GameStateFactory.swift */,
-				5F2A33AF2EA93AC3008A0A95 /* Hex.swift */,
-				5F2A33B12EA93AC3008A0A95 /* Map.swift */,
 				5F2A33B22EA93AC3008A0A95 /* MenuState.swift */,
-				5F2A33B32EA93AC3008A0A95 /* Monoid.swift */,
-				5F2A33B42EA93AC3008A0A95 /* Unit.swift */,
+				5F2A33AE2EA93AC3008A0A95 /* GameStateFactory.swift */,
 				5F2A33B52EA93AC3008A0A95 /* UnitFactory.swift */,
 			);
 			path = State;
@@ -138,9 +140,21 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
+		5F8E87342EB3E1F20023B28F /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				5F8E87322EB3E1DA0023B28F /* Integers.swift */,
+				5F2A33A82EA93AC3008A0A95 /* Arrays.swift */,
+				5F8E87302EB3BEEC0023B28F /* Speicher.swift */,
+				5F2A33B32EA93AC3008A0A95 /* Monoid.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 		5F919D4A2EA9579B0037A208 /* Hex */ = {
 			isa = PBXGroup;
 			children = (
+				5F8E87342EB3E1F20023B28F /* Base */,
 				5F2A33B62EA93AC3008A0A95 /* State */,
 				5F2A33C12EA93AC3008A0A95 /* UI */,
 				5F2A33A72EA93AC3008A0A95 /* Sounds */,
@@ -250,10 +264,12 @@
 				5F919D602EA9596E0037A208 /* GameState+AI.swift in Sources */,
 				5F919D612EA9596E0037A208 /* Arrays.swift in Sources */,
 				5F919D632EA9596E0037A208 /* Monoid.swift in Sources */,
+				5F8E87332EB3E1DD0023B28F /* Integers.swift in Sources */,
 				5FCABBCA2EAA787D008EE894 /* Strings.swift in Sources */,
 				5F919D642EA9596E0037A208 /* MenuState.swift in Sources */,
 				5F919D652EA9596E0037A208 /* GameStateFactory.swift in Sources */,
 				5F919D662EA9596E0037A208 /* GameState+Shop.swift in Sources */,
+				5F8E87312EB3BEEC0023B28F /* Speicher.swift in Sources */,
 				5F24DC332EA95FE60085FDDC /* main.swift in Sources */,
 				5F919D672EA9596E0037A208 /* Map.swift in Sources */,
 				5F919D682EA9596E0037A208 /* GameState.swift in Sources */,

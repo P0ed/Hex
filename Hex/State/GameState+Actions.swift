@@ -10,7 +10,7 @@ extension GameState {
 	}
 
 	func vision(for country: Country) -> Set<Hex> {
-		units.reduce(into: [] as Set<Hex>) { v, u in
+		units.reduce(into: [] as Set<Hex>) { v, i, u in
 			if u.country == country { v.formUnion(vision(for: u)) }
 		}
 		.union(buildings.flatMap { building in
@@ -18,13 +18,11 @@ extension GameState {
 		})
 	}
 
-	mutating func selectUnit(_ uid: UnitID?) {
+	mutating func selectUnit(_ uid: UID?) {
 		if let uid {
-			let unitRef = units[uid]
-			let unit = units[unitRef]
-			selectedUnit = unit.id
-			cursor = unit.position
-			selectable = unit.canMove ? moves(for: unit) : .none
+			selectedUnit = uid
+			cursor = units[uid].position
+			selectable = units[uid].canMove ? moves(for: units[uid]) : .none
 		} else {
 			selectedUnit = .none
 			selectable = .none
@@ -43,29 +41,27 @@ extension GameState {
 						: .none
 					}
 				}
-				hxs.formUnion(front.map(\.0))
+				hxs.formUnion(front.map { pos, _ in pos })
 			} while !front.isEmpty
 		}
-		.subtracting(units.map(\.position))
+		.subtracting(units.map { _, u in u.position })
 	}
 
-	mutating func move(unit: UnitID, to position: Hex) {
-		let ref = units[unit]
-
-		guard units[ref].country == country,
-			  units[ref].canMove, moves(for: units[ref]).contains(position)
+	mutating func move(unit uid: UID, to position: Hex) {
+		guard units[uid].alive, units[uid].country == country,
+			  units[uid].canMove, moves(for: units[uid]).contains(position)
 		else { return }
 
-		let distance = units[ref].position.distance(to: position)
-		units[ref].position = position
-		units[ref].stats.mp = 0
-		units[ref].stats.ent = 0
-		if units[ref].stats.unitType == .art { units[ref].stats.ap = 0 }
+		let distance = units[uid].position.distance(to: position)
+		units[uid].position = position
+		units[uid].stats.mp = 0
+		units[uid].stats.ent = 0
+		if units[uid].stats.unitType == .art { units[uid].stats.ap = 0 }
 
-		let vision = vision(for: units[ref])
+		let vision = vision(for: units[uid])
 		player.visible.formUnion(vision)
-		selectUnit(units[ref].hasActions ? units[ref].id : .none)
-		events.append(.move(units[ref].id, distance))
+		selectUnit(units[uid].hasActions ? uid : .none)
+		events.append(.move(uid, distance))
 	}
 
 	private var tooFarX: Bool { abs(camera.pt.x - cursor.pt.x) > 9.0 * scale }

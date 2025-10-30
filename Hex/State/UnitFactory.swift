@@ -2,11 +2,11 @@ extension Stats {
 
 	static var base: Self {
 		.make { stats in
-			stats.hp = 15
-			stats.mp = 1
-			stats.ap = 1
-			stats.ammo = 15
-			stats.fuel = 15
+			stats.hp = 0xF
+			stats.mp = 0x1
+			stats.ap = 0x1
+			stats.ammo = 0xF
+			stats.fuel = 0xF
 		}
 	}
 

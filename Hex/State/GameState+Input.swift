@@ -51,28 +51,26 @@ private extension GameState {
 
 	mutating func primaryAction() {
 		if let selectedID = selectedUnit {
-			let unitRef = units[selectedID]
-			let unit = units[unitRef]
+			let unit = units[selectedID]
 
-			if let dstRef = units[cursor] {
-				let dst = units[dstRef]
+			if let (dstID, dst) = units[cursor] {
 				if dst.country.team != unit.country.team {
-					attack(src: unitRef, dst: dstRef)
-				} else if dst == unit, unit.stats.unitType == .engineer, unit.untouched {
+					attack(src: selectedID, dst: dstID)
+				} else if dstID == selectedID, unit.stats.unitType == .engineer, unit.untouched {
 					events.append(.build)
 				} else {
-					selectUnit(dst == unit ? .none : dst.id)
+					selectUnit(dst == unit ? .none : dstID)
 				}
 			} else if unit.canMove {
-				move(unit: unit.id, to: cursor)
+				move(unit: selectedID, to: cursor)
 			} else if buildings[cursor]?.country == country {
 				events.append(.shop)
 			} else {
 				selectUnit(.none)
 			}
 		} else {
-			if let ref = units[cursor], units[ref].country == country {
-				selectUnit(units[ref].id)
+			if let (i, u) = units[cursor], u.country == country {
+				selectUnit(i)
 			} else if buildings[cursor]?.country == country {
 				events.append(.shop)
 			}
@@ -88,24 +86,16 @@ private extension GameState {
 	}
 
 	mutating func nextUnit(reversed: Bool = false) {
-		let player = country
+		var idx = selectedUnit ?? (reversed ? units.count - 1 : 0)
+		let country = country
 
-		let units: AnyRandomAccessCollection<Unit> = reversed
-		? .init(units.reversed())
-		: .init(units)
-
-		let idx = selectedUnit.flatMap { uid in
-			units.enumerated().first { i, u in u.id == uid }?.offset
+		for _ in units.indices {
+			let u = units[idx % units.count]
+			if u.alive, u.country == country, u.hasActions {
+				return selectUnit(idx)
+			}
+			idx += reversed ? -1 : 1
 		}
-
-		let validUnit: (Unit) -> Bool = { u in
-			u.country == player && u.hasActions
-		}
-
-		let nextUnit = idx.flatMap { idx in
-			units.dropFirst(idx + 1).first(where: validUnit)
-		} ?? units.first(where: validUnit)
-
-		if let nextUnit { selectUnit(nextUnit.id) }
+		selectUnit(nil)
 	}
 }

@@ -57,19 +57,11 @@ extension Array {
 	func mapInPlace(_ transform: (inout Element) -> Void) -> Self {
 		map { e in modifying(e, transform) }
 	}
-
-	mutating func fastRemove(at index: Int) {
-		let last = count - 1
-		if index != last { self[index] = self[last] }
-		remove(at: last)
-	}
-
-	subscript(_ ref: Ref<Element>) -> Element {
-		get { self[ref.index] }
-		set { self[ref.index] = newValue }
-	}
 }
 
-struct Ref<Element> {
-	var index: Int
+extension [Building] {
+
+	subscript(_ hex: Hex) -> Building? {
+		first { u in u.position == hex }
+	}
 }

@@ -23,7 +23,7 @@ final class GameScene: SKScene {
 		nodes?.layout(size: size)
 		updateBuildings()
 
-		state.events = state.units.map { u in .spawn(u.id) }
+		state.events = state.units.map { i, _ in .spawn(i) }
 
 		hid.inputStream = { [weak self] input in self?.apply(input) }
 	}
@@ -44,12 +44,12 @@ final class GameScene: SKScene {
 		menuState = menu.flatMap { m in m.items.isEmpty ? .none : m }
 	}
 
-	func addUnit(_ uid: UnitID, node: SKNode) {
+	func addUnit(_ uid: UID, node: SKNode) {
 		addChild(node)
 		nodes?.units[uid] = node
 	}
 
-	func removeUnit(_ uid: UnitID) {
+	func removeUnit(_ uid: UID) {
 		nodes?.units[uid]?.removeFromParent()
 		nodes?.units[uid] = .none
 	}

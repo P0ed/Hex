@@ -5,11 +5,7 @@ extension GameState {
 
 	static func random(radius: Int = 12, seed: Int = 0) -> GameState {
 
-		func mkUnit(_ player: Country, _ position: Hex, _ stats: Stats) -> Unit {
-			Unit(id: .make(), country: player, position: position, stats: .base >< stats)
-		}
-
-		return GameState(
+		GameState(
 			map: Map(radius: radius, seed: seed),
 			players: [
 				Player(country: .ukr),
@@ -24,23 +20,23 @@ extension GameState {
 				Building(country: .rus, position: Hex(11, -2), type: .city),
 			],
 			units: [
-				mkUnit(.ukr, Hex(0, -3), .builder),
-				mkUnit(.ukr, Hex(0, -4), .truck),
-				mkUnit(.ukr, Hex(-4, 0), .inf >< .veteran),
-				mkUnit(.ukr, Hex(0, -1), .tank >< .veteran),
-				mkUnit(.ukr, Hex(-4, 1), .recon >< .elite),
-				mkUnit(.ukr, Hex(-1, -1), .art >< .veteran),
+				Unit(country: .ukr, position: Hex(0, -3), stats: .base >< .builder),
+				Unit(country: .ukr, position: Hex(0, -4), stats: .base >< .truck),
+				Unit(country: .ukr, position: Hex(-4, 0), stats: .base >< .inf >< .veteran),
+				Unit(country: .ukr, position: Hex(0, -1), stats: .base >< .tank >< .veteran),
+				Unit(country: .ukr, position: Hex(-4, 1), stats: .base >< .recon >< .elite),
+				Unit(country: .ukr, position: Hex(-1, -1), stats: .base >< .art >< .veteran),
 
-				mkUnit(.usa, Hex(0, 3), .inf),
-				mkUnit(.usa, Hex(3, 1), .inf),
-				mkUnit(.usa, Hex(4, 2), .tank),
-				mkUnit(.usa, Hex(-2, 5), .art),
-				mkUnit(.usa, Hex(2, 3), .art),
+				Unit(country: .usa, position: Hex(0, 3), stats: .base >< .inf),
+				Unit(country: .usa, position: Hex(3, 1), stats: .base >< .inf),
+				Unit(country: .usa, position: Hex(4, 2), stats: .base >< .tank),
+				Unit(country: .usa, position: Hex(-2, 5), stats: .base >< .art),
+				Unit(country: .usa, position: Hex(2, 3), stats: .base >< .art),
 
-				mkUnit(.rus, Hex(10, 0), .tank),
-				mkUnit(.rus, Hex(10, -1), .tank),
-				mkUnit(.rus, Hex(11, -1), .tank),
-				mkUnit(.rus, Hex(11, -3), .tank),
+				Unit(country: .rus, position: Hex(10, 0), stats: .base >< .tank),
+				Unit(country: .rus, position: Hex(10, -1), stats: .base >< .tank),
+				Unit(country: .rus, position: Hex(11, -1), stats: .base >< .tank),
+				Unit(country: .rus, position: Hex(11, -3), stats: .base >< .tank),
 			]
 		)
 	}

@@ -6,7 +6,7 @@ extension GameScene {
 		switch event {
 		case let .spawn(uid): processSpawn(uid: uid)
 		case let .move(uid, distance): await processMove(uid: uid, distance: distance)
-		case let .attack(src, dst): await processAttack(src: src, dst: dst)
+		case let .attack(src, dst, unit): await processAttack(src: src, dst: dst, unit: unit)
 		case .reflag: updateBuildings()
 		case .nextDay: updateUnits()
 		case .shop: processShop()
@@ -19,34 +19,32 @@ extension GameScene {
 
 private extension GameScene {
 
-	func processSpawn(uid: UnitID) {
-		let unit = state.units[state.units[uid]]
-		let sprite = unit.sprite
-		sprite.isHidden = !state.player.visible.contains(unit.position)
+	func processSpawn(uid: UID) {
+		let sprite = state.units[uid].sprite
+		sprite.isHidden = !state.player.visible.contains(state.units[uid].position)
 		addUnit(uid, node: sprite)
 	}
 
-	func processMove(uid: UnitID, distance: Int) async {
-		let unit = state.units[state.units[uid]]
+	func processMove(uid: UID, distance: Int) async {
 		nodes?.sounds.mov.play()
 		await nodes?.units[uid]?.run(.move(
-			to: unit.position.point,
+			to: state.units[uid].position.point,
 			duration: CGFloat(distance) * 0.1
 		))
 	}
 
-	func processAttack(src: UnitID, dst: Unit) async {
+	func processAttack(src: UID, dst: UID, unit: Unit) async {
 		nodes?.units[src]?.showSight(for: 1.0)
 		await run(.wait(forDuration: 0.47))
-		nodes?.units[dst.id]?.showSight(for: 1.0 - 0.47)
+		nodes?.units[dst]?.showSight(for: 1.0 - 0.47)
 		await run(.wait(forDuration: 0.47))
 
-		if dst.alive {
+		if unit.alive {
 			nodes?.sounds.boomM.play()
-			nodes?.units[dst.id]?.update(dst)
+			nodes?.units[dst]?.update(unit)
 		} else {
 			nodes?.sounds.boomL.play()
-			removeUnit(dst.id)
+			removeUnit(dst)
 		}
 	}
 
@@ -72,8 +70,7 @@ private extension GameScene {
 	}
 
 	func processBuild() {
-		guard let engineerRef = state.units[state.cursor],
-			  state.units[engineerRef].stats.unitType == .engineer
+		guard let (i, u) = state.units[state.cursor], u.stats.unitType == .engineer
 		else { return }
 
 		show(MenuState(
@@ -84,7 +81,7 @@ private extension GameScene {
 					text: template.type.imageName,
 					description: "\(template.description)" + " / \(state.player.prestige)",
 					action: { state in
-						state.build(template, by: engineerRef)
+						state.build(template, by: i)
 					}
 				)
 			}

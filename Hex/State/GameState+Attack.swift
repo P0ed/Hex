@@ -1,27 +1,28 @@
 extension GameState {
 
-	func targets(unit: Unit) -> [Unit] {
-		!unit.canAttack ? [] : enemyUnits.filter { u in
-			player.visible.contains(u.position) && unit.canHit(unit: u)
+	func targets(unit: Unit) -> [(UID, Unit)] {
+		!unit.canAttack ? [] : units.compactMap { i, u in
+			u.country.team != unit.country.team
+			&& player.visible.contains(u.position)
+			&& unit.canHit(unit: u)
+			? (i, u) : nil
 		}
 	}
 
-	func artSupport(for defender: Ref<Unit>, attacker: Ref<Unit>) -> Ref<Unit>? {
+	func artSupport(for defender: UID, attacker: UID) -> UID? {
 		units[attacker].stats.unitType == .art
 		? nil
 		: units[defender].position.neighbors.firstMap { hx in
-			units[hx].flatMap { ref in
-				let u = units[ref]
-
-				return u.country.team == units[defender].country.team
+			units[hx].flatMap { i, u in
+				u.country.team == units[defender].country.team
 				&& u.stats.unitType == .art
 				&& u.canHit(unit: units[attacker])
-				? ref : nil
+				? i : nil
 			}
 		}
 	}
 
-	mutating func fire(src: Ref<Unit>, dst: Ref<Unit>, defBonus: UInt8 = 0) {
+	mutating func fire(src: UID, dst: UID, defBonus: UInt8 = 0) {
 		let atk = Int(units[src].stats.atk + units[src].stats.stars)
 		let def = Int(units[dst].stats.def + units[dst].stats.stars + defBonus)
 
@@ -31,12 +32,13 @@ extension GameState {
 		units[dst].stats.ent.decrement()
 
 		units[src].stats.ammo.decrement()
-		units[src].stats.exp.increment(by: hpLeft != 0 ? dmg : dmg + 4)
+		units[src].stats.exp.increment(by: hpLeft != 0 ? dmg : dmg * 2)
 
-		events.append(.attack(units[src].id, units[dst]))
+		camera = units[dst].position
+		events.append(.attack(src, dst, units[dst]))
 	}
 
-	mutating func attack(src: Ref<Unit>, dst: Ref<Unit>) {
+	mutating func attack(src: UID, dst: UID) {
 		guard units[src].country == country,
 			  units[src].country.team != units[dst].country.team,
 			  units[src].canAttack, units[src].canHit(unit: units[dst])
@@ -57,12 +59,6 @@ extension GameState {
 			fire(src: dst, dst: src)
 		}
 
-		selectUnit(units[src].hasActions && units[src].alive ? units[src].id : .none)
-
-		if !units[src].alive {
-			units.fastRemove(at: src.index)
-		} else if !units[dst].alive {
-			units.fastRemove(at: dst.index)
-		}
+		selectUnit(units[src].alive && units[src].hasActions ? src : .none)
 	}
 }
