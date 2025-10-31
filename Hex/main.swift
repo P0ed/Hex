@@ -3,13 +3,19 @@ import SpriteKit
 
 private let window = NSWindow(
 	contentRect: NSRect(origin: .zero, size: .window),
-	styleMask: [.titled, .closable, .resizable, .miniaturizable],
+	styleMask: [.titled, .fullSizeContentView, .closable, .resizable, .miniaturizable],
 	backing: .buffered,
 	defer: false
 )
-window.title = "Hex General"
+window.titlebarAppearsTransparent = true
 window.center()
 window.makeKeyAndOrderFront(nil)
+
+private let view = SKView(frame: window.contentLayoutRect)
+view.autoresizingMask = [.width, .height]
+view.presentScene(GameScene(size: .scene))
+window.contentView = view
+window.makeFirstResponder(view)
 
 private let willClose = NotificationCenter.default.addObserver(
 	forName: NSWindow.willCloseNotification,
@@ -17,11 +23,5 @@ private let willClose = NotificationCenter.default.addObserver(
 	queue: .main,
 	using: { _ in exit(0) }
 )
-
-private let view = SKView(frame: window.contentLayoutRect)
-view.autoresizingMask = [.width, .height]
-view.presentScene(GameScene(size: .scene))
-window.contentView?.addSubview(view)
-window.makeFirstResponder(view)
 
 NSApplication.shared.run()

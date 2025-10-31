@@ -74,7 +74,7 @@ extension GameScene {
 		fog.zPosition = 0.4
 
 		let terrain = SKTileMapNode(tiles: .terrain, radius: state.map.radius)
-		terrain.position = .init(x: -.hexR * 1.5, y: .hexR * 0.31)
+		terrain.position = .init(x: -.hexR * 1.5, y: .hexR * 0.4)
 		[buildings, flags, grid, fog].forEach(terrain.addChild)
 		addChild(terrain)
 
@@ -108,8 +108,8 @@ extension GameScene {
 	}
 
 	private func addCursor() -> SKNode {
-		let cursor = SKShapeNode(hex: .zero, base: .clear, line: .lineCursor)
-		cursor.lineWidth = 1.0
+		let cursor = SKSpriteNode(imageNamed: "Grid")
+		cursor.texture?.filteringMode = .nearest
 		cursor.zPosition = 3.0
 		addChild(cursor)
 		return cursor

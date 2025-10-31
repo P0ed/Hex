@@ -4,7 +4,7 @@ extension GameState {
 		[
 			Unit(country: country, position: .zero, stats: .shop >< .inf),
 			Unit(country: country, position: .zero, stats: .shop >< .recon),
-			Unit(country: country, position: .zero, stats: .shop >< .tank),
+			Unit(country: country, position: .zero, stats: .shop >< .t72),
 			Unit(country: country, position: .zero, stats: .shop >< .art),
 			Unit(country: country, position: .zero, stats: .shop >< .builder),
 			Unit(country: country, position: .zero, stats: .shop >< .truck),

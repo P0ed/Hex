@@ -117,9 +117,13 @@ extension GameState {
 
 	private mutating func eliminatePlayers() {
 		players = players.mapInPlace { player in
-			player.alive = !buildings.contains { building in
-				building.type == .city && building.country == player.country
-			}
+			player.alive = countryHasCities(player.country)
+		}
+	}
+
+	private func countryHasCities(_ country: Country) -> Bool {
+		buildings.contains { b in
+			b.type == .city && b.country == country
 		}
 	}
 }

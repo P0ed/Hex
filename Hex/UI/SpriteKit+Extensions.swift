@@ -75,7 +75,7 @@ extension Double {
 }
 
 extension CGSize {
-	static var hex: CGSize { .init(width: 2.0 * Double.hexR, height: 2.0 * Double.hexR) }
+	static var hex: CGSize { .init(width: 64.0, height: 56.0) }
 	static var scene: CGSize { .init(width: 640.0, height: 400.0) }
 	static var window: CGSize { .init(width: 1280.0, height: 800.0) }
 }

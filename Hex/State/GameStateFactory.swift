@@ -3,7 +3,7 @@ import GameplayKit
 @MainActor
 extension GameState {
 
-	static func random(radius: Int = 12, seed: Int = 0) -> GameState {
+	static func random(radius: Int = 64, seed: Int = 0) -> GameState {
 
 		GameState(
 			map: Map(radius: radius, seed: seed),
@@ -23,20 +23,21 @@ extension GameState {
 				Unit(country: .ukr, position: Hex(0, -3), stats: .base >< .builder),
 				Unit(country: .ukr, position: Hex(0, -4), stats: .base >< .truck),
 				Unit(country: .ukr, position: Hex(-4, 0), stats: .base >< .inf >< .veteran),
-				Unit(country: .ukr, position: Hex(0, -1), stats: .base >< .tank >< .veteran),
+				Unit(country: .ukr, position: Hex(0, -1), stats: .base >< .strv122 >< .elite),
+				Unit(country: .ukr, position: Hex(0, -2), stats: .base >< .strv122 >< .elite),
 				Unit(country: .ukr, position: Hex(-4, 1), stats: .base >< .recon >< .elite),
 				Unit(country: .ukr, position: Hex(-1, -1), stats: .base >< .art >< .veteran),
 
 				Unit(country: .usa, position: Hex(0, 3), stats: .base >< .inf),
 				Unit(country: .usa, position: Hex(3, 1), stats: .base >< .inf),
-				Unit(country: .usa, position: Hex(4, 2), stats: .base >< .tank),
+				Unit(country: .usa, position: Hex(4, 2), stats: .base >< .m1A2),
 				Unit(country: .usa, position: Hex(-2, 5), stats: .base >< .art),
 				Unit(country: .usa, position: Hex(2, 3), stats: .base >< .art),
 
-				Unit(country: .rus, position: Hex(10, 0), stats: .base >< .tank),
-				Unit(country: .rus, position: Hex(10, -1), stats: .base >< .tank),
-				Unit(country: .rus, position: Hex(11, -1), stats: .base >< .tank),
-				Unit(country: .rus, position: Hex(11, -3), stats: .base >< .tank),
+				Unit(country: .rus, position: Hex(10, 0), stats: .base >< .t72),
+				Unit(country: .rus, position: Hex(10, -1), stats: .base >< .t72),
+				Unit(country: .rus, position: Hex(11, -1), stats: .base >< .t72),
+				Unit(country: .rus, position: Hex(11, -3), stats: .base >< .t72),
 			]
 		)
 	}

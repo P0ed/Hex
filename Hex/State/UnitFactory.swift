@@ -53,15 +53,54 @@ extension Stats {
 		}
 	}
 
-	static var tank: Self {
+	static var t72: Self {
 		.make { stats in
 			stats.unitType = .tank
-			stats.atk = 7
+			stats.atk = 8
+			stats.def = 7
+			stats.mov = 6
+			stats.rng = 1
+			stats.armor = 3
+			stats.hardAttack = 3
+			stats.moveType = .track
+		}
+	}
+
+	static var m1A2: Self {
+		.make { stats in
+			stats.unitType = .tank
+			stats.atk = 10
 			stats.def = 9
-			stats.mov = 5
+			stats.mov = 6
+			stats.rng = 1
+			stats.armor = 3
+			stats.hardAttack = 3
+			stats.moveType = .track
+		}
+	}
+
+	static var strv122: Self {
+		.make { stats in
+			stats.unitType = .tank
+			stats.atk = 9
+			stats.def = 10
+			stats.mov = 6
+			stats.rng = 1
+			stats.armor = 3
+			stats.hardAttack = 3
+			stats.moveType = .track
+		}
+	}
+
+	static var strf90: Self {
+		.make { stats in
+			stats.unitType = .tank
+			stats.atk = 8
+			stats.def = 9
+			stats.mov = 7
 			stats.rng = 1
 			stats.armor = 2
-			stats.hardAttack = 1
+			stats.hardAttack = 2
 			stats.moveType = .track
 		}
 	}
