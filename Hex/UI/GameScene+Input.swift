@@ -27,7 +27,8 @@ extension GameScene {
 		case "z": apply(.scale(1.0))
 		case "x": apply(.scale(2.0))
 		case "c": apply(.scale(4.0))
-		case "v": nodes?.grid.isHidden.toggle()
+		case "v": apply(.scale(8.0))
+		case "g": nodes?.grid.isHidden.toggle()
 
 		case "f" where flags.contains(.command): view?.window?.toggleFullScreen(nil)
 		case "q" where flags.contains(.command): exit(0)
@@ -40,10 +41,10 @@ extension GameScene {
 		if menuState == nil {
 			let location = event.location(in: nodes.grid)
 			apply(.hex(
-				state.map.converting(
-					col: nodes.grid.tileColumnIndex(fromPosition: location),
-					row: nodes.grid.tileRowIndex(fromPosition: location)
-				)
+				state.map.converting(XY(
+					nodes.grid.tileColumnIndex(fromPosition: location),
+					nodes.grid.tileRowIndex(fromPosition: location)
+				))
 			))
 		} else {
 			guard self.nodes(at: event.location(in: self))

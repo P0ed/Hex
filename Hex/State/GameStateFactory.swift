@@ -1,19 +1,16 @@
-import GameplayKit
-
 @MainActor
 extension GameState {
 
-	static func random(radius: Int = 64, seed: Int = 0) -> GameState {
-
+	static func random(size: Int = 8, seed: Int = 0) -> GameState {
 		GameState(
-			map: Map(radius: radius, seed: seed),
+			map: Map(width: size * 4, height: size * 2, seed: seed),
 			players: [
 				Player(country: .ukr),
 				Player(country: .usa, ai: true),
 				Player(country: .rus, ai: true),
 			],
 			buildings: [
-				Building(country: .ukr, position: Hex(-1, -3), type: .city),
+				Building(country: .ukr, position: Hex(-5, -2), type: .city),
 				Building(country: .usa, position: Hex(2, 4), type: .city),
 				Building(country: .usa, position: Hex(-2, 6), type: .city),
 				Building(country: .rus, position: Hex(10, 1), type: .city),
@@ -40,26 +37,5 @@ extension GameState {
 				Unit(country: .rus, position: Hex(11, -3), stats: .base >< .t72),
 			]
 		)
-	}
-}
-
-@MainActor
-extension Map {
-
-	init(radius: Int, seed: Int) {
-		self = Map(radius: radius)
-
-		let height = GKNoiseMap.height(radius: radius, seed: seed)
-		let humidity = GKNoiseMap.humidity(radius: radius, seed: seed + 1)
-
-		let pairs = [Hex].circle(radius).map { hex in
-			let (x, y) = converting(hex)
-			let pos = SIMD2<Int32>(Int32(x), Int32(y))
-			return (hex, Terrain.terrain(
-				at: height.value(at: pos),
-				humidity: humidity.value(at: pos)
-			))
-		}
-		terrain = Dictionary(pairs, uniquingKeysWith: { _, r in r })
 	}
 }

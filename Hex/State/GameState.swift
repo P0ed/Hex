@@ -19,7 +19,7 @@ struct GameState: ~Copyable {
 
 extension GameState {
 
-	init(map: Map, players: [Player], buildings: [Building], units: [Unit]) {
+	init(map: consuming Map, players: [Player], buildings: [Building], units: [Unit]) {
 		self.map = map
 		self.players = players
 		self.buildings = buildings
@@ -43,7 +43,7 @@ struct Player: Hashable, Codable {
 	var country: Country
 	var ai: Bool = false
 	var alive: Bool = true
-	var prestige: UInt16 = 1000
+	var prestige: UInt16 = 0x2FF
 	var visible: Set<Hex> = []
 }
 

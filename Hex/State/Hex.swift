@@ -14,6 +14,16 @@ struct Hex: Hashable, Codable {
 	}
 }
 
+struct XY: Hashable {
+	var x: Int
+	var y: Int
+
+	init(_ x: Int, _ y: Int) {
+		self.x = x
+		self.y = y
+	}
+}
+
 extension Hex {
 
 	static var zero: Hex { Hex(0, 0) }
@@ -61,6 +71,18 @@ extension Hex {
 
 	var corners: [Point] {
 		(0..<6).map { [pt] c in pt + .hexCorner(c) }
+	}
+}
+
+extension [Hex] {
+
+	static func circle(_ radius: Int) -> Self {
+		let _radius = -radius
+		let qs = (_radius...radius)
+		return qs.flatMap { q in
+			let rs = Swift.max(_radius, _radius - q)...Swift.min(radius, radius - q)
+			return rs.map { r in Hex(q, r) }
+		}
 	}
 }
 

@@ -34,11 +34,10 @@ extension SKTileGroup {
 	static let mountains = make(.mountains)
 }
 
-@MainActor
 extension Terrain {
 
-	static func terrain(at height: Float, humidity: Float) -> Terrain {
-		switch height {
+	init(height: Float, humidity: Float) {
+		self = switch height {
 		case 0.0 ..< 0.3: .forest
 		case 0.3 ..< 0.6: humidity > 0 ? .forest : .hills
 		case 0.6 ..< 0.8: .hills
@@ -46,13 +45,18 @@ extension Terrain {
 		default: .field
 		}
 	}
+}
 
-	var tileGroup: SKTileGroup {
+@MainActor
+extension Terrain {
+
+	var tileGroup: SKTileGroup? {
 		switch self {
 		case .field: .field
 		case .forest: .forest
 		case .hills: .hills
 		case .mountains: .mountains
+		case .none: .none
 		}
 	}
 }
@@ -97,31 +101,30 @@ extension SKTileSet {
 
 @MainActor
 extension SKTileMapNode {
-	convenience init(tiles: SKTileSet, radius: Int) {
+	convenience init(tiles: SKTileSet, width: Int, height: Int) {
 		self.init(
 			tileSet: tiles,
-			columns: radius * 2 + 1,
-			rows: radius * 2 + 1,
+			columns: width,
+			rows: height,
 			tileSize: .hex
 		)
 	}
 }
 
-@MainActor
 extension GKNoiseMap {
 
-	private static func map(radius: Int, source: GKNoiseSource) -> GKNoiseMap {
+	private static func map(size: SIMD2<Int32>, source: GKNoiseSource) -> GKNoiseMap {
 		GKNoiseMap(
 			GKNoise(source),
 			size: .one,
 			origin: .zero,
-			sampleCount: SIMD2<Int32>(Int32(radius) * 2, Int32(radius) * 2),
+			sampleCount: size,
 			seamless: false
 		)
 	}
 
-	static func height(radius: Int, seed: Int) -> GKNoiseMap {
-		.map(radius: radius, source: GKPerlinNoiseSource(
+	static func height(size: SIMD2<Int32>, seed: Int) -> GKNoiseMap {
+		.map(size: size, source: GKPerlinNoiseSource(
 			frequency: 10.0,
 			octaveCount: 6,
 			persistence: 0.47,
@@ -130,8 +133,8 @@ extension GKNoiseMap {
 		))
 	}
 
-	static func humidity(radius: Int, seed: Int) -> GKNoiseMap {
-		.map(radius: radius, source: GKVoronoiNoiseSource(
+	static func humidity(size: SIMD2<Int32>, seed: Int) -> GKNoiseMap {
+		.map(size: size, source: GKVoronoiNoiseSource(
 			frequency: 6.8,
 			displacement: 1.0,
 			distanceEnabled: false,

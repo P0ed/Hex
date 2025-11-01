@@ -60,29 +60,28 @@ extension GameScene {
 	}
 
 	private func addMap() -> MapNodes {
-		let buildings = SKTileMapNode(tiles: .buildings, radius: state.map.radius)
+		let buildings = SKTileMapNode(tiles: .buildings, width: state.map.width, height: state.map.height)
 		buildings.zPosition = 0.1
 
-		let flags = SKTileMapNode(tiles: .flags, radius: state.map.radius)
+		let flags = SKTileMapNode(tiles: .flags, width: state.map.width, height: state.map.height)
 		flags.zPosition = 0.2
 
-		let grid = SKTileMapNode(tiles: .cells, radius: state.map.radius)
+		let grid = SKTileMapNode(tiles: .cells, width: state.map.width, height: state.map.height)
 		grid.zPosition = 0.3
 		grid.isHidden = true
 
-		let fog = SKTileMapNode(tiles: .cells, radius: state.map.radius)
+		let fog = SKTileMapNode(tiles: .cells, width: state.map.width, height: state.map.height)
 		fog.zPosition = 0.4
 
-		let terrain = SKTileMapNode(tiles: .terrain, radius: state.map.radius)
-		terrain.position = .init(x: -.hexR * 1.5, y: .hexR * 0.4)
+		let terrain = SKTileMapNode(tiles: .terrain, width: state.map.width, height: state.map.height)
+		terrain.position = .init(x: -24.0, y: -14.0)
 		[buildings, flags, grid, fog].forEach(terrain.addChild)
 		addChild(terrain)
 
-		state.map.cells.forEach { hex in
-			let (x, y) = state.map.converting(hex)
-			let tileGroup = state.map[hex].tileGroup
-			terrain.setTileGroup(tileGroup, forColumn: x, row: y)
-			grid.setTileGroup(.grid, forColumn: x, row: y)
+		state.map.indices.forEach { xy in
+			let tileGroup = state.map[xy].tileGroup
+			terrain.setTileGroup(tileGroup, forColumn: xy.x, row: xy.y)
+			grid.setTileGroup(.grid, forColumn: xy.x, row: xy.y)
 		}
 
 		return MapNodes(
@@ -142,11 +141,10 @@ extension GameScene {
 	func updateFogIfNeeded() -> Set<Hex> {
 		let fog = state.selectable ?? state.player.visible
 		if self.fog != fog {
-			state.map.cells.forEach { hex in
-				let (x, y) = state.map.converting(hex)
+			state.map.indices.forEach { xy in
 				nodes?.fog.setTileGroup(
-					fog.contains(hex) ? nil : .fog,
-					forColumn: x, row: y
+					fog.contains(state.map.converting(xy)) ? nil : .fog,
+					forColumn: xy.x, row: xy.y
 				)
 			}
 			state.units.forEach { i, u in
@@ -158,15 +156,15 @@ extension GameScene {
 
 	func updateBuildings() {
 		state.buildings.forEach { b in
-			let (x, y) = state.map.converting(b.position)
+			let xy = state.map.converting(b.position)
 
 			nodes?.buildings.setTileGroup(
 				b.type.tile,
-				forColumn: x, row: y
+				forColumn: xy.x, row: xy.y
 			)
 			nodes?.flags.setTileGroup(
 				b.country.flag,
-				forColumn: x, row: y
+				forColumn: xy.x, row: xy.y
 			)
 		}
 	}
@@ -180,8 +178,4 @@ extension GameScene {
 	func updateStatus() {
 		nodes?.status.text = menuState?.statusText ?? state.statusText
 	}
-}
-
-extension Country {
-
 }
