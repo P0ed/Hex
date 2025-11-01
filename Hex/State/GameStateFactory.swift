@@ -1,7 +1,7 @@
 @MainActor
 extension GameState {
 
-	static func random(size: Int = 8, seed: Int = 0) -> GameState {
+	static func random(size: Int = 4, seed: Int = 0) -> GameState {
 		GameState(
 			map: Map(width: size * 4, height: size * 2, seed: seed),
 			players: [

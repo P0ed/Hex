@@ -142,8 +142,8 @@
 				5F2A33BE2EA93AC3008A0A95 /* SpriteKit+Extensions.swift */,
 				5F2A33BF2EA93AC3008A0A95 /* TileSprites.swift */,
 				5F2A33C02EA93AC3008A0A95 /* UnitSprites.swift */,
-				5F5276622EB56FE10066AD6A /* HexMap.swift */,
 				5FCABBC92EAA787B008EE894 /* Strings.swift */,
+				5F5276622EB56FE10066AD6A /* HexMap.swift */,
 				5F5276602EB56FB10066AD6A /* TileMap.fsh */,
 			);
 			path = UI;

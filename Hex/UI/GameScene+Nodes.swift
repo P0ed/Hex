@@ -25,6 +25,7 @@ extension GameScene {
 	}
 
 	struct MapNodes {
+		var terrain: HexMapNode
 		var buildings: SKTileMapNode
 		var fog: SKTileMapNode
 		var flags: SKTileMapNode
@@ -72,19 +73,28 @@ extension GameScene {
 
 		let fog = SKTileMapNode(tiles: .cells, width: state.map.width, height: state.map.height)
 		fog.zPosition = 0.4
+		fog.isHidden = true
 
-		let terrain = SKTileMapNode(tiles: .terrain, width: state.map.width, height: state.map.height)
-		terrain.position = .init(x: -24.0, y: -14.0)
-		[buildings, flags, grid, fog].forEach(terrain.addChild)
-		addChild(terrain)
+//		let terrain = SKTileMapNode(tiles: .terrain, width: state.map.width, height: state.map.height)
+//		terrain.position = .init(x: -24.0, y: -14.0)
+//		[buildings, flags, grid, fog].forEach(terrain.addChild)
+//		addChild(terrain)
+
+		let terrain2 = HexMapNode(map: state.map, terrainAtlas: .init(image: .terrainAtlas))
+		[buildings, flags, grid, fog].forEach { n in
+			n.position = .init(x: -24.0, y: -14.0)
+			terrain2.addChild(n)
+		}
+		addChild(terrain2)
 
 		state.map.indices.forEach { xy in
-			let tileGroup = state.map[xy].tileGroup
-			terrain.setTileGroup(tileGroup, forColumn: xy.x, row: xy.y)
+//			let tileGroup = state.map[xy].tileGroup
+//			terrain.setTileGroup(tileGroup, forColumn: xy.x, row: xy.y)
 			grid.setTileGroup(.grid, forColumn: xy.x, row: xy.y)
 		}
 
 		return MapNodes(
+			terrain: terrain2,
 			buildings: buildings,
 			fog: fog,
 			flags: flags,

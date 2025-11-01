@@ -1,9 +1,17 @@
+import Foundation
+
 struct Map: ~Copyable {
 	private var terrain: InlineArray<2048, Terrain>
 	var width: Int
 	var height: Int
 
 	var size: Int { width * height }
+
+	var terrainData: Data {
+		var data = Data(capacity: size)
+		for xy in indices { data.append(self[xy].rawValue) }
+		return data
+	}
 
 	init(width: Int, height: Int) {
 		precondition(width > 0 && height > 0 && width * height <= 2048)
