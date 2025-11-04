@@ -18,7 +18,7 @@ extension GameState {
 		}
 	}
 
-	private var nextPurchase: (Unit, Hex)? {
+	private var nextPurchase: (Unit, XY)? {
 		player.prestige < 500 ? .none : buildings.firstMap { [country] b in
 			b.country == country && b.type == .city && units[b.position] == nil
 			? unitTemplates.firstMap { t in (t, b.position) }
@@ -34,7 +34,7 @@ extension GameState {
 		}
 	}
 
-	private func nextMove(target: Hex) -> (UID, Hex)? {
+	private func nextMove(target: XY) -> (UID, XY)? {
 		units.firstMap { [country] i, u in
 			u.country == country
 			? moves(for: u)

@@ -29,15 +29,15 @@ private extension GameScene {
 		nodes?.sounds.mov.play()
 		await nodes?.units[uid]?.run(.move(
 			to: state.units[uid].position.point,
-			duration: CGFloat(distance) * 0.1
+			duration: CGFloat(distance) * 0.047
 		))
 	}
 
 	func processAttack(src: UID, dst: UID, unit: Unit) async {
-		nodes?.units[src]?.showSight(for: 1.0)
-		await run(.wait(forDuration: 0.47))
-		nodes?.units[dst]?.showSight(for: 1.0 - 0.47)
-		await run(.wait(forDuration: 0.47))
+		nodes?.units[src]?.showSight(for: 0.68)
+		await run(.wait(forDuration: 0.33))
+		nodes?.units[dst]?.showSight(for: 0.68 - 0.33)
+		await run(.wait(forDuration: 0.33))
 
 		if unit.alive {
 			nodes?.sounds.boomM.play()
@@ -61,8 +61,8 @@ private extension GameScene {
 					icon: template.imageName,
 					text: "\(template.stats.unitType)",
 					description: template.description + " / \(state.player.prestige)",
-					action: { [hex = state.cursor] state in
-						state.buy(template, at: hex)
+					action: { [xy = state.cursor] state in
+						state.buy(template, at: xy)
 					}
 				)
 			}

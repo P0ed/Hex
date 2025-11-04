@@ -1,4 +1,4 @@
-enum Direction { case left, right, down, up }
+enum Direction { case right, up, left, down }
 enum Target { case prev, next }
 enum Action { case a, b, c, d }
 
@@ -7,7 +7,7 @@ enum Input {
 	case target(Target)
 	case action(Action)
 	case menu
-	case hex(Hex)
+	case tile(XY)
 	case index(Int)
 	case scale(Double)
 }
@@ -27,7 +27,7 @@ extension GameState {
 		case .action(.d): break
 		case .target(.prev): prevUnit()
 		case .target(.next): nextUnit()
-		case .hex(let hex): select(hex)
+		case .tile(let xy): select(xy)
 		case .index: break
 		case .scale(let value): scale = value
 		}
@@ -37,16 +37,16 @@ extension GameState {
 @MainActor
 private extension GameState {
 
-	mutating func select(_ hex: Hex) {
-		guard canHandleInput, map.contains(hex) else { return }
+	mutating func select(_ xy: XY) {
+		guard canHandleInput, map.contains(xy) else { return }
 
-		cursor = hex
+		cursor = xy
 		primaryAction()
 	}
 
 	mutating func moveCursor(_ direction: Direction) {
-		let hex = cursor.neighbor(direction)
-		if map.contains(hex) { cursor = hex }
+		let xy = cursor.neighbor(direction)
+		if map.contains(xy) { cursor = xy }
 	}
 
 	mutating func primaryAction() {

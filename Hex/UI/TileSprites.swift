@@ -8,7 +8,7 @@ extension SKTileGroup {
 		SKTileGroup(
 			tileDefinition: SKTileDefinition(
 				texture: .init(image: image),
-				size: .hex
+				size: .tile
 			)
 		)
 	}
@@ -83,19 +83,19 @@ extension SKTileSet {
 
 	static let cells = SKTileSet(
 		tileGroups: [.grid, .fog],
-		tileSetType: .hexagonalFlat
+		tileSetType: .isometric
 	)
 	static let terrain = SKTileSet(
 		tileGroups: [.field, .forest, .hills, .mountains],
-		tileSetType: .hexagonalFlat
+		tileSetType: .isometric
 	)
 	static let buildings = SKTileSet(
 		tileGroups: [.city, .barracks, .factory, .mammut],
-		tileSetType: .hexagonalFlat
+		tileSetType: .isometric
 	)
 	static let flags = SKTileSet(
 		tileGroups: [.ukr, .usa, .dnr, .lnr, .rus, .irn],
-		tileSetType: .hexagonalFlat
+		tileSetType: .isometric
 	)
 }
 
@@ -106,8 +106,12 @@ extension SKTileMapNode {
 			tileSet: tiles,
 			columns: width,
 			rows: height,
-			tileSize: .hex
+			tileSize: .tile
 		)
+	}
+
+	func setTileGroup(_ tileGroup: SKTileGroup?, at xy: XY) {
+		setTileGroup(tileGroup, forColumn: xy.x, row: xy.y)
 	}
 }
 

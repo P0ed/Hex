@@ -93,8 +93,8 @@ extension GameState {
 		units[id] = unit
 	}
 
-	func neighbors(at position: Hex) -> [UID] {
-		position.neighbors.compactMap { hx in units[hx]?.0 }
+	func neighbors(at position: XY) -> [UID] {
+		position.n8.compactMap { xy in units[xy]?.0 }
 	}
 
 	private mutating func captureCities() {

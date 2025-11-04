@@ -122,7 +122,7 @@ extension Stats {
 			stats.atk = 3
 			stats.def = 5
 			stats.armor = 1
-			stats.mov = 6
+			stats.mov = 7
 			stats.rng = 1
 			stats.moveType = .track
 		}

@@ -61,7 +61,7 @@ extension Array {
 
 extension [Building] {
 
-	subscript(_ hex: Hex) -> Building? {
-		first { u in u.position == hex }
+	subscript(_ xy: XY) -> Building? {
+		first { u in u.position == xy }
 	}
 }

@@ -83,7 +83,7 @@ extension Speicher {
 
 extension Speicher where Element == Unit {
 
-	subscript(_ hex: Hex) -> (UID, Unit)? {
-		firstMap { i, u in u.position == hex ? (i, u) : nil }
+	subscript(_ xy: XY) -> (UID, Unit)? {
+		firstMap { i, u in u.position == xy ? (i, u) : nil }
 	}
 }

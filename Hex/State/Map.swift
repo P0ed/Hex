@@ -1,7 +1,7 @@
 import Foundation
 
 struct Map: ~Copyable {
-	private var terrain: InlineArray<2048, Terrain>
+	private var terrain: InlineArray<1024, Terrain>
 	var width: Int
 	var height: Int
 
@@ -14,7 +14,7 @@ struct Map: ~Copyable {
 	}
 
 	init(width: Int, height: Int) {
-		precondition(width > 0 && height > 0 && width * height <= 2048)
+		precondition(width > 0 && height > 0 && width * height <= 1024)
 		self.width = width
 		self.height = height
 		terrain = .init(repeating: .none)
@@ -32,32 +32,13 @@ struct Map: ~Copyable {
 		}
 	}
 
-	subscript(hex: Hex) -> Terrain {
-		self[converting(hex)]
-	}
-
 	subscript(xy: XY) -> Terrain {
-		get { terrain[xy.x + xy.y * width] }
-		set { terrain[xy.x + xy.y * width] = newValue }
+		get { contains(xy) ? terrain[xy.x + xy.y * width] : .none }
+		set { contains(xy) ? terrain[xy.x + xy.y * width] = newValue : () }
 	}
 
-	func contains(_ hex: Hex) -> Bool {
-		let xy = converting(hex)
+	func contains(_ xy: XY) -> Bool {
 		return xy.x >= 0 && xy.x < width && xy.y >= 0 && xy.y < height
-	}
-
-	func converting(_ hex: Hex) -> XY {
-		XY(
-			width / 2 + hex.q,
-			height / 2 + hex.r + (hex.q - hex.q & 1) / 2
-		)
-	}
-
-	func converting(_ xy: XY) -> Hex {
-		Hex(
-			xy.x - width / 2,
-			xy.y - (xy.x - xy.x & 1) / 2
-		)
 	}
 }
 

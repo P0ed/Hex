@@ -1,6 +1,6 @@
 struct Unit: Hashable, Codable {
 	var country: Country
-	var position: Hex
+	var position: XY
 	var stats: Stats
 }
 
@@ -108,7 +108,7 @@ enum UnitType: UInt8, Hashable, Codable {
 extension Unit: DeadOrAlive {
 
 	static var dead: Unit {
-		.init(country: .dnr, position: .zero, stats: .init(rawValue: 0))
+		.init(country: .dnr, position: .zero, stats: .empty)
 	}
 
 	var alive: Bool { stats.hp > 0 }
@@ -121,7 +121,7 @@ extension Unit {
 	var canAttack: Bool { stats.ap != 0 && stats.ammo != 0 }
 
 	func canHit(unit: Unit) -> Bool {
-		position.distance(to: unit.position) <= stats.rng
+		position.distance(to: unit.position) <= stats.rng * 2
 	}
 
 	var cost: UInt16 {

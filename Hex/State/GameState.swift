@@ -8,10 +8,10 @@ struct GameState: ~Copyable {
 
 	var turn: UInt32 = 0
 
-	var cursor: Hex = .zero
-	var camera: Hex = .zero
+	var cursor: XY = .zero
+	var camera: XY = .zero
 	var selectedUnit: UID?
-	var selectable: Set<Hex>?
+	var selectable: Set<XY>?
 	var scale: Double = 1.0
 
 	var events: [Event] = []
@@ -31,7 +31,7 @@ extension GameState {
 
 struct Building: Hashable, Codable {
 	var country: Country
-	var position: Hex
+	var position: XY
 	var type: BuildingType
 }
 
@@ -44,7 +44,7 @@ struct Player: Hashable, Codable {
 	var ai: Bool = false
 	var alive: Bool = true
 	var prestige: UInt16 = 0x2FF
-	var visible: Set<Hex> = []
+	var visible: Set<XY> = []
 }
 
 enum Country: UInt8, Hashable, Codable {

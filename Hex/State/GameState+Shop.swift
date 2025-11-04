@@ -18,7 +18,7 @@ extension GameState {
 		]
 	}
 
-	mutating func buy(_ template: Unit, at position: Hex) {
+	mutating func buy(_ template: Unit, at position: XY) {
 		guard player.prestige >= template.cost, units[position] == nil else { return }
 
 		let unit = modifying(template) { u in

@@ -40,11 +40,11 @@ extension GameScene {
 		guard let nodes else { return }
 		if menuState == nil {
 			let location = event.location(in: nodes.grid)
-			apply(.hex(
-				state.map.converting(XY(
+			apply(.tile(
+				XY(
 					nodes.grid.tileColumnIndex(fromPosition: location),
 					nodes.grid.tileRowIndex(fromPosition: location)
-				))
+				)
 			))
 		} else {
 			guard self.nodes(at: event.location(in: self))

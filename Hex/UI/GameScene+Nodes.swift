@@ -25,7 +25,7 @@ extension GameScene {
 	}
 
 	struct MapNodes {
-		var terrain: HexMapNode
+		var terrain: SKTileMapNode
 		var buildings: SKTileMapNode
 		var fog: SKTileMapNode
 		var flags: SKTileMapNode
@@ -73,28 +73,24 @@ extension GameScene {
 
 		let fog = SKTileMapNode(tiles: .cells, width: state.map.width, height: state.map.height)
 		fog.zPosition = 0.4
-		fog.isHidden = true
 
-//		let terrain = SKTileMapNode(tiles: .terrain, width: state.map.width, height: state.map.height)
-//		terrain.position = .init(x: -24.0, y: -14.0)
-//		[buildings, flags, grid, fog].forEach(terrain.addChild)
-//		addChild(terrain)
-
-		let terrain2 = HexMapNode(map: state.map, terrainAtlas: .init(image: .terrainAtlas))
+		let terrain = SKTileMapNode(tiles: .terrain, width: state.map.width, height: state.map.height)
+		terrain.anchorPoint = CGPoint(x: 0.0, y: 0.5)
+		terrain.position = CGPoint(x: -CGSize.tile.width * 0.5, y: 0.0)
 		[buildings, flags, grid, fog].forEach { n in
-			n.position = .init(x: -24.0, y: -14.0)
-			terrain2.addChild(n)
+			n.anchorPoint = CGPoint(x: 0.0, y: 0.5)
+			terrain.addChild(n)
 		}
-		addChild(terrain2)
+		addChild(terrain)
 
 		state.map.indices.forEach { xy in
-//			let tileGroup = state.map[xy].tileGroup
-//			terrain.setTileGroup(tileGroup, forColumn: xy.x, row: xy.y)
-			grid.setTileGroup(.grid, forColumn: xy.x, row: xy.y)
+			let tileGroup = state.map[xy].tileGroup
+			terrain.setTileGroup(tileGroup, at: xy)
+			grid.setTileGroup(.grid, at: xy)
 		}
 
 		return MapNodes(
-			terrain: terrain2,
+			terrain: terrain,
 			buildings: buildings,
 			fog: fog,
 			flags: flags,
@@ -107,13 +103,6 @@ extension GameScene {
 		addChild(camera)
 		self.camera = camera
 		return camera
-	}
-
-	private func addSelected() -> SKNode {
-		let selected = SKShapeNode(hex: .zero, base: .baseSelection, line: .lineSelection)
-		selected.zPosition = 2.0
-		addChild(selected)
-		return selected
 	}
 
 	private func addCursor() -> SKNode {
@@ -133,7 +122,7 @@ extension GameScene {
 		return label
 	}
 
-	func update(cursor: Hex, camera: Hex, scale: Double) {
+	func update(cursor: XY, camera: XY, scale: Double) {
 		let cursorPosition = state.cursor.point
 		if nodes?.cursor.position != cursorPosition {
 			nodes?.cursor.position = cursorPosition
@@ -148,14 +137,11 @@ extension GameScene {
 		}
 	}
 
-	func updateFogIfNeeded() -> Set<Hex> {
+	func updateFogIfNeeded() -> Set<XY> {
 		let fog = state.selectable ?? state.player.visible
 		if self.fog != fog {
 			state.map.indices.forEach { xy in
-				nodes?.fog.setTileGroup(
-					fog.contains(state.map.converting(xy)) ? nil : .fog,
-					forColumn: xy.x, row: xy.y
-				)
+				nodes?.fog.setTileGroup(fog.contains(xy) ? nil : .fog, at: xy)
 			}
 			state.units.forEach { i, u in
 				nodes?.units[i]?.isHidden = !state.player.visible.contains(u.position)
@@ -166,16 +152,8 @@ extension GameScene {
 
 	func updateBuildings() {
 		state.buildings.forEach { b in
-			let xy = state.map.converting(b.position)
-
-			nodes?.buildings.setTileGroup(
-				b.type.tile,
-				forColumn: xy.x, row: xy.y
-			)
-			nodes?.flags.setTileGroup(
-				b.country.flag,
-				forColumn: xy.x, row: xy.y
-			)
+			nodes?.buildings.setTileGroup(b.type.tile, at: b.position)
+			nodes?.flags.setTileGroup(b.country.flag, at: b.position)
 		}
 	}
 

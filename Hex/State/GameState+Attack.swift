@@ -12,7 +12,7 @@ extension GameState {
 	func artSupport(for defender: UID, attacker: UID) -> UID? {
 		units[attacker].stats.unitType == .art
 		? nil
-		: units[defender].position.neighbors.firstMap { hx in
+		: units[defender].position.n8.firstMap { hx in
 			units[hx].flatMap { i, u in
 				u.country.team == units[defender].country.team
 				&& u.stats.unitType == .art

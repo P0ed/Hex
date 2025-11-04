@@ -6,7 +6,7 @@ final class GameScene: SKScene {
 	private(set) var menuState: MenuState? { didSet { didSetMenu() } }
 
 	private(set) var nodes: Nodes?
-	private(set) var fog: Set<Hex>?
+	private(set) var fog: Set<XY>?
 
 	private let hid = HIDController()
 

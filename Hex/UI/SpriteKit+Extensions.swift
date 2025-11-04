@@ -10,16 +10,6 @@ extension SKColor {
 	static var textDefault: SKColor { .init(white: 0.01, alpha: 1.0) }
 }
 
-extension SKShapeNode {
-
-	convenience init(hex: Hex, base: SKColor, line: SKColor) {
-		self.init(path: .hex)
-		position = hex.point
-		fillColor = base
-		strokeColor = line
-	}
-}
-
 extension SKLabelNode {
 
 	enum Size: UInt8 {
@@ -53,29 +43,14 @@ extension CGPath {
 		transform(path)
 		return path
 	}
-
-	static var hex: CGPath {
-		.make { path in
-			path.addLines(between: Hex.zero.corners.map { pt in (pt * .hexR).cg })
-			path.closeSubpath()
-		}
-	}
 }
 
-extension Point {
-	var cg: CGPoint { .init(x: x, y: y) }
-}
-
-extension Hex {
-	var point: CGPoint { (pt * .hexR).cg }
-}
-
-extension Double {
-	static var hexR: Double { 32.0 }
+extension XY {
+	var point: CGPoint { pt * CGSize.tile.height }
 }
 
 extension CGSize {
-	static var hex: CGSize { .init(width: 64.0, height: 56.0) }
+	static var tile: CGSize { .init(width: 64.0, height: 32.0) }
 	static var scene: CGSize { .init(width: 640.0, height: 400.0) }
 	static var window: CGSize { .init(width: 1280.0, height: 800.0) }
 }
