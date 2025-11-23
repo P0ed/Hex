@@ -14,16 +14,15 @@ extension Unit {
 		node.addChild(sprite)
 
 		let plate = SKSpriteNode(imageNamed: "Plate")
-		plate.position = CGPoint(x: 0, y: -20.5)
+		plate.position = CGPoint(x: 0, y: -14.5)
 		plate.zPosition = 0.1
 		plate.texture?.filteringMode = .nearest
 		node.addChild(plate)
 
 		let label = SKLabelNode(size: .m, color: .textDefault)
 		label.name = "hp"
-		label.fontColor = .textDefault
 		label.text = "\(stats.hp)"
-		label.position = CGPoint(x: 0, y: -26.0)
+		label.position = CGPoint(x: 0, y: -20.0)
 		label.zPosition = 0.2
 		node.addChild(label)
 

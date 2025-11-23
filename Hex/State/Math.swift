@@ -1,15 +1,15 @@
 import CoreGraphics
 
 struct XY: Hashable, Codable {
-	private var _x: Int
-	private var _y: Int
+	private var _x: Int8
+	private var _y: Int8
 
 	var x: Int { Int(_x) }
 	var y: Int { Int(_y) }
 
 	init(_ x: Int, _ y: Int) {
-		_x = x
-		_y = y
+		_x = Int8(x)
+		_y = Int8(y)
 	}
 }
 
@@ -64,10 +64,6 @@ extension XY {
 		XY(lhs.x - rhs.x, lhs.y - rhs.y)
 	}
 
-	var pt: CGPoint {
-		CGPoint(x: Double(x + y) * 1.0, y: Double(y - x) * 0.5)
-	}
-
 	func circle(_ dr: Int) -> [XY] {
 		guard dr > 1 else { return [self] }
 
@@ -87,6 +83,10 @@ extension XY {
 			}
 		}
 		return arr
+	}
+
+	var pt: CGPoint {
+		CGPoint(x: Double(x), y: Double(y))
 	}
 }
 

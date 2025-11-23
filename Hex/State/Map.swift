@@ -7,12 +7,6 @@ struct Map: ~Copyable {
 
 	var size: Int { width * height }
 
-	var terrainData: Data {
-		var data = Data(capacity: size)
-		for xy in indices { data.append(self[xy].rawValue) }
-		return data
-	}
-
 	init(width: Int, height: Int) {
 		precondition(width > 0 && height > 0 && width * height <= 1024)
 		self.width = width

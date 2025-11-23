@@ -43,7 +43,7 @@ struct Player: Hashable, Codable {
 	var country: Country
 	var ai: Bool = false
 	var alive: Bool = true
-	var prestige: UInt16 = 0x2FF
+	var prestige: UInt16 = 0x300
 	var visible: Set<XY> = []
 }
 

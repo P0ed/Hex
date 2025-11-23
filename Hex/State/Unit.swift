@@ -115,6 +115,7 @@ extension Unit: DeadOrAlive {
 }
 
 extension Unit {
+
 	var untouched: Bool { stats.mp != 0 && stats.ap != 0 }
 	var hasActions: Bool { canMove || canAttack }
 	var canMove: Bool { stats.mp != 0 }

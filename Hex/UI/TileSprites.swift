@@ -83,24 +83,25 @@ extension SKTileSet {
 
 	static let cells = SKTileSet(
 		tileGroups: [.grid, .fog],
-		tileSetType: .isometric
+		tileSetType: .grid
 	)
 	static let terrain = SKTileSet(
 		tileGroups: [.field, .forest, .hills, .mountains],
-		tileSetType: .isometric
+		tileSetType: .grid
 	)
 	static let buildings = SKTileSet(
 		tileGroups: [.city, .barracks, .factory, .mammut],
-		tileSetType: .isometric
+		tileSetType: .grid
 	)
 	static let flags = SKTileSet(
 		tileGroups: [.ukr, .usa, .dnr, .lnr, .rus, .irn],
-		tileSetType: .isometric
+		tileSetType: .grid
 	)
 }
 
 @MainActor
 extension SKTileMapNode {
+
 	convenience init(tiles: SKTileSet, width: Int, height: Int) {
 		self.init(
 			tileSet: tiles,

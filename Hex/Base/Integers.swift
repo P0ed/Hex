@@ -3,7 +3,7 @@ extension UInt8 {
 	@discardableResult
 	mutating func increment(by amount: UInt8, cap: UInt8 = .max) -> UInt8 {
 		let old = self
-		self = UInt8(Swift.min(UInt16(cap), UInt16(self + amount)))
+		self = UInt8(Swift.min(UInt16(cap), UInt16(self) + UInt16(amount)))
 		return self - old
 	}
 

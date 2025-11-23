@@ -75,10 +75,10 @@ extension GameScene {
 		fog.zPosition = 0.4
 
 		let terrain = SKTileMapNode(tiles: .terrain, width: state.map.width, height: state.map.height)
-		terrain.anchorPoint = CGPoint(x: 0.0, y: 0.5)
-		terrain.position = CGPoint(x: -CGSize.tile.width * 0.5, y: 0.0)
+		terrain.anchorPoint = CGPoint(x: 0.0, y: 0.0)
+		terrain.position = CGPoint(x: -CGSize.tile.width * 0.5, y: -CGSize.tile.height * 0.5)
 		[buildings, flags, grid, fog].forEach { n in
-			n.anchorPoint = CGPoint(x: 0.0, y: 0.5)
+			n.anchorPoint = CGPoint(x: 0.0, y: 0.0)
 			terrain.addChild(n)
 		}
 		addChild(terrain)
