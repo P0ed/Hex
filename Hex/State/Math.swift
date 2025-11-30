@@ -86,7 +86,7 @@ extension XY {
 	}
 
 	var pt: CGPoint {
-		CGPoint(x: Double(x), y: Double(y))
+		CGPoint(x: Double(x + y) * 1.0, y: Double(y - x) * 0.5)
 	}
 }
 

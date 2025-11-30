@@ -8,7 +8,7 @@ extension SKTileGroup {
 		SKTileGroup(
 			tileDefinition: SKTileDefinition(
 				texture: .init(image: image),
-				size: .tile
+				size: image.size
 			)
 		)
 	}
@@ -83,19 +83,19 @@ extension SKTileSet {
 
 	static let cells = SKTileSet(
 		tileGroups: [.grid, .fog],
-		tileSetType: .grid
+		tileSetType: .isometric
 	)
 	static let terrain = SKTileSet(
 		tileGroups: [.field, .forest, .hills, .mountains],
-		tileSetType: .grid
+		tileSetType: .isometric
 	)
 	static let buildings = SKTileSet(
 		tileGroups: [.city, .barracks, .factory, .mammut],
-		tileSetType: .grid
+		tileSetType: .isometric
 	)
 	static let flags = SKTileSet(
 		tileGroups: [.ukr, .usa, .dnr, .lnr, .rus, .irn],
-		tileSetType: .grid
+		tileSetType: .isometric
 	)
 }
 

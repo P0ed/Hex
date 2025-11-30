@@ -73,10 +73,10 @@ extension GameState {
 
 	mutating func alignCamera() {
 		while tooFarX {
-			camera = camera.n4[(camera.pt.x - cursor.pt.x) > 0.0 ? 2 : 0]
+			camera = camera.n8[(camera.pt.x - cursor.pt.x) > 0.0 ? 5 : 1]
 		}
 		while tooFarY {
-			camera = camera.n4[(camera.pt.y - cursor.pt.y) > 0.0 ? 3 : 1]
+			camera = camera.n8[(camera.pt.y - cursor.pt.y) > 0.0 ? 7 : 3]
 		}
 	}
 }

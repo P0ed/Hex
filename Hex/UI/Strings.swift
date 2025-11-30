@@ -76,7 +76,7 @@ extension String {
 		}
 	}
 
-	static func makeStatus(pad: Int = 12, mk: ((String) -> Void) -> Void) -> String {
+	static func makeStatus(pad: Int = 12, _ mk: ((String) -> Void) -> Void) -> String {
 		.make { str in
 			var padding = 0
 

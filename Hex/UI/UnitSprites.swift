@@ -37,7 +37,7 @@ extension Unit {
 		case .art: "Art"
 		case .antiAir: "AA"
 		case .air: "Fighter"
-		case .engineer: "Crane"
+		case .engineer: "Engi"
 		case .supply: "Truck"
 		}
 	}

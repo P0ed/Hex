@@ -61,31 +61,40 @@ extension GameScene {
 	}
 
 	private func addMap() -> MapNodes {
+		let hills = SKTileMapNode(tiles: .terrain, width: state.map.width, height: state.map.height)
+		hills.zPosition = 0.1
+
 		let buildings = SKTileMapNode(tiles: .buildings, width: state.map.width, height: state.map.height)
-		buildings.zPosition = 0.1
+		buildings.zPosition = 0.4
 
 		let flags = SKTileMapNode(tiles: .flags, width: state.map.width, height: state.map.height)
-		flags.zPosition = 0.2
+		flags.zPosition = 0.5
 
 		let grid = SKTileMapNode(tiles: .cells, width: state.map.width, height: state.map.height)
-		grid.zPosition = 0.3
+		grid.zPosition = 0.6
 		grid.isHidden = true
 
 		let fog = SKTileMapNode(tiles: .cells, width: state.map.width, height: state.map.height)
-		fog.zPosition = 0.4
+		fog.zPosition = 0.7
+		fog.isHidden = true
 
 		let terrain = SKTileMapNode(tiles: .terrain, width: state.map.width, height: state.map.height)
-		terrain.anchorPoint = CGPoint(x: 0.0, y: 0.0)
-		terrain.position = CGPoint(x: -CGSize.tile.width * 0.5, y: -CGSize.tile.height * 0.5)
-		[buildings, flags, grid, fog].forEach { n in
-			n.anchorPoint = CGPoint(x: 0.0, y: 0.0)
+		terrain.anchorPoint = CGPoint(x: 0.0, y: 0.5)
+		terrain.position = CGPoint(x: -CGSize.tile.width * 0.5, y: 0.0)
+		[hills, buildings, flags, grid, fog].forEach { n in
+			n.anchorPoint = CGPoint(x: 0.0, y: 0.5)
 			terrain.addChild(n)
 		}
 		addChild(terrain)
 
 		state.map.indices.forEach { xy in
+			let type = state.map[xy]
 			let tileGroup = state.map[xy].tileGroup
-			terrain.setTileGroup(tileGroup, at: xy)
+			if type == .hills || type == .mountains {
+				hills.setTileGroup(tileGroup, at: xy)
+			} else {
+				terrain.setTileGroup(tileGroup, at: xy)
+			}
 			grid.setTileGroup(.grid, at: xy)
 		}
 
@@ -106,7 +115,7 @@ extension GameScene {
 	}
 
 	private func addCursor() -> SKNode {
-		let cursor = SKSpriteNode(imageNamed: "Grid")
+		let cursor = SKSpriteNode(imageNamed: "Cursor")
 		cursor.texture?.filteringMode = .nearest
 		cursor.zPosition = 3.0
 		addChild(cursor)

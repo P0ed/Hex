@@ -116,6 +116,7 @@ extension Building {
 
 extension D20: RandomNumberGenerator {
 
+	// SplitMix64
 	mutating func next() -> UInt64 {
 		seed &+= 0x9e3779b97f4a7c15
 		var z: UInt64 = seed
