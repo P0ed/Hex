@@ -5,8 +5,6 @@ extension Unit {
 
 	var sprite: SKNode {
 		let node = SKNode()
-		node.position = position.point
-		node.zPosition = 4.0
 
 		let sprite = SKSpriteNode(imageNamed: imageName)
 		sprite.xScale = country.team == .axis ? 1.0 : -1.0
@@ -15,7 +13,7 @@ extension Unit {
 
 		let plate = SKSpriteNode(imageNamed: "Plate")
 		plate.position = CGPoint(x: 0, y: -14.5)
-		plate.zPosition = 0.1
+		plate.zPosition = 2.1
 		plate.texture?.filteringMode = .nearest
 		node.addChild(plate)
 
@@ -23,7 +21,7 @@ extension Unit {
 		label.name = "hp"
 		label.text = "\(stats.hp)"
 		label.position = CGPoint(x: 0, y: -20.0)
-		label.zPosition = 0.2
+		label.zPosition = 2.2
 		node.addChild(label)
 
 		return node
@@ -71,20 +69,12 @@ extension BuildingType {
 	var imageName: String {
 		switch self {
 		case .city: "City"
-		case .radar: "Mammut"
-		case .barracks: "Barracks"
-		case .factory: "Factory"
-		default: "City"
 		}
 	}
 
 	var tile: SKTileGroup {
 		switch self {
 		case .city: .city
-		case .radar: .mammut
-		case .barracks: .barracks
-		case .factory: .factory
-		default: .city
 		}
 	}
 }

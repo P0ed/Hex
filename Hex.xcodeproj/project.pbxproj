@@ -109,19 +109,19 @@
 			isa = PBXGroup;
 			children = (
 				5F2A33A92EA93AC3008A0A95 /* GameState.swift */,
-				5F2A33AF2EA93AC3008A0A95 /* Math.swift */,
 				5F2A33B12EA93AC3008A0A95 /* Map.swift */,
-				5FF7EB3C2EB6428B00E287FF /* MapGeneration.swift */,
 				5F2A33B42EA93AC3008A0A95 /* Unit.swift */,
+				5F2A33B22EA93AC3008A0A95 /* MenuState.swift */,
 				5F2A33AA2EA93AC3008A0A95 /* GameState+Actions.swift */,
 				5FB4D1252EAFABCB0010E702 /* GameState+EndTurn.swift */,
 				5FB4D0D42EAE261E0010E702 /* GameState+Attack.swift */,
 				5F2A33AB2EA93AC3008A0A95 /* GameState+AI.swift */,
 				5F2A33AC2EA93AC3008A0A95 /* GameState+Input.swift */,
 				5F2A33AD2EA93AC3008A0A95 /* GameState+Shop.swift */,
-				5F2A33B22EA93AC3008A0A95 /* MenuState.swift */,
 				5F2A33AE2EA93AC3008A0A95 /* GameStateFactory.swift */,
 				5F2A33B52EA93AC3008A0A95 /* UnitFactory.swift */,
+				5FF7EB3C2EB6428B00E287FF /* MapGeneration.swift */,
+				5F2A33AF2EA93AC3008A0A95 /* Math.swift */,
 			);
 			path = State;
 			sourceTree = "<group>";

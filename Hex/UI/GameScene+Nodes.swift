@@ -11,10 +11,9 @@ extension GameScene {
 		var sounds: SoundNodes
 		var units: [UID: SKNode] = [:]
 
-		var buildings: SKTileMapNode { map.buildings }
-		var fog: SKTileMapNode { map.fog }
-		var flags: SKTileMapNode { map.flags }
-		var grid: SKTileMapNode { map.grid }
+//		var buildings: SKTileMapNode { map.buildings }
+//		var fog: SKTileMapNode { map.fog }
+//		var flags: SKTileMapNode { map.flags }
 	}
 
 	struct SoundNodes {
@@ -24,12 +23,13 @@ extension GameScene {
 		var mov: SKAudioNode
 	}
 
+	@MainActor
 	struct MapNodes {
-		var terrain: SKTileMapNode
-		var buildings: SKTileMapNode
-		var fog: SKTileMapNode
-		var flags: SKTileMapNode
-		var grid: SKTileMapNode
+		var layers: [SKTileMapNode]
+		var size: Int
+//		var buildings: SKTileMapNode
+//		var fog: SKTileMapNode
+//		var flags: SKTileMapNode
 	}
 
 	func addNodes() -> Nodes {
@@ -61,50 +61,41 @@ extension GameScene {
 	}
 
 	private func addMap() -> MapNodes {
-		let hills = SKTileMapNode(tiles: .terrain, width: state.map.width, height: state.map.height)
-		hills.zPosition = 0.1
+//		let buildings = SKTileMapNode(tiles: .buildings, size: state.map.size)
+//		buildings.zPosition = 0.4
+//
+//		let flags = SKTileMapNode(tiles: .flags, size: state.map.size)
+//		flags.zPosition = 0.5
+//
+//		let fog = SKTileMapNode(tiles: .cells, size: state.map.size)
+//		fog.zPosition = 0.7
+//		fog.blendMode = .multiplyAlpha
 
-		let buildings = SKTileMapNode(tiles: .buildings, width: state.map.width, height: state.map.height)
-		buildings.zPosition = 0.4
-
-		let flags = SKTileMapNode(tiles: .flags, width: state.map.width, height: state.map.height)
-		flags.zPosition = 0.5
-
-		let grid = SKTileMapNode(tiles: .cells, width: state.map.width, height: state.map.height)
-		grid.zPosition = 0.6
-		grid.isHidden = true
-
-		let fog = SKTileMapNode(tiles: .cells, width: state.map.width, height: state.map.height)
-		fog.zPosition = 0.7
-		fog.isHidden = true
-
-		let terrain = SKTileMapNode(tiles: .terrain, width: state.map.width, height: state.map.height)
-		terrain.anchorPoint = CGPoint(x: 0.0, y: 0.5)
-		terrain.position = CGPoint(x: -CGSize.tile.width * 0.5, y: 0.0)
-		[hills, buildings, flags, grid, fog].forEach { n in
-			n.anchorPoint = CGPoint(x: 0.0, y: 0.5)
-			terrain.addChild(n)
+		let layers = (0 ..< state.map.size * 2).map { idx in
+			SKTileMapNode(tiles: .terrain, size: state.map.size)
 		}
-		addChild(terrain)
+		layers.enumerated().forEach { idx, layer in
+			layer.anchorPoint = CGPoint(x: 0.0, y: 0.5)
+			layer.position = CGPoint(x: -CGSize.tile.width * 0.5, y: 0.0)
+			layer.zPosition = CGFloat(idx)
+			addChild(layer)
+		}
+
+//		[buildings, flags, fog].forEach { n in
+//			n.anchorPoint = CGPoint(x: 0.0, y: 0.5)
+//			terrain.addChild(n)
+//		}
+
+		let map = MapNodes(
+			layers: layers,
+			size: state.map.size
+		)
 
 		state.map.indices.forEach { xy in
-			let type = state.map[xy]
-			let tileGroup = state.map[xy].tileGroup
-			if type == .hills || type == .mountains {
-				hills.setTileGroup(tileGroup, at: xy)
-			} else {
-				terrain.setTileGroup(tileGroup, at: xy)
-			}
-			grid.setTileGroup(.grid, at: xy)
+			map.setTileGroup(state.map[xy].tileGroup, at: xy)
 		}
 
-		return MapNodes(
-			terrain: terrain,
-			buildings: buildings,
-			fog: fog,
-			flags: flags,
-			grid: grid
-		)
+		return map
 	}
 
 	private func addCamera() -> SKCameraNode {
@@ -115,9 +106,8 @@ extension GameScene {
 	}
 
 	private func addCursor() -> SKNode {
-		let cursor = SKSpriteNode(imageNamed: "Cursor")
+		let cursor = SKSpriteNode(texture: .init(image: .cursor))
 		cursor.texture?.filteringMode = .nearest
-		cursor.zPosition = 3.0
 		addChild(cursor)
 		return cursor
 	}
@@ -125,24 +115,27 @@ extension GameScene {
 	private func addStatus() -> SKLabelNode {
 		let label = SKLabelNode(size: .s)
 		camera?.addChild(label)
-		label.zPosition = 10.0
+		label.zPosition = 66.0
 		label.horizontalAlignmentMode = .left
 		label.verticalAlignmentMode = .baseline
 		return label
 	}
 
 	func update(cursor: XY, camera: XY, scale: Double) {
-		let cursorPosition = state.cursor.point
-		if nodes?.cursor.position != cursorPosition {
-			nodes?.cursor.position = cursorPosition
+		guard let nodes else { return }
+
+		let cursorPosition = state.map.point(at: state.cursor)
+		if nodes.cursor.position != cursorPosition {
+			nodes.cursor.position = cursorPosition
+			nodes.cursor.zPosition = nodes.map.zPosition(at: state.cursor) + 1.1
 		}
 		let cameraPosition = state.camera.point
-		if nodes?.camera.position != cameraPosition {
-			nodes?.camera.run(.move(to: cameraPosition, duration: 0.15))
+		if nodes.camera.position != cameraPosition {
+			nodes.camera.run(.move(to: cameraPosition, duration: 0.15))
 		}
 		let cameraScale = CGFloat(state.scale)
-		if nodes?.camera.xScale != cameraScale {
-			nodes?.camera.run(.scale(to: cameraScale, duration: 0.15))
+		if nodes.camera.xScale != cameraScale {
+			nodes.camera.run(.scale(to: cameraScale, duration: 0.15))
 		}
 	}
 
@@ -150,7 +143,7 @@ extension GameScene {
 		let fog = state.selectable ?? state.player.visible
 		if self.fog != fog {
 			state.map.indices.forEach { xy in
-				nodes?.fog.setTileGroup(fog.contains(xy) ? nil : .fog, at: xy)
+//				nodes?.fog.setTileGroup(fog.contains(xy) ? nil : .fog, at: xy)
 			}
 			state.units.forEach { i, u in
 				nodes?.units[i]?.isHidden = !state.player.visible.contains(u.position)
@@ -161,8 +154,8 @@ extension GameScene {
 
 	func updateBuildings() {
 		state.buildings.forEach { b in
-			nodes?.buildings.setTileGroup(b.type.tile, at: b.position)
-			nodes?.flags.setTileGroup(b.country.flag, at: b.position)
+//			nodes?.buildings.setTileGroup(b.type.tile, at: b.position)
+//			nodes?.flags.setTileGroup(b.country.flag, at: b.position)
 		}
 	}
 
@@ -174,5 +167,20 @@ extension GameScene {
 
 	func updateStatus() {
 		nodes?.status.text = menuState?.statusText ?? state.statusText
+	}
+}
+
+extension GameScene.MapNodes {
+
+	func layer(at xy: XY) -> Int {
+		xy.x + size - 1 - xy.y
+	}
+
+	func setTileGroup(_ tileGroup: SKTileGroup?, at xy: XY) {
+		layers[layer(at: xy)].setTileGroup(tileGroup, at: xy)
+	}
+
+	func zPosition(at xy: XY) -> CGFloat {
+		CGFloat(layer(at: xy))
 	}
 }

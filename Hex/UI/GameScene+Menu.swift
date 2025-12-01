@@ -9,7 +9,7 @@ extension GameScene {
 		)
 		menu.fillColor = .lightGray
 		menu.strokeColor = .gray
-		menu.zPosition = 10.0
+		menu.zPosition = 68.0
 		menu.isHidden = true
 		menu.setScale(0.5)
 		camera?.addChild(menu)

@@ -20,17 +20,28 @@ extension GameScene {
 private extension GameScene {
 
 	func processSpawn(uid: UID) {
+		guard let nodes else { return }
+
 		let sprite = state.units[uid].sprite
-		sprite.isHidden = !state.player.visible.contains(state.units[uid].position)
+		let xy = state.units[uid].position
+		sprite.position = state.map.point(at: xy)
+		sprite.zPosition = nodes.map.zPosition(at: xy) + 0.1
+		sprite.isHidden = !state.player.visible.contains(xy)
 		addUnit(uid, node: sprite)
 	}
 
 	func processMove(uid: UID, distance: Int) async {
-		nodes?.sounds.mov.play()
-		await nodes?.units[uid]?.run(.move(
-			to: state.units[uid].position.point,
+		guard let nodes, let unit = nodes.units[uid] else { return }
+
+		let xy = state.units[uid].position
+		let z = nodes.map.zPosition(at: xy) + 0.1
+		unit.zPosition = max(unit.zPosition, z)
+		nodes.sounds.mov.play()
+		await unit.run(.move(
+			to: state.map.point(at: xy),
 			duration: CGFloat(distance) * 0.047
 		))
+		unit.zPosition = z
 	}
 
 	func processAttack(src: UID, dst: UID, unit: Unit) async {

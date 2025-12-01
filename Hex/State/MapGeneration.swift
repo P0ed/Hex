@@ -2,10 +2,10 @@ import GameplayKit
 
 extension Map {
 
-	init(width: Int, height: Int, seed: Int) {
-		self = Map(width: width, height: height)
+	init(size: Int, seed: Int) {
+		self = Map(size: size)
 
-		let size = SIMD2<Int32>(Int32(width), Int32(height))
+		let size = SIMD2<Int32>(Int32(size), Int32(size))
 		let height = GKNoiseMap.height(size: size, seed: seed)
 		let humidity = GKNoiseMap.humidity(size: size, seed: seed + 1)
 

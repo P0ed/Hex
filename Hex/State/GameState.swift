@@ -25,6 +25,12 @@ extension GameState {
 		self.buildings = buildings
 		self.units = .init(array: units)
 
+		buildings.forEach { b in
+			switch b.type {
+			case .city: self.map[b.position] = .city
+			}
+		}
+
 		self.players = players.mapInPlace { p in p.visible = vision(for: p.country) }
 	}
 }
@@ -36,7 +42,7 @@ struct Building: Hashable, Codable {
 }
 
 enum BuildingType: UInt8, Hashable, Codable {
-	case city, barracks, factory, airfield, radar
+	case city
 }
 
 struct Player: Hashable, Codable {
@@ -99,17 +105,12 @@ extension Building {
 	var cost: UInt16 {
 		switch type {
 		case .city: 1600
-		case .barracks: 300
-		case .factory: 500
-		case .airfield: 700
-		case .radar: 400
 		}
 	}
 
 	var income: UInt16 {
 		switch type {
 		case .city: 40
-		default: 0
 		}
 	}
 }

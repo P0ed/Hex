@@ -18,6 +18,7 @@ UserDefaults.standard.set(
 )
 
 private let view = SKView(frame: window.contentLayoutRect)
+view.ignoresSiblingOrder = true
 view.autoresizingMask = [.width, .height]
 window.contentView = view
 window.makeFirstResponder(view)

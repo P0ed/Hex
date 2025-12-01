@@ -13,8 +13,8 @@ extension GameState {
 
 	var buildingTemplates: [Building] {
 		[
-			Building(country: country, position: .zero, type: .barracks),
-			Building(country: country, position: .zero, type: .factory),
+//			Building(country: country, position: .zero, type: .barracks),
+//			Building(country: country, position: .zero, type: .factory),
 		]
 	}
 

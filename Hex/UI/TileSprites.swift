@@ -13,10 +13,6 @@ extension SKTileGroup {
 		)
 	}
 
-	static let city = make(.city)
-	static let mammut = make(.mammut)
-	static let barracks = make(.barracks)
-	static let factory = make(.factory)
 
 	static let ukr = make(.UKR)
 	static let usa = make(.USA)
@@ -25,23 +21,24 @@ extension SKTileGroup {
 	static let dnr = make(.DNR)
 	static let irn = make(.IRN)
 
-	static let grid = make(.grid)
 	static let fog = make(.fog)
 
+	static let city = make(.city)
 	static let field = make(.field)
 	static let forest = make(.forest)
-	static let hills = make(.hills)
-	static let mountains = make(.mountains)
+	static let forestHill = make(.forestHill)
+	static let hill = make(.hill)
+	static let mountain = make(.mountain)
 }
 
 extension Terrain {
 
 	init(height: Float, humidity: Float) {
 		self = switch height {
-		case 0.0 ..< 0.3: .forest
-		case 0.3 ..< 0.6: humidity > 0 ? .forest : .hills
-		case 0.6 ..< 0.8: .hills
-		case 0.8 ... 1.0: .mountains
+		case -0.5 ..< 0.3: humidity > 0.4 ? .forest : .field
+		case 0.3 ..< 0.7: humidity > 0.4 ? .forestHill : .hill
+		case 0.7 ..< 0.85: .hill
+		case 0.85 ... 1.0: .mountain
 		default: .field
 		}
 	}
@@ -54,8 +51,10 @@ extension Terrain {
 		switch self {
 		case .field: .field
 		case .forest: .forest
-		case .hills: .hills
-		case .mountains: .mountains
+		case .hill: .hill
+		case .forestHill: .forestHill
+		case .mountain: .mountain
+		case .city: .city
 		case .none: .none
 		}
 	}
@@ -82,15 +81,15 @@ extension Country {
 extension SKTileSet {
 
 	static let cells = SKTileSet(
-		tileGroups: [.grid, .fog],
+		tileGroups: [.fog],
 		tileSetType: .isometric
 	)
 	static let terrain = SKTileSet(
-		tileGroups: [.field, .forest, .hills, .mountains],
+		tileGroups: [.city, .field, .forest, .hill, .forestHill, .mountain],
 		tileSetType: .isometric
 	)
 	static let buildings = SKTileSet(
-		tileGroups: [.city, .barracks, .factory, .mammut],
+		tileGroups: [.city],
 		tileSetType: .isometric
 	)
 	static let flags = SKTileSet(
@@ -102,11 +101,11 @@ extension SKTileSet {
 @MainActor
 extension SKTileMapNode {
 
-	convenience init(tiles: SKTileSet, width: Int, height: Int) {
+	convenience init(tiles: SKTileSet, size: Int) {
 		self.init(
 			tileSet: tiles,
-			columns: width,
-			rows: height,
+			columns: size,
+			rows: size,
 			tileSize: .tile
 		)
 	}

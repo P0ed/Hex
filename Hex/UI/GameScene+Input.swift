@@ -27,8 +27,6 @@ extension GameScene {
 		case "z": apply(.scale(1.0))
 		case "x": apply(.scale(2.0))
 		case "c": apply(.scale(4.0))
-		case "v": apply(.scale(8.0))
-		case "g": nodes?.grid.isHidden.toggle()
 
 		case "f" where flags.contains(.command): view?.window?.toggleFullScreen(nil)
 		case "q" where flags.contains(.command): exit(0)
@@ -39,11 +37,11 @@ extension GameScene {
 	override func mouseDown(with event: NSEvent) {
 		guard let nodes else { return }
 		if menuState == nil {
-			let location = event.location(in: nodes.grid)
+			let location = event.location(in: nodes.map.layers[0])
 			apply(.tile(
 				XY(
-					nodes.grid.tileColumnIndex(fromPosition: location),
-					nodes.grid.tileRowIndex(fromPosition: location)
+					nodes.map.layers[0].tileColumnIndex(fromPosition: location),
+					nodes.map.layers[0].tileRowIndex(fromPosition: location)
 				)
 			))
 		} else {

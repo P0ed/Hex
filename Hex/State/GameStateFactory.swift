@@ -3,7 +3,7 @@ extension GameState {
 
 	static func random(size: Int = 32, seed: Int = 0) -> GameState {
 		GameState(
-			map: Map(width: size, height: size, seed: seed),
+			map: Map(size: size, seed: seed),
 			players: [
 				Player(country: .ukr),
 				Player(country: .usa, ai: true),
