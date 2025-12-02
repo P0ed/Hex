@@ -14,7 +14,7 @@ extension Unit {
 
 		let plate = SKSpriteNode(imageNamed: "Plate")
 		plate.position = CGPoint(x: 0, y: -14.0)
-		plate.zPosition = 2.1
+		plate.zPosition = 2.3
 		plate.texture?.filteringMode = .nearest
 		node.addChild(plate)
 
@@ -22,7 +22,7 @@ extension Unit {
 		label.name = "hp"
 		label.text = "\(stats.hp)"
 		label.position = CGPoint(x: 0, y: -19.0)
-		label.zPosition = 2.2
+		label.zPosition = 2.4
 		node.addChild(label)
 
 		return node
@@ -30,14 +30,13 @@ extension Unit {
 
 	var imageName: String {
 		switch stats.unitType {
-		case .inf: country.team == .axis ? "Inf-Axis" : "Inf"
+		case .inf: "Inf"
 		case .recon: "Recon"
 		case .tank: "Tank"
 		case .art: "Art"
 		case .antiAir: "AA"
 		case .air: "Fighter"
-		case .engineer: "Engi"
-		case .supply: "Truck"
+		case .engineer, .supply: "Truck"
 		}
 	}
 }

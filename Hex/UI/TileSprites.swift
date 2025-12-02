@@ -20,28 +20,45 @@ extension SKTileGroup {
 	static let dnr = make(.DNR)
 	static let irn = make(.IRN)
 
-	static let fog = make(.fog)
-
 	static let city = make(.city)
 	static let field = make(.field)
 	static let forest = make(.forest)
 	static let forestHill = make(.forestHill)
 	static let hill = make(.hill)
 	static let mountain = make(.mountain)
+
+	static let cityFog = make(.cityFog)
+	static let fieldFog = make(.fieldFog)
+	static let forestFog = make(.forestFog)
+	static let forestHillFog = make(.forestHillFog)
+	static let hillFog = make(.hillFog)
+	static let mountainFog = make(.mountainFog)
 }
 
 @MainActor
 extension Terrain {
 
-	var tileGroup: SKTileGroup? {
-		switch self {
-		case .field: .field
-		case .forest: .forest
-		case .hill: .hill
-		case .forestHill: .forestHill
-		case .mountain: .mountain
-		case .city: .city
-		case .none: .none
+	func tileGroup(fog: Bool) -> SKTileGroup? {
+		if fog {
+			switch self {
+			case .field: .field
+			case .forest: .forest
+			case .hill: .hill
+			case .forestHill: .forestHill
+			case .mountain: .mountain
+			case .city: .city
+			case .none: .none
+			}
+		} else {
+			switch self {
+			case .field: .fieldFog
+			case .forest: .forestFog
+			case .hill: .hillFog
+			case .forestHill: .forestHillFog
+			case .mountain: .mountainFog
+			case .city: .cityFog
+			case .none: .none
+			}
 		}
 	}
 }
@@ -66,20 +83,11 @@ extension Country {
 @MainActor
 extension SKTileSet {
 
-	static let cells = SKTileSet(
-		tileGroups: [.fog],
-		tileSetType: .isometric
-	)
 	static let terrain = SKTileSet(
-		tileGroups: [.city, .field, .forest, .hill, .forestHill, .mountain],
-		tileSetType: .isometric
-	)
-	static let buildings = SKTileSet(
-		tileGroups: [.city],
-		tileSetType: .isometric
-	)
-	static let flags = SKTileSet(
-		tileGroups: [.ukr, .usa, .dnr, .lnr, .rus, .irn],
+		tileGroups: [
+			.city, .field, .forest, .hill, .forestHill, .mountain,
+			.cityFog, .fieldFog, .forestFog, .hillFog, .forestHillFog, .mountainFog
+		],
 		tileSetType: .isometric
 	)
 }

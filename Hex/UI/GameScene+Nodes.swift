@@ -81,18 +81,13 @@ extension GameScene {
 			addChild(layer)
 		}
 
-//		[buildings, flags, fog].forEach { n in
-//			n.anchorPoint = CGPoint(x: 0.0, y: 0.5)
-//			terrain.addChild(n)
-//		}
-
 		let map = MapNodes(
 			layers: layers,
 			size: state.map.size
 		)
 
 		state.map.indices.forEach { xy in
-			map.setTileGroup(state.map[xy].tileGroup, at: xy)
+			map.setTileGroup(state.map[xy].tileGroup(fog: false), at: xy)
 		}
 
 		return map
@@ -109,11 +104,11 @@ extension GameScene {
 		let node = SKNode()
 		node.position = .init(x: -1.0, y: -1.0)
 
-		let sprite = SKSpriteNode(texture: .init(image: .cursor))
-		sprite.texture?.filteringMode = .nearest
-		sprite.zPosition = 0.1
+		let cursor = SKSpriteNode(texture: .init(image: .cursor))
+		cursor.texture?.filteringMode = .nearest
+		cursor.zPosition = 0.1
 
-		node.addChild(sprite)
+		node.addChild(cursor)
 		addChild(node)
 
 		return node
@@ -147,24 +142,22 @@ extension GameScene {
 	}
 
 	func updateFogIfNeeded() -> Set<XY> {
-		let fog = state.selectable ?? state.player.visible
+		guard let nodes else { return [] }
+
+		let visible = state.player.visible
+		let fog = state.selectable ?? visible
 		if self.fog != fog {
 			state.map.indices.forEach { xy in
-//				nodes?.fog.setTileGroup(fog.contains(xy) ? nil : .fog, at: xy)
+				nodes.map.setTileGroup(state.map[xy].tileGroup(fog: fog.contains(xy)), at: xy)
 			}
 			state.units.forEach { i, u in
-				nodes?.units[i]?.isHidden = !state.player.visible.contains(u.position)
+				nodes.units[i]?.isHidden = !visible.contains(u.position)
 			}
 		}
 		return fog
 	}
 
-	func updateBuildings() {
-		state.buildings.forEach { b in
-//			nodes?.buildings.setTileGroup(b.type.tile, at: b.position)
-//			nodes?.flags.setTileGroup(b.country.flag, at: b.position)
-		}
-	}
+	func updateBuildings() {}
 
 	func updateUnits() {
 		state.units.forEach { i, u in
