@@ -7,20 +7,21 @@ extension Unit {
 		let node = SKNode()
 
 		let sprite = SKSpriteNode(imageNamed: imageName)
+		sprite.zPosition = 0.2
 		sprite.xScale = country.team == .axis ? 1.0 : -1.0
 		sprite.texture?.filteringMode = .nearest
 		node.addChild(sprite)
 
 		let plate = SKSpriteNode(imageNamed: "Plate")
-		plate.position = CGPoint(x: 0, y: -14.5)
+		plate.position = CGPoint(x: 0, y: -14.0)
 		plate.zPosition = 2.1
 		plate.texture?.filteringMode = .nearest
 		node.addChild(plate)
 
-		let label = SKLabelNode(size: .m, color: .textDefault)
+		let label = SKLabelNode(size: .s, color: .textDefault)
 		label.name = "hp"
 		label.text = "\(stats.hp)"
-		label.position = CGPoint(x: 0, y: -20.0)
+		label.position = CGPoint(x: 0, y: -19.0)
 		label.zPosition = 2.2
 		node.addChild(label)
 

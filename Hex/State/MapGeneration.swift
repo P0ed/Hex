@@ -18,3 +18,16 @@ extension Map {
 		}
 	}
 }
+
+extension Terrain {
+
+	init(height: Float, humidity: Float) {
+		self = switch height {
+		case -0.5 ..< 0.3: humidity > 0.5 ? .forest : .field
+		case 0.3 ..< 0.7: humidity > 0.5 ? .forestHill : .hill
+		case 0.7 ..< 0.85: .hill
+		case 0.85 ... 1.0: .mountain
+		default: .field
+		}
+	}
+}

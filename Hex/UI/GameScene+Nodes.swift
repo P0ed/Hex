@@ -106,10 +106,17 @@ extension GameScene {
 	}
 
 	private func addCursor() -> SKNode {
-		let cursor = SKSpriteNode(texture: .init(image: .cursor))
-		cursor.texture?.filteringMode = .nearest
-		addChild(cursor)
-		return cursor
+		let node = SKNode()
+		node.position = .init(x: -1.0, y: -1.0)
+
+		let sprite = SKSpriteNode(texture: .init(image: .cursor))
+		sprite.texture?.filteringMode = .nearest
+		sprite.zPosition = 0.1
+
+		node.addChild(sprite)
+		addChild(node)
+
+		return node
 	}
 
 	private func addStatus() -> SKLabelNode {
@@ -127,7 +134,7 @@ extension GameScene {
 		let cursorPosition = state.map.point(at: state.cursor)
 		if nodes.cursor.position != cursorPosition {
 			nodes.cursor.position = cursorPosition
-			nodes.cursor.zPosition = nodes.map.zPosition(at: state.cursor) + 1.1
+			nodes.cursor.zPosition = nodes.map.zPosition(at: state.cursor)
 		}
 		let cameraPosition = state.camera.point
 		if nodes.camera.position != cameraPosition {

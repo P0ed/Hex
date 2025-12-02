@@ -25,7 +25,7 @@ private extension GameScene {
 		let sprite = state.units[uid].sprite
 		let xy = state.units[uid].position
 		sprite.position = state.map.point(at: xy)
-		sprite.zPosition = nodes.map.zPosition(at: xy) + 0.1
+		sprite.zPosition = nodes.map.zPosition(at: xy)
 		sprite.isHidden = !state.player.visible.contains(xy)
 		addUnit(uid, node: sprite)
 	}
@@ -34,7 +34,7 @@ private extension GameScene {
 		guard let nodes, let unit = nodes.units[uid] else { return }
 
 		let xy = state.units[uid].position
-		let z = nodes.map.zPosition(at: xy) + 0.1
+		let z = nodes.map.zPosition(at: xy)
 		unit.zPosition = max(unit.zPosition, z)
 		nodes.sounds.mov.play()
 		await unit.run(.move(

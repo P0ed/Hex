@@ -119,7 +119,7 @@ extension Stats {
 	static var recon: Self {
 		.make { stats in
 			stats.unitType = .recon
-			stats.atk = 3
+			stats.atk = 4
 			stats.def = 5
 			stats.armor = 1
 			stats.mov = 7

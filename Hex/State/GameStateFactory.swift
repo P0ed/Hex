@@ -1,7 +1,7 @@
 @MainActor
 extension GameState {
 
-	static func random(size: Int = 32, seed: Int = 0) -> GameState {
+	static func random(size: Int = 12, seed: Int = 0) -> GameState {
 		GameState(
 			map: Map(size: size, seed: seed),
 			players: [
@@ -11,18 +11,17 @@ extension GameState {
 			],
 			buildings: [
 				Building(country: .ukr, position: XY(1, 1), type: .city),
-				Building(country: .usa, position: XY(5, 7), type: .city),
-				Building(country: .usa, position: XY(8, 6), type: .city),
+				Building(country: .usa, position: XY(5, 10), type: .city),
+				Building(country: .usa, position: XY(8, 8), type: .city),
 				Building(country: .rus, position: XY(10, 1), type: .city),
 				Building(country: .rus, position: XY(11, 5), type: .city),
 			],
 			units: [
-				Unit(country: .ukr, position: XY(0, 3), stats: .base >< .builder),
-				Unit(country: .ukr, position: XY(0, 4), stats: .base >< .truck),
+				Unit(country: .ukr, position: XY(0, 0), stats: .base >< .truck),
 				Unit(country: .ukr, position: XY(4, 0), stats: .base >< .inf >< .veteran),
 				Unit(country: .ukr, position: XY(0, 1), stats: .base >< .strv122 >< .elite),
 				Unit(country: .ukr, position: XY(0, 2), stats: .base >< .strv122 >< .elite),
-				Unit(country: .ukr, position: XY(16, 16), stats: .base >< .recon >< .elite),
+				Unit(country: .ukr, position: XY(1, 0), stats: .base >< .recon >< .elite),
 				Unit(country: .ukr, position: XY(1, 1), stats: .base >< .art >< .veteran),
 
 				Unit(country: .usa, position: XY(5, 7), stats: .base >< .inf),

@@ -13,7 +13,6 @@ extension SKTileGroup {
 		)
 	}
 
-
 	static let ukr = make(.UKR)
 	static let usa = make(.USA)
 	static let rus = make(.RUS)
@@ -29,19 +28,6 @@ extension SKTileGroup {
 	static let forestHill = make(.forestHill)
 	static let hill = make(.hill)
 	static let mountain = make(.mountain)
-}
-
-extension Terrain {
-
-	init(height: Float, humidity: Float) {
-		self = switch height {
-		case -0.5 ..< 0.3: humidity > 0.4 ? .forest : .field
-		case 0.3 ..< 0.7: humidity > 0.4 ? .forestHill : .hill
-		case 0.7 ..< 0.85: .hill
-		case 0.85 ... 1.0: .mountain
-		default: .field
-		}
-	}
 }
 
 @MainActor
