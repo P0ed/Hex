@@ -1,5 +1,5 @@
 struct GameState: ~Copyable {
-	var map: Map
+	var map: Map<Terrain>
 
 	var players: [Player]
 	var buildings: [Building]
@@ -19,7 +19,7 @@ struct GameState: ~Copyable {
 
 extension GameState {
 
-	init(map: consuming Map, players: [Player], buildings: [Building], units: [Unit]) {
+	init(map: consuming Map<Terrain>, players: [Player], buildings: [Building], units: [Unit]) {
 		self.map = map
 		self.players = players
 		self.buildings = buildings

@@ -23,6 +23,10 @@ extension XY {
 		2 * max(abs(x), abs(y)) + min(abs(x), abs(y))
 	}
 
+	var manhattan: Int {
+		abs(x) + abs(y)
+	}
+
 	func distance(to xy: XY) -> Int {
 		(self - xy).dr
 	}

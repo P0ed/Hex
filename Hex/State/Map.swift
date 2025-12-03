@@ -1,15 +1,17 @@
 import Foundation
 
-struct Map: ~Copyable {
-	private var terrain: InlineArray<1024, Terrain>
+struct Map<Element>: ~Copyable {
+	private var terrain: InlineArray<1024, Element>
+	private var zero: Element
 	var size: Int
 
 	var count: Int { size * size }
 
-	init(size: Int) {
+	init(size: Int, zero: Element) {
 		precondition(size > 0 && size <= 32)
 		self.size = size
-		terrain = .init(repeating: .none)
+		self.zero = zero
+		terrain = .init(repeating: zero)
 	}
 
 	var indices: AnySequence<XY> {
@@ -24,8 +26,8 @@ struct Map: ~Copyable {
 		}
 	}
 
-	subscript(xy: XY) -> Terrain {
-		get { contains(xy) ? terrain[xy.x + xy.y * size] : .none }
+	subscript(xy: XY) -> Element {
+		get { contains(xy) ? terrain[xy.x + xy.y * size] : zero }
 		set { contains(xy) ? terrain[xy.x + xy.y * size] = newValue : () }
 	}
 
@@ -33,13 +35,37 @@ struct Map: ~Copyable {
 		return xy.x >= 0 && xy.x < size && xy.y >= 0 && xy.y < size
 	}
 
+	func forEachEdge(_ body: (XY, Edge) -> Void) {
+		Edge.allCases.forEach { edge in
+			forEachEdge(edge) { xy in
+				body(xy, edge)
+			}
+		}
+	}
+
+	func forEachEdge(_ edge: Edge, _ body: (XY) -> Void) {
+		switch edge {
+		case .bottom: (0 ..< size).forEach { x in body(XY(x, 0)) }
+		case .left: (0 ..< size).forEach { y in body(XY(0, y)) }
+		case .top: (0 ..< size).forEach { x in body(XY(x, size - 1)) }
+		case .right: (0 ..< size).forEach { y in body(XY(size - 1, y)) }
+		}
+	}
+}
+
+extension Map<Terrain> {
+
 	func point(at xy: XY) -> CGPoint {
 		xy.point + CGPoint(x: 0, y: self[xy].height)
 	}
 }
 
+enum Edge: Hashable, CaseIterable {
+	case bottom, left, top, right
+}
+
 enum Terrain: UInt8, Hashable, Codable {
-	case none, field, forest, hill, forestHill, mountain, city
+	case none, river, field, forest, hill, forestHill, mountain, city
 }
 
 extension Terrain {
@@ -50,20 +76,20 @@ extension Terrain {
 		case .field, .city: 1
 		case .forest, .hill: min(stats.mov, 2)
 		case .forestHill: 3
-		case .mountain: stats.mov
+		case .mountain, .river: stats.mov
 		case .none: .max
 		}
 		case .wheel: switch self {
 		case .city: 1
 		case .field: 2
 		case .forest, .hill: 3
-		case .forestHill: stats.mov
+		case .forestHill, .river: stats.mov
 		case .none, .mountain: .max
 		}
 		case .track: switch self {
 		case .field, .city: 1
 		case .forest, .hill: 2
-		case .forestHill: stats.mov
+		case .forestHill, .river: stats.mov
 		case .none, .mountain: .max
 		}
 		case .air: 1
@@ -74,7 +100,7 @@ extension Terrain {
 		switch self {
 		case .forest, .hill: 1
 		case .forestHill, .mountain, .city: 2
-		case .field, .none: 0
+		case .field, .river, .none: 0
 		}
 	}
 

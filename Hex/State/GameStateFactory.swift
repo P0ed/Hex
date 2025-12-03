@@ -1,9 +1,9 @@
 @MainActor
 extension GameState {
 
-	static func random(size: Int = 12, seed: Int = 0) -> GameState {
+	static func random(size: Int = .random(in: 8...32), seed: Int = 0) -> GameState {
 		GameState(
-			map: Map(size: size, seed: seed),
+			map: Map(size: size, seed: .random(in: 0...1023)),
 			players: [
 				Player(country: .ukr),
 				Player(country: .usa, ai: true),
@@ -13,7 +13,7 @@ extension GameState {
 				Building(country: .ukr, position: XY(1, 1), type: .city),
 				Building(country: .usa, position: XY(5, 10), type: .city),
 				Building(country: .usa, position: XY(8, 8), type: .city),
-				Building(country: .rus, position: XY(10, 1), type: .city),
+				Building(country: .rus, position: XY(13, 1), type: .city),
 				Building(country: .rus, position: XY(11, 5), type: .city),
 			],
 			units: [

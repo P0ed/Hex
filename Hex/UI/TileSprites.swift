@@ -13,6 +13,19 @@ extension SKTileGroup {
 		)
 	}
 
+	private static func make(_ images: [SKTileAdjacencyMask: NSImage]) -> SKTileGroup {
+		SKTileGroup(
+			rules: images.map { adjacency, image in
+				.init(adjacency: adjacency, tileDefinitions: [
+					SKTileDefinition(
+						texture: .init(image: image),
+						size: image.size
+					)
+				])
+			}
+		)
+	}
+
 	static let ukr = make(.UKR)
 	static let usa = make(.USA)
 	static let rus = make(.RUS)
@@ -27,12 +40,22 @@ extension SKTileGroup {
 	static let hill = make(.hill)
 	static let mountain = make(.mountain)
 
+	static let river00 = make(.river00)
+	static let river01 = make(.river01)
+	static let river10 = make(.river10)
+	static let river11 = make(.river11)
+
 	static let cityFog = make(.cityFog)
 	static let fieldFog = make(.fieldFog)
 	static let forestFog = make(.forestFog)
 	static let forestHillFog = make(.forestHillFog)
 	static let hillFog = make(.hillFog)
 	static let mountainFog = make(.mountainFog)
+
+	static let river00Fog = make(.river00Fog)
+	static let river01Fog = make(.river01Fog)
+	static let river10Fog = make(.river10Fog)
+	static let river11Fog = make(.river11Fog)
 }
 
 @MainActor
@@ -47,6 +70,7 @@ extension Terrain {
 			case .forestHill: .forestHill
 			case .mountain: .mountain
 			case .city: .city
+			case .river: .river00
 			case .none: .none
 			}
 		} else {
@@ -57,6 +81,7 @@ extension Terrain {
 			case .forestHill: .forestHillFog
 			case .mountain: .mountainFog
 			case .city: .cityFog
+			case .river: .river00Fog
 			case .none: .none
 			}
 		}
@@ -80,13 +105,22 @@ extension Country {
 	}
 }
 
+extension SKTileAdjacencyMask: @retroactive Hashable {
+
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine(rawValue)
+	}
+}
+
 @MainActor
 extension SKTileSet {
 
 	static let terrain = SKTileSet(
 		tileGroups: [
 			.city, .field, .forest, .hill, .forestHill, .mountain,
-			.cityFog, .fieldFog, .forestFog, .hillFog, .forestHillFog, .mountainFog
+			.river00, .river01, .river10, .river10,
+			.cityFog, .fieldFog, .forestFog, .hillFog, .forestHillFog, .mountainFog,
+			.river00Fog, .river01Fog, .river10Fog, .river11Fog,
 		],
 		tileSetType: .isometric
 	)
@@ -106,37 +140,5 @@ extension SKTileMapNode {
 
 	func setTileGroup(_ tileGroup: SKTileGroup?, at xy: XY) {
 		setTileGroup(tileGroup, forColumn: xy.x, row: xy.y)
-	}
-}
-
-extension GKNoiseMap {
-
-	private static func map(size: SIMD2<Int32>, source: GKNoiseSource) -> GKNoiseMap {
-		GKNoiseMap(
-			GKNoise(source),
-			size: .one,
-			origin: .zero,
-			sampleCount: size,
-			seamless: false
-		)
-	}
-
-	static func height(size: SIMD2<Int32>, seed: Int) -> GKNoiseMap {
-		.map(size: size, source: GKPerlinNoiseSource(
-			frequency: 10.0,
-			octaveCount: 6,
-			persistence: 0.47,
-			lacunarity: 0.68,
-			seed: Int32(bitPattern: UInt32(seed & Int(UInt32.max)))
-		))
-	}
-
-	static func humidity(size: SIMD2<Int32>, seed: Int) -> GKNoiseMap {
-		.map(size: size, source: GKVoronoiNoiseSource(
-			frequency: 6.8,
-			displacement: 1.0,
-			distanceEnabled: false,
-			seed: Int32(bitPattern: UInt32(seed & Int(UInt32.max)))
-		))
 	}
 }

@@ -57,7 +57,7 @@ extension GameState {
 				add("controller: \(building.country.team)")
 			}
 		} else {
-			"\(cursor.x):\(cursor.y) \(map[cursor])"
+			"(\(cursor.x), \(cursor.y)) \(map[cursor])"
 		}
 	}
 }
