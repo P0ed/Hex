@@ -76,7 +76,8 @@ extension Terrain {
 		case .field, .city: 1
 		case .forest, .hill: min(stats.mov, 2)
 		case .forestHill: 3
-		case .mountain, .river: stats.mov
+		case .river: stats.mov
+		case .mountain: stats.unitType == .inf ? stats.mov : .max
 		case .none: .max
 		}
 		case .wheel: switch self {
