@@ -1,3 +1,3 @@
 # Panzer General inspired game engine
 
-<img width="640" height="640" src="https://github.com/user-attachments/assets/4f87289d-5e83-46f3-9e86-c36a7921ae52" />
+<img width="1392" height="912" alt="PG" src="https://github.com/user-attachments/assets/d0efd6f2-1218-4d83-9c84-bc1281b97858" />
