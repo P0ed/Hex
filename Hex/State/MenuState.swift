@@ -10,7 +10,7 @@ enum MenuLayout {
 }
 
 enum MenuAction {
-	case close, apply((inout GameState) -> Void)
+	case close, apply(Int)
 }
 
 struct MenuItem {
@@ -28,10 +28,9 @@ extension MenuState {
 	mutating func apply(_ input: Input) {
 		switch input {
 		case .direction(let direction): moveCursor(direction)
-		case .action(.a): action = .apply(items[cursor].action)
-		case .action(.b): action = .close
-		case .index(let idx): cursor = idx
-		case .menu: action = .close
+		case .tile(let xy): cursor = xy.x
+		case .action(.a): action = .apply(cursor)
+		case .menu, .action(.b): action = .close
 		default: break
 		}
 	}

@@ -2,6 +2,7 @@ import SpriteKit
 
 extension GameScene {
 
+	@MainActor
 	struct Nodes {
 		var cursor: SKNode
 		var camera: SKCameraNode
@@ -10,10 +11,6 @@ extension GameScene {
 		var status: SKLabelNode
 		var sounds: SoundNodes
 		var units: [UID: SKNode] = [:]
-
-//		var buildings: SKTileMapNode { map.buildings }
-//		var fog: SKTileMapNode { map.fog }
-//		var flags: SKTileMapNode { map.flags }
 	}
 
 	struct SoundNodes {
@@ -27,9 +24,6 @@ extension GameScene {
 	struct MapNodes {
 		var layers: [SKTileMapNode]
 		var size: Int
-//		var buildings: SKTileMapNode
-//		var fog: SKTileMapNode
-//		var flags: SKTileMapNode
 	}
 
 	func addNodes() -> Nodes {
@@ -61,17 +55,7 @@ extension GameScene {
 	}
 
 	private func addMap() -> MapNodes {
-//		let buildings = SKTileMapNode(tiles: .buildings, size: state.map.size)
-//		buildings.zPosition = 0.4
-//
-//		let flags = SKTileMapNode(tiles: .flags, size: state.map.size)
-//		flags.zPosition = 0.5
-//
-//		let fog = SKTileMapNode(tiles: .cells, size: state.map.size)
-//		fog.zPosition = 0.7
-//		fog.blendMode = .multiplyAlpha
-
-		let layers = (0 ..< state.map.size * 2).map { idx in
+		let layers = (0 ..< state.map.size * 2 - 1).map { idx in
 			SKTileMapNode(tiles: .terrain, size: state.map.size)
 		}
 		layers.enumerated().forEach { idx, layer in

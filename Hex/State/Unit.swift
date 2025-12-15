@@ -91,6 +91,9 @@ extension Stats {
 		get { get(width: 3, offset: 48) }
 		set { set(newValue, width: 3, offset: 48) }
 	}
+}
+
+extension Stats {
 
 	var stars: UInt8 {
 		modifying(4) { stars in stars.decrement(by: UInt8(exp.leadingZeroBitCount)) }

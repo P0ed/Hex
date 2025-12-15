@@ -3,7 +3,7 @@ import SpriteKit
 extension GameScene {
 
 	override func keyDown(with event: NSEvent) {
-		let flags = event.modifierFlags
+		let flags = event.modifierFlags.intersection([.shift, .command])
 
 		switch event.keyCode {
 		case 36, 49: apply(.action(.a))
@@ -12,7 +12,7 @@ extension GameScene {
 		default: break
 		}
 		switch event.specialKey {
-		case .tab: apply(.target(flags.contains(.shift) ? .prev : .next))
+		case .tab: apply(.target(flags == .shift ? .prev : .next))
 		case .leftArrow: apply(.direction(.left))
 		case .rightArrow: apply(.direction(.right))
 		case .downArrow: apply(.direction(.down))
@@ -28,8 +28,8 @@ extension GameScene {
 		case "x": apply(.scale(2.0))
 		case "c": apply(.scale(4.0))
 
-		case "f" where flags.contains(.command): view?.window?.toggleFullScreen(nil)
-		case "q" where flags.contains(.command): exit(0)
+		case "f" where flags == .command: view?.window?.toggleFullScreen(nil)
+		case "q" where flags == .command: exit(0)
 		default: break
 		}
 	}
@@ -53,7 +53,7 @@ extension GameScene {
 				.compactMap { n in n as? SKShapeNode }.first
 				.flatMap { n in n.name == nil ? n : nil }
 				.flatMap(nodes.menu.children.firstIndex)
-				.map { idx in apply(.index(idx)) }
+				.map { idx in apply(.tile(XY(idx, 0))) }
 		}
 	}
 }

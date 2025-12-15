@@ -69,7 +69,9 @@ final class GameScene: SKScene {
 
 	private func didSetMenu() {
 		if let action = menuState?.action {
-			if case let .apply(transform) = action { transform(&state) }
+			if let menuState, case let .apply(idx) = action {
+				menuState.items[idx].action(&state)
+			}
 			return menuState = .none
 		} else if (menuState == nil) != (nodes?.menu.isHidden == true) {
 			if let menuState { nodes?.showMenu(menuState) }

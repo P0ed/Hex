@@ -17,7 +17,6 @@ extension GameScene {
 	}
 }
 
-@MainActor
 extension GameScene.Nodes {
 
 	static let inset = 8.0 as CGFloat

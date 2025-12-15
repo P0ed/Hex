@@ -8,7 +8,6 @@ enum Input {
 	case action(Action)
 	case menu
 	case tile(XY)
-	case index(Int)
 	case scale(Double)
 }
 
@@ -28,7 +27,6 @@ extension GameState {
 		case .target(.prev): prevUnit()
 		case .target(.next): nextUnit()
 		case .tile(let xy): select(xy)
-		case .index: break
 		case .scale(let value): scale = value
 		}
 	}

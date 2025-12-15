@@ -1,5 +1,4 @@
 protocol DeadOrAlive {
-	static var dead: Self { get }
 	var alive: Bool { get }
 }
 
@@ -10,16 +9,16 @@ struct Speicher<let maxCount: Int, Element: DeadOrAlive>: ~Copyable {
 
 extension Speicher {
 
-	init() {
-		elements = .init(repeating: .dead)
+	init(repeating value: Element) {
+		elements = .init(repeating: value)
 		count = 0
 	}
 
-	init(array: [Element]) {
-		precondition(array.count <= maxCount)
-		count = array.count
+	init(head: [Element], tail: Element) {
+		precondition(head.count <= maxCount)
+		count = head.count
 		elements = .init { [count] i in
-			i < count ? array[i] : .dead
+			i < count ? head[i] : tail
 		}
 	}
 

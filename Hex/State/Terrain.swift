@@ -1,0 +1,58 @@
+import CoreGraphics
+
+enum Terrain: UInt8, Hashable, Codable {
+	case none, river, field, forest, hill, forestHill, mountain, city
+}
+
+extension Terrain {
+
+	func moveCost(_ stats: Stats) -> UInt8 {
+		switch stats.moveType {
+		case .leg: switch self {
+		case .field, .city: 1
+		case .forest, .hill: min(stats.mov, 2)
+		case .forestHill: 3
+		case .river: stats.mov
+		case .mountain: stats.unitType == .inf ? stats.mov : .max
+		case .none: .max
+		}
+		case .wheel: switch self {
+		case .city: 1
+		case .field: 2
+		case .forest, .hill: 3
+		case .forestHill, .river: stats.mov
+		case .none, .mountain: .max
+		}
+		case .track: switch self {
+		case .field, .city: 1
+		case .forest, .hill: 2
+		case .forestHill, .river: stats.mov
+		case .none, .mountain: .max
+		}
+		case .air: 1
+		}
+	}
+
+	var defBonus: UInt8 {
+		switch self {
+		case .forest, .hill: 1
+		case .forestHill, .mountain, .city: 2
+		case .field, .river, .none: 0
+		}
+	}
+
+	var elevation: CGFloat {
+		switch self {
+		case .hill, .forestHill: 4.0
+		case .mountain: 8.0
+		default: 0.0
+		}
+	}
+}
+
+extension Map<Terrain> {
+
+	func point(at xy: XY) -> CGPoint {
+		xy.point + CGPoint(x: 0, y: self[xy].elevation)
+	}
+}
