@@ -125,23 +125,21 @@ extension GameScene {
 		}
 	}
 
-	func updateFogIfNeeded() -> Set<XY> {
-		guard let nodes else { return [] }
+	func updateFogIfNeeded() -> SetXY {
+		guard let nodes else { return .empty }
 
 		let visible = state.player.visible
 		let fog = state.selectable ?? visible
 		if self.fog != fog {
 			state.map.indices.forEach { xy in
-				nodes.map.setTileGroup(state.map[xy].tileGroup(fog: fog.contains(xy)), at: xy)
+				nodes.map.setTileGroup(state.map[xy].tileGroup(fog: fog[xy]), at: xy)
 			}
 			state.units.forEach { i, u in
-				nodes.units[i]?.isHidden = !visible.contains(u.position)
+				nodes.units[i]?.isHidden = !visible[u.position]
 			}
 		}
 		return fog
 	}
-
-	func updateBuildings() {}
 
 	func updateUnits() {
 		state.units.forEach { i, u in

@@ -1,4 +1,4 @@
-protocol DeadOrAlive {
+protocol DeadOrAlive: ~Copyable {
 	var alive: Bool { get }
 }
 

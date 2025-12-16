@@ -1,16 +1,16 @@
-struct Player: Hashable, Codable {
+struct Player: DeadOrAlive {
 	var country: Country
 	var ai: Bool = false
 	var alive: Bool = true
 	var prestige: UInt16 = 0x300
-	var visible: Set<XY> = []
+	var visible: SetXY = .empty
 }
 
-enum Country: UInt8, Hashable, Codable {
+enum Country: UInt8, Hashable {
 	case dnr, lnr, irn, isr, rus, swe, ukr, usa
 }
 
-enum Team: UInt8, Hashable, Codable {
+enum Team: UInt8, Hashable {
 	case axis, allies, soviet
 }
 

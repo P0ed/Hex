@@ -7,7 +7,6 @@ extension GameScene {
 		case let .spawn(uid): processSpawn(uid: uid)
 		case let .move(uid, distance): await processMove(uid: uid, distance: distance)
 		case let .attack(src, dst, unit): await processAttack(src: src, dst: dst, unit: unit)
-		case .reflag: updateBuildings()
 		case .nextDay: updateUnits()
 		case .shop: processShop()
 		case .build: processBuild()
@@ -26,7 +25,7 @@ private extension GameScene {
 		let xy = state.units[uid].position
 		sprite.position = state.map.point(at: xy)
 		sprite.zPosition = nodes.map.zPosition(at: xy)
-		sprite.isHidden = !state.player.visible.contains(xy)
+		sprite.isHidden = !state.player.visible[xy]
 		addUnit(uid, node: sprite)
 	}
 
@@ -128,7 +127,7 @@ private extension GameScene {
 
 	private func restartGame() {
 		view?.presentScene(
-			GameScene(size: size),
+			GameScene(state: .random(), size: size),
 			transition: .moveIn(with: .up, duration: 0.47)
 		)
 	}

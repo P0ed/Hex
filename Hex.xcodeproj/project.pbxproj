@@ -38,6 +38,8 @@
 		5F919D6D2EA959FA0037A208 /* boom-s.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5F2A33A62EA93AC3008A0A95 /* boom-s.wav */; };
 		5F919D6E2EA959FA0037A208 /* boom-m.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5F2A33A52EA93AC3008A0A95 /* boom-m.wav */; };
 		5F919D6F2EA959FD0037A208 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F2A33C32EA93AC3008A0A95 /* Assets.xcassets */; };
+		5FA0F0972EF21C3A0022EC68 /* SetXY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA0F0962EF21C3A0022EC68 /* SetXY.swift */; };
+		5FA0F0992EF2255B0022EC68 /* D20.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA0F0982EF2255B0022EC68 /* D20.swift */; };
 		5FB4D0D52EAE26240010E702 /* GameState+Attack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB4D0D42EAE261E0010E702 /* GameState+Attack.swift */; };
 		5FB4D1262EAFABCB0010E702 /* GameState+EndTurn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB4D1252EAFABCB0010E702 /* GameState+EndTurn.swift */; };
 		5FCABBC82EAA701D008EE894 /* mov.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5FCABBC72EAA701D008EE894 /* mov.wav */; };
@@ -79,6 +81,8 @@
 		5F8E87322EB3E1DA0023B28F /* Integers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Integers.swift; sourceTree = "<group>"; };
 		5F919D2C2EA9564A0037A208 /* Hex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F919D702EA95ADF0037A208 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5FA0F0962EF21C3A0022EC68 /* SetXY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetXY.swift; sourceTree = "<group>"; };
+		5FA0F0982EF2255B0022EC68 /* D20.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = D20.swift; sourceTree = "<group>"; };
 		5FB297482E79A39000FA039B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5FB4D0D42EAE261E0010E702 /* GameState+Attack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+Attack.swift"; sourceTree = "<group>"; };
 		5FB4D1252EAFABCB0010E702 /* GameState+EndTurn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+EndTurn.swift"; sourceTree = "<group>"; };
@@ -152,10 +156,12 @@
 			isa = PBXGroup;
 			children = (
 				5F8E87322EB3E1DA0023B28F /* Integers.swift */,
+				5F2A33B32EA93AC3008A0A95 /* Monoid.swift */,
 				5F2A33A82EA93AC3008A0A95 /* Arrays.swift */,
 				5F8E87302EB3BEEC0023B28F /* Speicher.swift */,
 				5F41DDD42EE32744008FBF17 /* Map.swift */,
-				5F2A33B32EA93AC3008A0A95 /* Monoid.swift */,
+				5FA0F0962EF21C3A0022EC68 /* SetXY.swift */,
+				5FA0F0982EF2255B0022EC68 /* D20.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -270,6 +276,7 @@
 				5F919D542EA959670037A208 /* HIDController.swift in Sources */,
 				5F919D5E2EA9596E0037A208 /* Unit.swift in Sources */,
 				5F919D5F2EA9596E0037A208 /* UnitFactory.swift in Sources */,
+				5FA0F0972EF21C3A0022EC68 /* SetXY.swift in Sources */,
 				5F919D602EA9596E0037A208 /* GameState+AI.swift in Sources */,
 				5F919D612EA9596E0037A208 /* Arrays.swift in Sources */,
 				5F919D632EA9596E0037A208 /* Monoid.swift in Sources */,
@@ -285,6 +292,7 @@
 				5F919D672EA9596E0037A208 /* Terrain.swift in Sources */,
 				5F919D682EA9596E0037A208 /* GameState.swift in Sources */,
 				5F919D692EA9596E0037A208 /* Math.swift in Sources */,
+				5FA0F0992EF2255B0022EC68 /* D20.swift in Sources */,
 				5FF7EB3D2EB6428F00E287FF /* MapGeneration.swift in Sources */,
 				5F919D6A2EA9596E0037A208 /* GameState+Actions.swift in Sources */,
 				5FB4D1262EAFABCB0010E702 /* GameState+EndTurn.swift in Sources */,
@@ -415,6 +423,7 @@
 				SDKROOT = macosx;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
 				TVOS_DEPLOYMENT_TARGET = 26.0;
@@ -476,6 +485,7 @@
 				SDKROOT = macosx;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_VERSION = 6.0;
 				TVOS_DEPLOYMENT_TARGET = 26.0;
 				XROS_DEPLOYMENT_TARGET = 26.0;

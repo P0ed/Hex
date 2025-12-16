@@ -2,13 +2,20 @@ import SpriteKit
 import GameplayKit
 
 final class GameScene: SKScene {
-	private(set) var state: GameState = .random() { didSet { didSetState() } }
+	private(set) var state: GameState { didSet { didSetState() } }
 	private(set) var menuState: MenuState? { didSet { didSetMenu() } }
 
 	private(set) var nodes: Nodes?
-	private(set) var fog: Set<XY>?
+	private(set) var fog: SetXY?
 
 	private let hid = HIDController()
+
+	init(state: consuming GameState, size: CGSize) {
+		self.state = state
+		super.init(size: size)
+	}
+
+	required init?(coder aDecoder: NSCoder) { fatalError() }
 
 	override func becomeFirstResponder() -> Bool {
 		super.becomeFirstResponder()
@@ -21,7 +28,6 @@ final class GameScene: SKScene {
 
 		nodes = addNodes()
 		nodes?.layout(size: size)
-		updateBuildings()
 
 		state.events = state.units.map { i, _ in .spawn(i) }
 

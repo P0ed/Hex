@@ -1,4 +1,4 @@
-struct Unit: Hashable, Codable {
+struct Unit: Hashable {
 	var country: Country
 	var position: XY
 	var stats: Stats
@@ -6,7 +6,7 @@ struct Unit: Hashable, Codable {
 
 typealias UID = Int
 
-struct Stats: RawRepresentable, Hashable, Codable {
+struct Stats: RawRepresentable, Hashable {
 	var rawValue: UInt64
 }
 

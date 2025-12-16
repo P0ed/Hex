@@ -3,7 +3,7 @@ struct GameState: ~Copyable {
 
 	var players: [Player]
 	var buildings: [Building]
-	var units: Speicher<1024, Unit>
+	var units: Speicher<128, Unit>
 	var d20: D20 = .init(seed: 0)
 
 	var turn: UInt32 = 0
@@ -11,7 +11,7 @@ struct GameState: ~Copyable {
 	var cursor: XY = .zero
 	var camera: XY = .zero
 	var selectedUnit: UID?
-	var selectable: Set<XY>?
+	var selectable: SetXY?
 	var scale: Double = 1.0
 
 	var events: [Event] = []
@@ -35,30 +35,25 @@ extension GameState {
 	}
 }
 
-struct Building: Hashable, Codable {
+struct Building: Hashable {
 	var country: Country
 	var position: XY
 	var type: BuildingType
 }
 
-enum BuildingType: UInt8, Hashable, Codable {
+enum BuildingType: UInt8, Hashable {
 	case city
 }
 
-enum Event: Hashable, Codable {
+enum Event: Hashable {
 	case spawn(UID)
 	case move(UID, Int)
 	case attack(UID, UID, Unit)
-	case reflag
 	case nextDay
 	case shop
 	case build
 	case menu
 	case gameOver
-}
-
-struct D20: Hashable, Codable {
-	var seed: UInt64
 }
 
 extension GameState {
@@ -85,21 +80,5 @@ extension Building {
 		switch type {
 		case .city: 40
 		}
-	}
-}
-
-extension D20: RandomNumberGenerator {
-
-	// SplitMix64
-	mutating func next() -> UInt64 {
-		seed &+= 0x9e3779b97f4a7c15
-		var z: UInt64 = seed
-		z = (z ^ (z &>> 30)) &* 0xbf58476d1ce4e5b9
-		z = (z ^ (z &>> 27)) &* 0x94d049bb133111eb
-		return z ^ (z &>> 31)
-	}
-
-	mutating func callAsFunction() -> Int {
-		.random(in: 0..<20, using: &self)
 	}
 }

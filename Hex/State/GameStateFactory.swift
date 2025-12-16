@@ -1,4 +1,3 @@
-@MainActor
 extension GameState {
 
 	static func random(size: Int = .random(in: 8...32), seed: Int = 0) -> GameState {

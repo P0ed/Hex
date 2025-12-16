@@ -37,7 +37,6 @@ extension GameState {
 			b.position = units[engineer].position
 		}
 		buildings.append(building)
-		events.append(.reflag)
 		units[engineer].stats.mp = 0
 		units[engineer].stats.ap = 0
 		selectUnit(.none)

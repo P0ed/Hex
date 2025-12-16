@@ -2,17 +2,17 @@ import CoreGraphics
 
 extension GameState {
 
-	func vision(for unit: Unit) -> Set<XY> {
+	func vision(for unit: Unit) -> SetXY {
 		let range = switch unit.stats.unitType {
 		case .recon: 3
 		case .inf, .tank, .air: 2
 		default: 1
 		}
-		return Set(unit.position.circle(range * 3))
+		return SetXY(unit.position.circle(range * 3))
 	}
 
-	func vision(for country: Country) -> Set<XY> {
-		units.reduce(into: [] as Set<XY>) { v, i, u in
+	func vision(for country: Country) -> SetXY {
+		units.reduce(into: SetXY.empty) { v, i, u in
 			if u.country == country { v.formUnion(vision(for: u)) }
 		}
 		.union(buildings.flatMap { building in
@@ -31,19 +31,19 @@ extension GameState {
 		}
 	}
 
-	func moves(for unit: Unit) -> Set<XY> {
-		!unit.canMove ? [] : .make { xys in
+	func moves(for unit: Unit) -> SetXY {
+		!unit.canMove ? .empty : .make { xys in
 			var front = [(unit.position, unit.stats.mov)]
 			repeat {
 				front = front.flatMap { xy, mp in
 					xy.n8.compactMap { xy in
 						let moveCost = map[xy].moveCost(unit.stats)
-						return !xys.contains(xy) && moveCost <= mp
+						return !xys[xy] && moveCost <= mp
 						? (xy, mp - moveCost)
 						: .none
 					}
 				}
-				xys.formUnion(front.map { pos, _ in pos })
+				xys.formUnion(SetXY(front.map { pos, _ in pos }))
 			} while !front.isEmpty
 		}
 		.subtracting(units.map { _, u in u.position })
@@ -51,7 +51,7 @@ extension GameState {
 
 	mutating func move(unit uid: UID, to position: XY) {
 		guard units[uid].alive, units[uid].country == country,
-			  units[uid].canMove, moves(for: units[uid]).contains(position)
+			  units[uid].canMove, moves(for: units[uid])[position]
 		else { return }
 
 		let distance = units[uid].position.distance(to: position)

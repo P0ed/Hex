@@ -38,6 +38,7 @@ extension GameState {
 		units.firstMap { [country] i, u in
 			u.country == country
 			? moves(for: u)
+				.set
 				.min(by: { ha, hb in
 					target.distance(to: ha) < target.distance(to: hb)
 				})

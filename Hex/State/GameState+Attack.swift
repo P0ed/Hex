@@ -3,7 +3,7 @@ extension GameState {
 	func targets(unit: Unit) -> [(UID, Unit)] {
 		!unit.canAttack ? [] : units.compactMap { i, u in
 			u.country.team != unit.country.team
-			&& player.visible.contains(u.position)
+			&& player.visible[u.position]
 			&& unit.canHit(unit: u)
 			? (i, u) : nil
 		}

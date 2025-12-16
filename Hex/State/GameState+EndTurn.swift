@@ -110,7 +110,6 @@ extension GameState {
 			}
 		}
 		if reflag {
-			events.append(.reflag)
 			eliminatePlayers()
 		}
 	}
