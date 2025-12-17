@@ -1,7 +1,6 @@
 import SpriteKit
 import GameplayKit
 
-@MainActor
 extension SKTileGroup {
 
 	private static func make(_ image: NSImage) -> SKTileGroup {
@@ -58,7 +57,6 @@ extension SKTileGroup {
 	static let river11Fog = make(.river11Fog)
 }
 
-@MainActor
 extension Terrain {
 
 	func tileGroup(fog: Bool) -> SKTileGroup? {
@@ -88,7 +86,6 @@ extension Terrain {
 	}
 }
 
-@MainActor
 extension Country {
 
 	var flag: SKTileGroup {
@@ -112,7 +109,6 @@ extension SKTileAdjacencyMask: @retroactive Hashable {
 	}
 }
 
-@MainActor
 extension SKTileSet {
 
 	static let terrain = SKTileSet(
@@ -126,7 +122,6 @@ extension SKTileSet {
 	)
 }
 
-@MainActor
 extension SKTileMapNode {
 
 	convenience init(tiles: SKTileSet, size: Int) {

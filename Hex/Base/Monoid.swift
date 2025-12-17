@@ -1,11 +1,3 @@
-func identity<A>(_ x: A) -> A { x }
-
-func modifying<A>(_ value: A, _ tfm: (inout A) -> Void) -> A {
-	var value = value
-	tfm(&value)
-	return value
-}
-
 protocol Monoid {
 	static var empty: Self { get }
 	mutating func combine(_ other: Self)

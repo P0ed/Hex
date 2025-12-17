@@ -1,11 +1,10 @@
 struct GameState: ~Copyable {
 	var map: Map<Terrain>
 
-	var players: [Player]
-	var buildings: [Building]
+	var players: Speicher<4, Player>
+	var buildings: Speicher<32, Building>
 	var units: Speicher<128, Unit>
 	var d20: D20 = .init(seed: 0)
-
 	var turn: UInt32 = 0
 
 	var cursor: XY = .zero
@@ -14,15 +13,18 @@ struct GameState: ~Copyable {
 	var selectable: SetXY?
 	var scale: Double = 1.0
 
-	var events: [Event] = []
+	var events: Speicher<128, Event> = .init(head: [], tail: .gameOver)
 }
 
 extension GameState {
 
 	init(map: consuming Map<Terrain>, players: [Player], buildings: [Building], units: [Unit]) {
 		self.map = map
-		self.players = players
-		self.buildings = buildings
+		self.players = .init(head: players, tail: .dead)
+		self.buildings = .init(
+			head: buildings,
+			tail: .init(country: .dnr, position: .zero, type: .city)
+		)
 		self.units = .init(head: units, tail: .dead)
 
 		buildings.forEach { b in
@@ -31,11 +33,14 @@ extension GameState {
 			}
 		}
 
-		self.players = players.mapInPlace { p in p.visible = vision(for: p.country) }
+		let v = Dictionary(uniqueKeysWithValues: self.players.map { i, p in
+			(i, vision(for: p.country))
+		})
+		self.players.modifyEach { i, p in p.visible = v[i] ?? .empty }
 	}
 }
 
-struct Building: Hashable {
+struct Building: Hashable, DeadOrAlive {
 	var country: Country
 	var position: XY
 	var type: BuildingType
@@ -54,6 +59,11 @@ enum Event: Hashable {
 	case build
 	case menu
 	case gameOver
+}
+
+extension Event: DeadOrAlive {
+
+	var alive: Bool { self != .gameOver }
 }
 
 extension GameState {

@@ -15,7 +15,7 @@ extension GameState {
 		units.reduce(into: SetXY.empty) { v, i, u in
 			if u.country == country { v.formUnion(vision(for: u)) }
 		}
-		.union(buildings.flatMap { building in
+		.union(buildings.flatMap { _, building in
 			building.country == country ? building.position.circle(3) : []
 		})
 	}
@@ -63,7 +63,7 @@ extension GameState {
 		let vision = vision(for: units[uid])
 		player.visible.formUnion(vision)
 		selectUnit(units[uid].hasActions ? uid : .none)
-		events.append(.move(uid, distance))
+		events.add(.move(uid, distance))
 	}
 
 	private var tooFarX: Bool { abs(camera.pt.x - cursor.pt.x) > 4.0 * scale }

@@ -11,7 +11,6 @@ enum Input {
 	case scale(Double)
 }
 
-@MainActor
 extension GameState {
 
 	var canHandleInput: Bool { !player.ai && events.isEmpty }
@@ -19,7 +18,7 @@ extension GameState {
 	mutating func apply(_ input: Input) {
 		switch input {
 		case .direction(let direction): moveCursor(direction)
-		case .menu: events.append(.menu)
+		case .menu: events.add(.menu)
 		case .action(.a): primaryAction()
 		case .action(.b): secondaryAction()
 		case .action(.c): break
@@ -32,7 +31,6 @@ extension GameState {
 	}
 }
 
-@MainActor
 private extension GameState {
 
 	mutating func select(_ xy: XY) {
@@ -55,14 +53,14 @@ private extension GameState {
 				if dst.country.team != unit.country.team {
 					attack(src: selectedID, dst: dstID)
 				} else if dstID == selectedID, unit.stats.unitType == .engineer, unit.untouched {
-					events.append(.build)
+					events.add(.build)
 				} else {
 					selectUnit(dst == unit ? .none : dstID)
 				}
 			} else if unit.canMove {
 				move(unit: selectedID, to: cursor)
 			} else if buildings[cursor]?.country == country {
-				events.append(.shop)
+				events.add(.shop)
 			} else {
 				selectUnit(.none)
 			}
@@ -70,7 +68,7 @@ private extension GameState {
 			if let (i, u) = units[cursor], u.country == country {
 				selectUnit(i)
 			} else if buildings[cursor]?.country == country {
-				events.append(.shop)
+				events.add(.shop)
 			}
 		}
 	}

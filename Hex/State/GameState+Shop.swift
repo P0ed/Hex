@@ -25,7 +25,7 @@ extension GameState {
 			u.position = position
 		}
 		player.prestige.decrement(by: unit.cost)
-		events.append(.spawn(units.add(unit)))
+		events.add(.spawn(units.add(unit)))
 	}
 
 	mutating func build(_ template: Building, by engineer: UID) {
@@ -36,7 +36,7 @@ extension GameState {
 		let building = modifying(template) { b in
 			b.position = units[engineer].position
 		}
-		buildings.append(building)
+		buildings.add(building)
 		units[engineer].stats.mp = 0
 		units[engineer].stats.ap = 0
 		selectUnit(.none)

@@ -1,8 +1,7 @@
-@MainActor
 extension GameState {
 
 	mutating func runAI() {
-		let target = buildings.firstMap { [country] b in
+		let target = buildings.firstMap { [country] _, b in
 			b.country.team != country.team ? b.position : nil
 		}
 		guard let target else { return }
@@ -19,7 +18,7 @@ extension GameState {
 	}
 
 	private var nextPurchase: (Unit, XY)? {
-		player.prestige < 500 ? .none : buildings.firstMap { [country] b in
+		player.prestige < 500 ? .none : buildings.firstMap { [country] _, b in
 			b.country == country && b.type == .city && units[b.position] == nil
 			? unitTemplates.firstMap { t in (t, b.position) }
 			: nil

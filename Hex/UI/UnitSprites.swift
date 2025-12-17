@@ -1,6 +1,5 @@
 import SpriteKit
 
-@MainActor
 extension Unit {
 
 	var sprite: SKNode {
@@ -63,7 +62,6 @@ extension SKNode {
 	}
 }
 
-@MainActor
 extension BuildingType {
 
 	var imageName: String {

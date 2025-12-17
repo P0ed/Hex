@@ -2,28 +2,28 @@ protocol DeadOrAlive: ~Copyable {
 	var alive: Bool { get }
 }
 
-struct Speicher<let maxCount: Int, Element: DeadOrAlive>: ~Copyable {
-	private var elements: InlineArray<maxCount, Element>
+extension DeadOrAlive {
+	var alive: Bool { true }
+}
+
+struct Speicher<let capacity: Int, Element: DeadOrAlive>: ~Copyable {
+	private var elements: InlineArray<capacity, Element>
 	private(set) var count: Int
 }
 
 extension Speicher {
 
-	init(repeating value: Element) {
-		elements = .init(repeating: value)
-		count = 0
-	}
-
 	init(head: [Element], tail: Element) {
-		precondition(head.count <= maxCount)
+		elements = .init(head: head, tail: tail)
 		count = head.count
-		elements = .init { [count] i in
-			i < count ? head[i] : tail
-		}
 	}
 
 	var indices: CountableRange<Int> {
 		0..<count
+	}
+
+	var isEmpty: Bool {
+		count == 0 || firstMap(ø) == nil
 	}
 
 	subscript(_ index: Int) -> Element {
@@ -31,6 +31,7 @@ extension Speicher {
 		set { elements[index] = newValue }
 	}
 
+	@discardableResult
 	mutating func add(_ element: Element) -> Int {
 		for i in indices where !elements[i].alive {
 			elements[i] = element
@@ -41,8 +42,18 @@ extension Speicher {
 		return count
 	}
 
+	mutating func erase() {
+		count = 0
+	}
+
 	func forEach(_ body: (Int, Element) -> Void) {
 		for i in indices where elements[i].alive { body(i, elements[i]) }
+	}
+
+	mutating func modifyEach(_ transform: (Int, inout Element) -> Void) {
+		for i in indices where elements[i].alive {
+			transform(i, &elements[i])
+		}
 	}
 
 	func map<A>(_ transform: (Int, Element) -> A) -> [A] {
@@ -52,6 +63,14 @@ extension Speicher {
 			array.append(transform(i, elements[i]))
 		}
 		return array
+	}
+
+	func flatMap<A>(_ transform: (Int, Element) -> [A]) -> [A] {
+		var arr = [] as [A]
+		for i in indices where elements[i].alive {
+			arr.append(contentsOf: transform(i, self[i]))
+		}
+		return arr
 	}
 
 	func compactMap<A>(_ transform: (Int, Element) -> A?) -> [A] {

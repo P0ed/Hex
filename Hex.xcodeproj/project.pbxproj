@@ -10,6 +10,7 @@
 		5F24DC332EA95FE60085FDDC /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F24DC322EA95FE50085FDDC /* main.swift */; };
 		5F41DDD52EE32745008FBF17 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F41DDD42EE32744008FBF17 /* Map.swift */; };
 		5F43D4A52EF051A80046AD2A /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F43D4A42EF051A80046AD2A /* Player.swift */; };
+		5F51E5BE2EF308B400A711DF /* Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F51E5BD2EF308B200A711DF /* Swift.swift */; };
 		5F8E87312EB3BEEC0023B28F /* Speicher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8E87302EB3BEEC0023B28F /* Speicher.swift */; };
 		5F8E87332EB3E1DD0023B28F /* Integers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8E87322EB3E1DA0023B28F /* Integers.swift */; };
 		5F919D532EA9595D0037A208 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33C42EA93AC3008A0A95 /* GameScene.swift */; };
@@ -77,6 +78,7 @@
 		5F2A33C42EA93AC3008A0A95 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		5F41DDD42EE32744008FBF17 /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		5F43D4A42EF051A80046AD2A /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		5F51E5BD2EF308B200A711DF /* Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift.swift; sourceTree = "<group>"; };
 		5F8E87302EB3BEEC0023B28F /* Speicher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speicher.swift; sourceTree = "<group>"; };
 		5F8E87322EB3E1DA0023B28F /* Integers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Integers.swift; sourceTree = "<group>"; };
 		5F919D2C2EA9564A0037A208 /* Hex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hex.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,6 +157,7 @@
 		5F8E87342EB3E1F20023B28F /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				5F51E5BD2EF308B200A711DF /* Swift.swift */,
 				5F8E87322EB3E1DA0023B28F /* Integers.swift */,
 				5F2A33B32EA93AC3008A0A95 /* Monoid.swift */,
 				5F2A33A82EA93AC3008A0A95 /* Arrays.swift */,
@@ -300,6 +303,7 @@
 				5F919D562EA959670037A208 /* UnitSprites.swift in Sources */,
 				5F919D572EA959670037A208 /* GameScene+Nodes.swift in Sources */,
 				5FB4D0D52EAE26240010E702 /* GameState+Attack.swift in Sources */,
+				5F51E5BE2EF308B400A711DF /* Swift.swift in Sources */,
 				5F919D582EA959670037A208 /* GameScene+Input.swift in Sources */,
 				5F919D5A2EA959670037A208 /* TileSprites.swift in Sources */,
 				5F919D5B2EA959670037A208 /* GameScene+Event.swift in Sources */,

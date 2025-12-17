@@ -35,7 +35,7 @@ extension GameState {
 		units[src].stats.exp.increment(by: hpLeft != 0 ? dmg : dmg * 2)
 
 		camera = units[dst].position
-		events.append(.attack(src, dst, units[dst]))
+		events.add(.attack(src, dst, units[dst]))
 	}
 
 	mutating func attack(src: UID, dst: UID) {

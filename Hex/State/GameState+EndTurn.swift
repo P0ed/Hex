@@ -3,13 +3,13 @@ extension GameState {
 	var day: Int { Int(turn) / players.count + 1 }
 
 	private var aliveTeams: Set<Team> {
-		Set(players.compactMap { p in p.alive ? p.country.team : nil })
+		Set(players.compactMap { _, p in p.alive ? p.country.team : nil })
 	}
 
 	mutating func endTurn() {
 		captureCities()
 
-		guard nextTurn() else { return events.append(.gameOver) }
+		guard nextTurn() else { return _ = events.add(.gameOver) }
 
 		resetUI()
 	}
@@ -24,17 +24,20 @@ extension GameState {
 	}
 
 	private mutating func startNextDay() {
-		players = players.mapInPlace { player in
-			endTurn(player: &player)
+		let ps = Dictionary(uniqueKeysWithValues: players.map { i, p in
+			(i, modifying(p) { p in endTurn(player: &p) })
+		})
+		players.modifyEach { i, p in
+			p = ps[i] ?? p
 		}
 		for i in units.indices where units[i].alive {
 			endTurn(unit: i)
 		}
-		events.append(.nextDay)
+		events.add(.nextDay)
 	}
 
 	private func income(for player: Player) -> UInt16 {
-		buildings.reduce(into: 0) { r, b in
+		buildings.reduce(into: 0) { r, _, b in
 			r += b.country == player.country ? b.income : 0
 		}
 	}
@@ -45,7 +48,7 @@ extension GameState {
 		cursor = units.firstMap { [country] _, u in
 			u.country == country ? u.position : nil
 		}
-		?? buildings.firstMap { b in
+		?? buildings.firstMap { _, b in
 			b.country == country ? b.position : nil
 		}
 		?? .zero
@@ -100,8 +103,8 @@ extension GameState {
 	private mutating func captureCities() {
 		let reflag = units.reduce(into: false) { reflag, _, u in
 
-			let idx = buildings.firstIndex { b in
-				b.position == u.position
+			let idx = buildings.firstMap { i, b in
+				b.position == u.position ? i : nil
 			}
 
 			if let idx, buildings[idx].country.team != u.country.team {
@@ -115,14 +118,17 @@ extension GameState {
 	}
 
 	private mutating func eliminatePlayers() {
-		players = players.mapInPlace { player in
-			player.alive = countryHasCities(player.country)
+		let hasCity = Dictionary(uniqueKeysWithValues: players.map { i, p in
+			(i, countryHasCities(p.country))
+		})
+		players.modifyEach { i, player in
+			player.alive = hasCity[i] ?? false
 		}
 	}
 
 	private func countryHasCities(_ country: Country) -> Bool {
-		buildings.contains { b in
-			b.type == .city && b.country == country
-		}
+		buildings.firstMap { _, b in
+			b.type == .city && b.country == country ? true : nil
+		} ?? false
 	}
 }

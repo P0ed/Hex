@@ -29,7 +29,7 @@ final class GameScene: SKScene {
 		nodes = addNodes()
 		nodes?.layout(size: size)
 
-		state.events = state.units.map { i, _ in .spawn(i) }
+		state.events = .init(head: state.units.map { i, _ in .spawn(i) }, tail: .gameOver)
 
 		hid.inputStream = { [weak self] input in self?.apply(input) }
 	}
@@ -67,8 +67,9 @@ final class GameScene: SKScene {
 		if state.isCursorTooFar { return state.alignCamera() }
 
 		Task {
-			for event in state.events { await processEvent(event) }
-			if !state.events.isEmpty { return state.events = [] }
+			let events = state.events.map { _, e in e }
+			for event in events { await processEvent(event) }
+			if !events.isEmpty { return state.events.erase() }
 			if state.player.ai { return state.runAI() }
 		}
 	}

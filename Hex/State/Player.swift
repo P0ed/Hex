@@ -24,3 +24,10 @@ extension Country {
 		}
 	}
 }
+
+extension Player {
+
+	static var dead: Self {
+		.init(country: .dnr, alive: false)
+	}
+}

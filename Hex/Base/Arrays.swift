@@ -1,5 +1,16 @@
 extension InlineArray {
 
+	init(head: [Element], tail: Element) {
+		precondition(head.count <= count)
+		self = .init { [count = head.count] i in
+			i < count ? head[i] : tail
+		}
+	}
+
+	mutating func modifyEach(_ transform: (inout Element) -> Void) {
+		for i in indices { transform(&self[i]) }
+	}
+
 	func mapInPlace(_ transform: (inout Element) -> Void) -> Self {
 		var arr = self
 		for i in indices { transform(&arr[i]) }
@@ -16,6 +27,12 @@ extension InlineArray {
 		var arr = [] as [A]
 		arr.reserveCapacity(count)
 		for i in indices { arr.append(transform(self[i])) }
+		return arr
+	}
+
+	func flatMap<A>(_ transform: (Element) -> [A]) -> [A] {
+		var arr = [] as [A]
+		for i in indices { arr.append(contentsOf: transform(self[i])) }
 		return arr
 	}
 
@@ -59,9 +76,9 @@ extension Array {
 	}
 }
 
-extension [Building] {
+extension Speicher where Element == Building {
 
 	subscript(_ xy: XY) -> Building? {
-		first { u in u.position == xy }
+		firstMap { _, b in b.position == xy ? b : nil }
 	}
 }

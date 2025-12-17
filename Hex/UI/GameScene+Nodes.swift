@@ -2,7 +2,6 @@ import SpriteKit
 
 extension GameScene {
 
-	@MainActor
 	struct Nodes {
 		var cursor: SKNode
 		var camera: SKCameraNode
@@ -20,7 +19,6 @@ extension GameScene {
 		var mov: SKAudioNode
 	}
 
-	@MainActor
 	struct MapNodes {
 		var layers: [SKTileMapNode]
 		var size: Int
