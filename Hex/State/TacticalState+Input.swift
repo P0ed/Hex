@@ -13,7 +13,7 @@ enum Input {
 
 extension TacticalState {
 
-	var canHandleInput: Bool { !player.ai && events.isEmpty }
+	var inputable: Bool { !player.ai && events.isEmpty }
 
 	mutating func apply(_ input: Input) {
 		switch input {
@@ -34,7 +34,7 @@ extension TacticalState {
 private extension TacticalState {
 
 	mutating func select(_ xy: XY) {
-		guard canHandleInput, map.contains(xy) else { return }
+		guard inputable, map.contains(xy) else { return }
 
 		cursor = xy
 		primaryAction()

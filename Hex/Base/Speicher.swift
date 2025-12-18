@@ -58,7 +58,6 @@ extension Speicher {
 
 	func map<A>(_ transform: (Int, Element) -> A) -> [A] {
 		var array = [] as [A]
-		array.reserveCapacity(count)
 		for i in indices where elements[i].alive {
 			array.append(transform(i, elements[i]))
 		}

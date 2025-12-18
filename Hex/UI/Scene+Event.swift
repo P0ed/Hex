@@ -2,7 +2,14 @@ import SpriteKit
 
 extension Scene<TacticalState, TacticalEvent, TacticalNodes> {
 
-	func processEvent(_ event: TacticalEvent) async {
+	func process(_ events: [TacticalEvent]) async {
+		for e in events { await process(e) }
+	}
+}
+
+private extension Scene<TacticalState, TacticalEvent, TacticalNodes> {
+
+	func process(_ event: TacticalEvent) async {
 		switch event {
 		case let .spawn(uid): processSpawn(uid: uid)
 		case let .move(uid, distance): await processMove(uid: uid, distance: distance)
@@ -14,9 +21,6 @@ extension Scene<TacticalState, TacticalEvent, TacticalNodes> {
 		case .gameOver: processGameOver()
 		}
 	}
-}
-
-private extension Scene<TacticalState, TacticalEvent, TacticalNodes> {
 
 	func processSpawn(uid: UID) {
 		guard let nodes else { return }

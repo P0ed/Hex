@@ -7,51 +7,26 @@ struct SceneMode<State: ~Copyable, Event, Nodes> {
 	var update: (borrowing State, Nodes) -> Void
 	var reducible: (borrowing State) -> Bool
 	var reduce: (inout State, Nodes) -> [Event]
-	var process: ([Event], Nodes) async -> Void
+	var process: (Scene<State, Event, Nodes>, [Event]) async -> Void
 	var status: (borrowing State) -> String
 	var layout: (CGSize, Nodes) -> Void = ø
 }
 
-extension SceneMode<TacticalState, TacticalEvent, TacticalNodes> {
+typealias TacticalMode = SceneMode<TacticalState, TacticalEvent, TacticalNodes>
+typealias TacticalScene = Scene<TacticalState, TacticalEvent, TacticalNodes>
+
+extension TacticalMode {
 
 	static var tactical: Self {
 		.init(
 			make: TacticalNodes.init,
-			inputable: { state in state.canHandleInput },
+			inputable: { state in state.inputable },
 			input: { state, input in state.apply(input) },
 			update: { state, nodes in nodes.update(state: state) },
-			reducible: reducible,
-			reduce: reduce,
-			process: process,
+			reducible: { state in state.reducible },
+			reduce: { state, nodes in state.reduce(nodes: nodes) },
+			process: { scene, events in await scene.process(events) },
 			status: { state in state.statusText }
 		)
-	}
-
-	private static func reducible(state: borrowing State) -> Bool {
-		state.isCursorTooFar || !state.events.isEmpty || state.player.ai
-	}
-
-	private static func reduce(state: inout State, nodes: Nodes) -> [Event] {
-//		fog = updateFogIfNeeded()
-
-		if state.isCursorTooFar {
-			state.alignCamera()
-			return []
-		}
-
-		let events = state.events.map { _, e in e }
-//			for event in events { await processEvent(event) }
-		if !events.isEmpty {
-			state.events.erase()
-			return events
-		}
-		if state.player.ai {
-			state.runAI()
-		}
-		return []
-	}
-
-	private static func process(events: [Event], nodes: Nodes) async {
-
 	}
 }

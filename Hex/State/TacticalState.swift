@@ -37,6 +37,8 @@ extension TacticalState {
 			(i, vision(for: p.country))
 		})
 		self.players.modifyEach { i, p in p.visible = v[i] ?? .empty }
+
+		events = .init(head: self.units.map { i, _ in .spawn(i) }, tail: .gameOver)
 	}
 }
 

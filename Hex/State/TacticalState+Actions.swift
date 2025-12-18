@@ -71,6 +71,10 @@ extension TacticalState {
 
 	var isCursorTooFar: Bool { tooFarX || tooFarY }
 
+	var reducible: Bool {
+		isCursorTooFar || !events.isEmpty || player.ai
+	}
+
 	mutating func alignCamera() {
 		while tooFarX {
 			camera = camera.n8[(camera.pt.x - cursor.pt.x) > 0.0 ? 5 : 1]
@@ -78,5 +82,22 @@ extension TacticalState {
 		while tooFarY {
 			camera = camera.n8[(camera.pt.y - cursor.pt.y) > 0.0 ? 7 : 3]
 		}
+	}
+
+	mutating func reduce(nodes: TacticalNodes) -> [TacticalEvent] {
+		if isCursorTooFar {
+			alignCamera()
+			return []
+		}
+		let es = events.map { _, e in e }
+		if !es.isEmpty {
+			events.erase()
+			return es
+		}
+		if player.ai {
+			runAI()
+			return []
+		}
+		return []
 	}
 }

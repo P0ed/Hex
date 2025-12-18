@@ -8,7 +8,6 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 
 	private(set) var baseNodes: BaseNodes?
 	private(set) var nodes: Nodes?
-	private(set) var fog: SetXY?
 
 	private let hid = HIDController()
 
@@ -34,12 +33,10 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 		let nodes = mode.make(self, state)
 		mode.layout(size, nodes)
 		self.nodes = nodes
-		mode.update(state, nodes)
-
-//		state.events = .init(head: state.units.map { i, _ in .spawn(i) }, tail: .gameOver)
-
 
 		hid.inputStream = { [weak self] input in self?.apply(input) }
+
+		didSetState()
 	}
 
 	override func didChangeSize(_ oldSize: CGSize) {
@@ -75,7 +72,7 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 		if mode.reducible(state) {
 			let events = mode.reduce(&state, nodes)
 			if !events.isEmpty {
-				Task { await mode.process(events, nodes) }
+				Task { await mode.process(self, events) }
 			}
 		}
 	}
