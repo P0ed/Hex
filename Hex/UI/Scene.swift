@@ -8,6 +8,7 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 
 	private(set) var baseNodes: BaseNodes?
 	private(set) var nodes: Nodes?
+	private var processing = false
 
 	private let hid = HIDController()
 
@@ -66,15 +67,23 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 	}
 
 	private func didSetState() {
-		guard let nodes else { return }
+		guard !processing, let nodes else { return }
 
 		updateStatus()
 		mode.update(state, nodes)
 
 		if mode.reducible(state) {
+			processing = true
 			let events = mode.reduce(&state, nodes)
 			if !events.isEmpty {
-				Task { await mode.process(self, events) }
+				Task {
+					await mode.process(self, events)
+					processing = false
+					if mode.reducible(state) { didSetState() }
+				}
+			} else {
+				processing = false
+				if mode.reducible(state) { didSetState() }
 			}
 		}
 	}
