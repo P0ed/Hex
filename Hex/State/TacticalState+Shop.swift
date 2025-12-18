@@ -1,4 +1,4 @@
-extension GameState {
+extension TacticalState {
 
 	var unitTemplates: [Unit] {
 		[

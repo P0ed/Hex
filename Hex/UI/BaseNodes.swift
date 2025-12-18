@@ -1,11 +1,23 @@
 import SpriteKit
 
-extension GameScene {
+struct BaseNodes {
+	var menu: SKNode
+	var status: SKLabelNode
+}
+
+extension Scene where State: ~Copyable {
+
+	func makeBaseNodes() -> BaseNodes {
+		BaseNodes(
+			menu: addMenu(),
+			status: addStatus()
+		)
+	}
 
 	func addMenu() -> SKNode {
 		let menu = SKShapeNode(
-			rectOf: Nodes.menuSize,
-			cornerRadius: Nodes.outerR
+			rectOf: BaseNodes.menuSize,
+			cornerRadius: BaseNodes.outerR
 		)
 		menu.fillColor = .lightGray
 		menu.strokeColor = .gray
@@ -15,9 +27,18 @@ extension GameScene {
 		camera?.addChild(menu)
 		return menu
 	}
+
+	func addStatus() -> SKLabelNode {
+		let label = SKLabelNode(size: .s)
+		camera?.addChild(label)
+		label.zPosition = 66.0
+		label.horizontalAlignmentMode = .left
+		label.verticalAlignmentMode = .baseline
+		return label
+	}
 }
 
-extension GameScene.Nodes {
+extension BaseNodes {
 
 	static let inset = 8.0 as CGFloat
 	static let spacing = 8.0 as CGFloat
@@ -41,7 +62,7 @@ extension GameScene.Nodes {
 		)
 	}
 
-	func showMenu(_ menuState: MenuState) {
+	func showMenu<State: ~Copyable>(_ menuState: MenuState<State>) {
 		menu.isHidden = false
 		addMenuItems(menuState)
 		if menuState.layout == .inspector { addMenuInspector() }
@@ -53,7 +74,7 @@ extension GameScene.Nodes {
 		menu.removeAllChildren()
 	}
 
-	private func addMenuItems(_ menuState: MenuState) {
+	private func addMenuItems<State: ~Copyable>(_ menuState: MenuState<State>) {
 		menuState.items.enumerated().map { idx, item in
 			let frame = SKShapeNode(rectOf: Self.itemSize, cornerRadius: Self.innerR)
 
@@ -97,7 +118,7 @@ extension GameScene.Nodes {
 		frame.addChild(label)
 	}
 
-	func updateMenu(_ menuState: MenuState) {
+	func updateMenu<State: ~Copyable>(_ menuState: MenuState<State>) {
 		menu.children.enumerated().forEach { idx, item in
 			if let frame = item as? SKShapeNode, frame.name == nil {
 				frame.fillColor = menuState.cursor == idx ? .gray : .darkGray

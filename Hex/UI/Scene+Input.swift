@@ -1,8 +1,8 @@
 import SpriteKit
 
-extension GameScene {
+extension Scene where State: ~Copyable {
 
-	override func keyDown(with event: NSEvent) {
+	func processKeyEvent(_ event: NSEvent) {
 		let flags = event.modifierFlags.intersection([.shift, .command])
 
 		switch event.keyCode {
@@ -34,25 +34,21 @@ extension GameScene {
 		}
 	}
 
-	override func mouseDown(with event: NSEvent) {
-		guard let nodes else { return }
+	func processMouseEvent(_ event: NSEvent) {
+		guard let nodes, let baseNodes else { return }
 		if menuState == nil {
-			let location = event.location(in: nodes.map.layers[0])
-			apply(.tile(
-				XY(
-					nodes.map.layers[0].tileColumnIndex(fromPosition: location),
-					nodes.map.layers[0].tileRowIndex(fromPosition: location)
-				)
-			))
+			if let input = mode.mouse(nodes, event) {
+				apply(input)
+			}
 		} else {
 			guard self.nodes(at: event.location(in: self))
-				.contains(where: { n in n == nodes.menu })
+				.contains(where: { n in n == baseNodes.menu })
 			else { return apply(.action(.b)) }
 
-			nodes.menu.nodes(at: event.location(in: nodes.menu))
+			baseNodes.menu.nodes(at: event.location(in: baseNodes.menu))
 				.compactMap { n in n as? SKShapeNode }.first
 				.flatMap { n in n.name == nil ? n : nil }
-				.flatMap(nodes.menu.children.firstIndex)
+				.flatMap(baseNodes.menu.children.firstIndex)
 				.map { idx in apply(.tile(XY(idx, 0))) }
 		}
 	}

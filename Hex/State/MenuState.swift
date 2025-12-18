@@ -1,6 +1,6 @@
-struct MenuState {
+struct MenuState<State: ~Copyable> {
 	var layout: MenuLayout
-	var items: [MenuItem]
+	var items: [MenuItem<State>]
 	var cursor: Int = 0
 	var action: MenuAction?
 }
@@ -13,14 +13,14 @@ enum MenuAction {
 	case close, apply(Int)
 }
 
-struct MenuItem {
+struct MenuItem<State: ~Copyable> {
 	var icon: String
 	var text: String
 	var description: String?
-	var action: (inout GameState) -> Void
+	var action: (inout State) -> Void
 }
 
-extension MenuState {
+extension MenuState where State: ~Copyable {
 
 	var rows: Int { layout == .compact ? 1 : 3 }
 	var cols: Int { layout == .inspector ? 3 : 5 }

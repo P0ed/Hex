@@ -52,16 +52,6 @@ extension InlineArray {
 	}
 }
 
-extension Sequence {
-
-	func firstMap<A>(_ transform: (Element) -> A?) -> A? {
-		for e in self {
-			if let some = transform(e) { return some }
-		}
-		return nil
-	}
-}
-
 extension Array {
 
 	init<let count: Int>(_ inlineArray: InlineArray<count, Element>) {
@@ -71,14 +61,18 @@ extension Array {
 		self = arr
 	}
 
+	mutating func modifyEach(_ transform: (inout Element) -> Void) {
+		for i in indices { transform(&self[i]) }
+	}
+
 	func mapInPlace(_ transform: (inout Element) -> Void) -> Self {
 		map { e in modifying(e, transform) }
 	}
-}
 
-extension Speicher where Element == Building {
-
-	subscript(_ xy: XY) -> Building? {
-		firstMap { _, b in b.position == xy ? b : nil }
+	func firstMap<A>(_ transform: (Element) -> A?) -> A? {
+		for e in self {
+			if let some = transform(e) { return some }
+		}
+		return nil
 	}
 }

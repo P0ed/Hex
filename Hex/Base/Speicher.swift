@@ -58,7 +58,6 @@ extension Speicher {
 
 	func map<A>(_ transform: (Int, Element) -> A) -> [A] {
 		var array = [] as [A]
-		array.reserveCapacity(count)
 		for i in indices where elements[i].alive {
 			array.append(transform(i, elements[i]))
 		}
@@ -103,5 +102,12 @@ extension Speicher where Element == Unit {
 
 	subscript(_ xy: XY) -> (UID, Unit)? {
 		firstMap { i, u in u.position == xy ? (i, u) : nil }
+	}
+}
+
+extension Speicher where Element == Building {
+
+	subscript(_ xy: XY) -> Building? {
+		firstMap { _, b in b.position == xy ? b : nil }
 	}
 }

@@ -46,7 +46,7 @@ extension Building {
 	}
 }
 
-extension GameState {
+extension TacticalState {
 
 	var statusText: String {
 		if let selectedUnit {
@@ -62,7 +62,7 @@ extension GameState {
 	}
 }
 
-extension MenuState {
+extension MenuState where State: ~Copyable {
 
 	var statusText: String { items[cursor].text }
 }

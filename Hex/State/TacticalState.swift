@@ -1,4 +1,4 @@
-struct GameState: ~Copyable {
+struct TacticalState: ~Copyable {
 	var map: Map<Terrain>
 
 	var players: Speicher<4, Player>
@@ -13,10 +13,10 @@ struct GameState: ~Copyable {
 	var selectable: SetXY?
 	var scale: Double = 1.0
 
-	var events: Speicher<128, Event> = .init(head: [], tail: .gameOver)
+	var events: Speicher<128, TacticalEvent> = .init(head: [], tail: .gameOver)
 }
 
-extension GameState {
+extension TacticalState {
 
 	init(map: consuming Map<Terrain>, players: [Player], buildings: [Building], units: [Unit]) {
 		self.map = map
@@ -37,6 +37,8 @@ extension GameState {
 			(i, vision(for: p.country))
 		})
 		self.players.modifyEach { i, p in p.visible = v[i] ?? .empty }
+
+		events = .init(head: self.units.map { i, _ in .spawn(i) }, tail: .gameOver)
 	}
 }
 
@@ -50,7 +52,7 @@ enum BuildingType: UInt8, Hashable {
 	case city
 }
 
-enum Event: Hashable {
+enum TacticalEvent: Hashable {
 	case spawn(UID)
 	case move(UID, Int)
 	case attack(UID, UID, Unit)
@@ -61,12 +63,12 @@ enum Event: Hashable {
 	case gameOver
 }
 
-extension Event: DeadOrAlive {
+extension TacticalEvent: DeadOrAlive {
 
 	var alive: Bool { self != .gameOver }
 }
 
-extension GameState {
+extension TacticalState {
 
 	var playerIndex: Int { Int(turn) % players.count }
 

@@ -1,7 +1,7 @@
 import AppKit
 import SpriteKit
 
-let window = NSWindow(
+private let window = NSWindow(
 	contentRect: NSRect(origin: .zero, size: .window),
 	styleMask: [.titled, .fullSizeContentView, .closable, .resizable, .miniaturizable],
 	backing: .buffered,
@@ -11,19 +11,19 @@ window.titlebarAppearsTransparent = true
 window.center()
 window.makeKeyAndOrderFront(nil)
 
-let view = SKView(frame: window.contentLayoutRect)
+private let view = SKView(frame: window.contentLayoutRect)
 view.ignoresSiblingOrder = true
 view.autoresizingMask = [.width, .height]
 window.contentView = view
 window.makeFirstResponder(view)
 
-let willClose = NotificationCenter.default.addObserver(
+private let willClose = NotificationCenter.default.addObserver(
 	forName: NSWindow.willCloseNotification,
 	object: window,
 	queue: .main,
 	using: { _ in exit(0) }
 )
 
-view.presentScene(GameScene(state: .random(), size: .scene))
+view.presentScene(Scene(mode: .tactical, state: .random()))
 
 NSApplication.shared.run()

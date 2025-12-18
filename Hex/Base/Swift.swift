@@ -23,3 +23,20 @@ func clone<A: ~Copyable>(_ x: borrowing A) -> A {
 			.move()
 	}
 }
+
+@propertyWrapper
+struct IO<A> {
+	private var get: () -> A
+	private var set: (A) -> Void
+
+	var wrappedValue: A {
+		get { get() }
+		nonmutating set { set(newValue) }
+	}
+
+	init(wrappedValue: A) {
+		var closure = wrappedValue
+		get = { closure }
+		set = { newValue in closure = newValue }
+	}
+}

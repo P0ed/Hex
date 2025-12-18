@@ -1,4 +1,4 @@
-extension GameState {
+extension TacticalState {
 
 	var day: Int { Int(turn) / players.count + 1 }
 
