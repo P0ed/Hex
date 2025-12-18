@@ -1,19 +1,18 @@
 import SpriteKit
 import GameplayKit
 
-final class Scene<State: ~Copyable & SceneState, Nodes>: SKScene {
-	private let mode: SceneMode<State, Nodes>
-	private(set) var state: State { didSet { didSetState() } }
+final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
+	private let mode: SceneMode<State, Event, Nodes>
 	private(set) var menuState: MenuState? { didSet { didSetMenu() } }
+	private(set) var state: State { didSet { didSetState() } }
 
+	private(set) var baseNodes: BaseNodes?
 	private(set) var nodes: Nodes?
-	private(set) var menuNode: SKNode?
-	private(set) var status: SKLabelNode?
 	private(set) var fog: SetXY?
 
 	private let hid = HIDController()
 
-	init(mode: SceneMode<State, Nodes>, state: consuming State, size: CGSize = .scene) {
+	init(mode: SceneMode<State, Event, Nodes>, state: consuming State, size: CGSize = .scene) {
 		self.state = state
 		self.mode = mode
 		super.init(size: size)
@@ -30,14 +29,15 @@ final class Scene<State: ~Copyable & SceneState, Nodes>: SKScene {
 		backgroundColor = .black
 		scaleMode = .aspectFit
 
+		baseNodes = makeBaseNodes()
+
 		let nodes = mode.make(self, state)
 		mode.layout(size, nodes)
 		self.nodes = nodes
-
-		menuNode = addMenu()
-		status = addStatus()
+		mode.update(state, nodes)
 
 //		state.events = .init(head: state.units.map { i, _ in .spawn(i) }, tail: .gameOver)
+
 
 		hid.inputStream = { [weak self] input in self?.apply(input) }
 	}
@@ -57,8 +57,8 @@ final class Scene<State: ~Copyable & SceneState, Nodes>: SKScene {
 	func apply(_ input: Input) {
 		if case .some = menuState {
 			menuState?.apply(input)
-		} else if state.canHandleInput {
-			state.apply(input)
+		} else if mode.inputable(state) {
+			mode.input(&state, input)
 		}
 	}
 
@@ -67,18 +67,18 @@ final class Scene<State: ~Copyable & SceneState, Nodes>: SKScene {
 	}
 
 	private func didSetState() {
-//		nodes?.update(cursor: state., camera: <#T##XY#>, scale: <#T##Double#>)
-//		update(cursor: state.cursor, camera: state.camera, scale: state.scale)
+		guard let nodes else { return }
+
 //		fog = updateFogIfNeeded()
-//		updateStatus()
-//		if state.isCursorTooFar { return state.alignCamera() }
-//
-//		Task {
-//			let events = state.events.map { _, e in e }
-//			for event in events { await processEvent(event) }
-//			if !events.isEmpty { return state.events.erase() }
-//			if state.player.ai { return state.runAI() }
-//		}
+		updateStatus()
+		mode.update(state, nodes)
+
+		if mode.reducible(state) {
+			let events = mode.reduce(&state, nodes)
+			if !events.isEmpty {
+				Task { await mode.process(events, nodes) }
+			}
+		}
 	}
 
 	private func didSetMenu() {
@@ -95,9 +95,13 @@ final class Scene<State: ~Copyable & SceneState, Nodes>: SKScene {
 //		}
 //		updateStatus()
 	}
+
+	private func updateStatus() {
+		baseNodes?.status.text = menuState?.statusText ?? mode.status(state)
+	}
 }
 
-extension Scene where State == TacticalState, Nodes == TacticalNodes {
+extension Scene<TacticalState, TacticalEvent, TacticalNodes> {
 
 	func addUnit(_ uid: UID, node: SKNode) {
 		addChild(node)

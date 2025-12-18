@@ -1,10 +1,5 @@
 import SpriteKit
 
-struct CommonNodes {
-	var menu: SKNode
-	var status: SKLabelNode
-}
-
 struct TacticalNodes {
 	var cursor: SKNode
 	var camera: SKCameraNode
@@ -103,23 +98,21 @@ extension TacticalNodes {
 		}
 	}
 
-//	func update(cursor: XY, camera: XY, scale: Double) {
-//		guard let nodes else { return }
-//
-//		let cursorPosition = state.map.point(at: state.cursor)
-//		if nodes.cursor.position != cursorPosition {
-//			nodes.cursor.position = cursorPosition
-//			nodes.cursor.zPosition = nodes.map.zPosition(at: state.cursor)
-//		}
-//		let cameraPosition = state.camera.point
-//		if nodes.camera.position != cameraPosition {
-//			nodes.camera.run(.move(to: cameraPosition, duration: 0.15))
-//		}
-//		let cameraScale = CGFloat(state.scale)
-//		if nodes.camera.xScale != cameraScale {
-//			nodes.camera.run(.scale(to: cameraScale, duration: 0.15))
-//		}
-//	}
+	func update(state: borrowing TacticalState) {
+		let cursorPosition = state.map.point(at: state.cursor)
+		if cursor.position != cursorPosition {
+			cursor.position = cursorPosition
+			cursor.zPosition = map.zPosition(at: state.cursor)
+		}
+		let cameraPosition = state.camera.point
+		if camera.position != cameraPosition {
+			camera.run(.move(to: cameraPosition, duration: 0.15))
+		}
+		let cameraScale = CGFloat(state.scale)
+		if camera.xScale != cameraScale {
+			camera.run(.scale(to: cameraScale, duration: 0.15))
+		}
+	}
 
 //	func updateFogIfNeeded() -> SetXY {
 //		guard let nodes else { return .empty }
@@ -135,10 +128,6 @@ extension TacticalNodes {
 //			}
 //		}
 //		return fog
-//	}
-
-//	func updateStatus() {
-//		nodes?.status.text = menuState?.statusText ?? state.statusText
 //	}
 }
 

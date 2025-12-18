@@ -1,8 +1,8 @@
 import SpriteKit
 
-extension Scene where State == TacticalState, Nodes == TacticalNodes {
+extension Scene<TacticalState, TacticalEvent, TacticalNodes> {
 
-	func processEvent(_ event: State.Event) async {
+	func processEvent(_ event: TacticalEvent) async {
 		switch event {
 		case let .spawn(uid): processSpawn(uid: uid)
 		case let .move(uid, distance): await processMove(uid: uid, distance: distance)
@@ -16,7 +16,7 @@ extension Scene where State == TacticalState, Nodes == TacticalNodes {
 	}
 }
 
-private extension Scene where State == TacticalState, Nodes == TacticalNodes {
+private extension Scene<TacticalState, TacticalEvent, TacticalNodes> {
 
 	func processSpawn(uid: UID) {
 		guard let nodes else { return }

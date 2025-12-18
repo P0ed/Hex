@@ -21,7 +21,7 @@
 		5F919D5A2EA959670037A208 /* TileSprites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33BF2EA93AC3008A0A95 /* TileSprites.swift */; };
 		5F919D5B2EA959670037A208 /* Scene+Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33B92EA93AC3008A0A95 /* Scene+Event.swift */; };
 		5F919D5C2EA959670037A208 /* SpriteKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33BE2EA93AC3008A0A95 /* SpriteKit+Extensions.swift */; };
-		5F919D5D2EA959670037A208 /* Scene+Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33BB2EA93AC3008A0A95 /* Scene+Menu.swift */; };
+		5F919D5D2EA959670037A208 /* BaseNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33BB2EA93AC3008A0A95 /* BaseNodes.swift */; };
 		5F919D5E2EA9596E0037A208 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33B42EA93AC3008A0A95 /* Unit.swift */; };
 		5F919D5F2EA9596E0037A208 /* UnitFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33B52EA93AC3008A0A95 /* UnitFactory.swift */; };
 		5F919D602EA9596E0037A208 /* TacticalState+AI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33AB2EA93AC3008A0A95 /* TacticalState+AI.swift */; };
@@ -69,7 +69,7 @@
 		5F2A33B52EA93AC3008A0A95 /* UnitFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitFactory.swift; sourceTree = "<group>"; };
 		5F2A33B92EA93AC3008A0A95 /* Scene+Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scene+Event.swift"; sourceTree = "<group>"; };
 		5F2A33BA2EA93AC3008A0A95 /* Scene+Input.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scene+Input.swift"; sourceTree = "<group>"; };
-		5F2A33BB2EA93AC3008A0A95 /* Scene+Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scene+Menu.swift"; sourceTree = "<group>"; };
+		5F2A33BB2EA93AC3008A0A95 /* BaseNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNodes.swift; sourceTree = "<group>"; };
 		5F2A33BC2EA93AC3008A0A95 /* TacticalNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TacticalNodes.swift; sourceTree = "<group>"; };
 		5F2A33BD2EA93AC3008A0A95 /* HIDController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HIDController.swift; sourceTree = "<group>"; };
 		5F2A33BE2EA93AC3008A0A95 /* SpriteKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SpriteKit+Extensions.swift"; sourceTree = "<group>"; };
@@ -146,7 +146,7 @@
 				5F2A33C42EA93AC3008A0A95 /* Scene.swift */,
 				5F2A33B92EA93AC3008A0A95 /* Scene+Event.swift */,
 				5F2A33BA2EA93AC3008A0A95 /* Scene+Input.swift */,
-				5F2A33BB2EA93AC3008A0A95 /* Scene+Menu.swift */,
+				5F2A33BB2EA93AC3008A0A95 /* BaseNodes.swift */,
 				5F2A33BC2EA93AC3008A0A95 /* TacticalNodes.swift */,
 				5F2A33BD2EA93AC3008A0A95 /* HIDController.swift */,
 				5F2A33BE2EA93AC3008A0A95 /* SpriteKit+Extensions.swift */,
@@ -312,7 +312,7 @@
 				5F919D5A2EA959670037A208 /* TileSprites.swift in Sources */,
 				5F919D5B2EA959670037A208 /* Scene+Event.swift in Sources */,
 				5F919D5C2EA959670037A208 /* SpriteKit+Extensions.swift in Sources */,
-				5F919D5D2EA959670037A208 /* Scene+Menu.swift in Sources */,
+				5F919D5D2EA959670037A208 /* BaseNodes.swift in Sources */,
 				5F919D532EA9595D0037A208 /* Scene.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

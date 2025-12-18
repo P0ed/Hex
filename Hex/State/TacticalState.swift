@@ -1,7 +1,4 @@
-struct TacticalState: ~Copyable, SceneState {
-	typealias Event = TacticalEvent
-	typealias Nodes = TacticalNodes
-
+struct TacticalState: ~Copyable {
 	var map: Map<Terrain>
 
 	var players: Speicher<4, Player>
@@ -16,7 +13,7 @@ struct TacticalState: ~Copyable, SceneState {
 	var selectable: SetXY?
 	var scale: Double = 1.0
 
-	var events: Speicher<128, Event> = .init(head: [], tail: .gameOver)
+	var events: Speicher<128, TacticalEvent> = .init(head: [], tail: .gameOver)
 }
 
 extension TacticalState {

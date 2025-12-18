@@ -1,11 +1,23 @@
 import SpriteKit
 
+struct BaseNodes {
+	var menu: SKNode
+	var status: SKLabelNode
+}
+
 extension Scene where State: ~Copyable {
+
+	func makeBaseNodes() -> BaseNodes {
+		BaseNodes(
+			menu: addMenu(),
+			status: addStatus()
+		)
+	}
 
 	func addMenu() -> SKNode {
 		let menu = SKShapeNode(
-			rectOf: CommonNodes.menuSize,
-			cornerRadius: CommonNodes.outerR
+			rectOf: BaseNodes.menuSize,
+			cornerRadius: BaseNodes.outerR
 		)
 		menu.fillColor = .lightGray
 		menu.strokeColor = .gray
@@ -26,7 +38,7 @@ extension Scene where State: ~Copyable {
 	}
 }
 
-extension CommonNodes {
+extension BaseNodes {
 
 	static let inset = 8.0 as CGFloat
 	static let spacing = 8.0 as CGFloat
