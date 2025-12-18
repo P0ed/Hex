@@ -1,5 +1,4 @@
 import SpriteKit
-import GameplayKit
 
 final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 	let mode: SceneMode<State, Event, Nodes>
@@ -57,7 +56,7 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 	func apply(_ input: Input) {
 		if case .some = menuState {
 			menuState?.apply(input)
-		} else if mode.inputable(state) {
+		} else if mode.inputable(state), !processing {
 			mode.input(&state, input)
 		}
 	}

@@ -13,7 +13,7 @@ enum Input {
 
 extension TacticalState {
 
-	var inputable: Bool { !player.ai && events.isEmpty }
+	var inputable: Bool { !player.ai }
 
 	mutating func apply(_ input: Input) {
 		switch input {
