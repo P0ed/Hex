@@ -13,6 +13,7 @@ struct SceneMode<State: ~Copyable, Event, Nodes> {
 }
 
 typealias TacticalMode = SceneMode<TacticalState, TacticalEvent, TacticalNodes>
+
 typealias TacticalScene = Scene<TacticalState, TacticalEvent, TacticalNodes>
 
 extension TacticalMode {

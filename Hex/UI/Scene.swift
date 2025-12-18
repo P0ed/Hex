@@ -28,11 +28,12 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 		backgroundColor = .black
 		scaleMode = .aspectFit
 
-		baseNodes = makeBaseNodes()
-
 		let nodes = mode.make(self, state)
 		mode.layout(size, nodes)
 		self.nodes = nodes
+
+		baseNodes = makeBaseNodes()
+		baseNodes?.layout(size: size)
 
 		hid.inputStream = { [weak self] input in self?.apply(input) }
 
@@ -41,6 +42,7 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 
 	override func didChangeSize(_ oldSize: CGSize) {
 		if let nodes { mode.layout(size, nodes) }
+		baseNodes?.layout(size: size)
 	}
 
 	override func keyDown(with event: NSEvent) {
@@ -89,7 +91,7 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 //		} else if let menuState {
 //			nodes?.updateMenu(menuState)
 //		}
-//		updateStatus()
+		updateStatus()
 	}
 
 	private func updateStatus() {
@@ -97,7 +99,7 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 	}
 }
 
-extension Scene<TacticalState, TacticalEvent, TacticalNodes> {
+extension TacticalScene {
 
 	func addUnit(_ uid: UID, node: SKNode) {
 		addChild(node)

@@ -1,13 +1,13 @@
 import SpriteKit
 
-extension Scene<TacticalState, TacticalEvent, TacticalNodes> {
+extension TacticalScene {
 
 	func process(_ events: [TacticalEvent]) async {
 		for e in events { await process(e) }
 	}
 }
 
-private extension Scene<TacticalState, TacticalEvent, TacticalNodes> {
+private extension TacticalScene {
 
 	func process(_ event: TacticalEvent) async {
 		switch event {
