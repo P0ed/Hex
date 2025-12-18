@@ -11,7 +11,7 @@ enum Input {
 	case scale(Double)
 }
 
-extension GameState {
+extension TacticalState {
 
 	var canHandleInput: Bool { !player.ai && events.isEmpty }
 
@@ -31,7 +31,7 @@ extension GameState {
 	}
 }
 
-private extension GameState {
+private extension TacticalState {
 
 	mutating func select(_ xy: XY) {
 		guard canHandleInput, map.contains(xy) else { return }

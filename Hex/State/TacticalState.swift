@@ -1,4 +1,7 @@
-struct GameState: ~Copyable {
+struct TacticalState: ~Copyable, SceneState {
+	typealias Event = TacticalEvent
+	typealias Nodes = TacticalNodes
+
 	var map: Map<Terrain>
 
 	var players: Speicher<4, Player>
@@ -16,7 +19,7 @@ struct GameState: ~Copyable {
 	var events: Speicher<128, Event> = .init(head: [], tail: .gameOver)
 }
 
-extension GameState {
+extension TacticalState {
 
 	init(map: consuming Map<Terrain>, players: [Player], buildings: [Building], units: [Unit]) {
 		self.map = map
@@ -50,7 +53,7 @@ enum BuildingType: UInt8, Hashable {
 	case city
 }
 
-enum Event: Hashable {
+enum TacticalEvent: Hashable {
 	case spawn(UID)
 	case move(UID, Int)
 	case attack(UID, UID, Unit)
@@ -61,12 +64,12 @@ enum Event: Hashable {
 	case gameOver
 }
 
-extension Event: DeadOrAlive {
+extension TacticalEvent: DeadOrAlive {
 
 	var alive: Bool { self != .gameOver }
 }
 
-extension GameState {
+extension TacticalState {
 
 	var playerIndex: Int { Int(turn) % players.count }
 

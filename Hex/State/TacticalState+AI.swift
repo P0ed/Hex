@@ -1,4 +1,4 @@
-extension GameState {
+extension TacticalState {
 
 	mutating func runAI() {
 		let target = buildings.firstMap { [country] _, b in

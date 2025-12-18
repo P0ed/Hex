@@ -46,7 +46,7 @@ extension Building {
 	}
 }
 
-extension GameState {
+extension TacticalState {
 
 	var statusText: String {
 		if let selectedUnit {

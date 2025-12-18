@@ -1,6 +1,6 @@
 import CoreGraphics
 
-extension GameState {
+extension TacticalState {
 
 	func vision(for unit: Unit) -> SetXY {
 		let range = switch unit.stats.unitType {

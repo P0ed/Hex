@@ -105,3 +105,10 @@ extension Speicher where Element == Unit {
 		firstMap { i, u in u.position == xy ? (i, u) : nil }
 	}
 }
+
+extension Speicher where Element == Building {
+
+	subscript(_ xy: XY) -> Building? {
+		firstMap { _, b in b.position == xy ? b : nil }
+	}
+}

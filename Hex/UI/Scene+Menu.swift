@@ -1,11 +1,11 @@
 import SpriteKit
 
-extension GameScene {
+extension Scene where State: ~Copyable {
 
 	func addMenu() -> SKNode {
 		let menu = SKShapeNode(
-			rectOf: Nodes.menuSize,
-			cornerRadius: Nodes.outerR
+			rectOf: CommonNodes.menuSize,
+			cornerRadius: CommonNodes.outerR
 		)
 		menu.fillColor = .lightGray
 		menu.strokeColor = .gray
@@ -15,9 +15,18 @@ extension GameScene {
 		camera?.addChild(menu)
 		return menu
 	}
+
+	func addStatus() -> SKLabelNode {
+		let label = SKLabelNode(size: .s)
+		camera?.addChild(label)
+		label.zPosition = 66.0
+		label.horizontalAlignmentMode = .left
+		label.verticalAlignmentMode = .baseline
+		return label
+	}
 }
 
-extension GameScene.Nodes {
+extension CommonNodes {
 
 	static let inset = 8.0 as CGFloat
 	static let spacing = 8.0 as CGFloat

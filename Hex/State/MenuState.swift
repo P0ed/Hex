@@ -17,7 +17,7 @@ struct MenuItem {
 	var icon: String
 	var text: String
 	var description: String?
-	var action: (inout GameState) -> Void
+	var action: (inout TacticalState) -> Void
 }
 
 extension MenuState {

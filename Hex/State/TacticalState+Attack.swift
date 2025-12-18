@@ -1,4 +1,4 @@
-extension GameState {
+extension TacticalState {
 
 	func targets(unit: Unit) -> [(UID, Unit)] {
 		!unit.canAttack ? [] : units.compactMap { i, u in

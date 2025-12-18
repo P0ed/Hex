@@ -1,13 +1,13 @@
 import SpriteKit
 
-extension GameScene {
+extension Scene where State == TacticalState, Nodes == TacticalNodes {
 
-	func processEvent(_ event: Event) async {
+	func processEvent(_ event: State.Event) async {
 		switch event {
 		case let .spawn(uid): processSpawn(uid: uid)
 		case let .move(uid, distance): await processMove(uid: uid, distance: distance)
 		case let .attack(src, dst, unit): await processAttack(src: src, dst: dst, unit: unit)
-		case .nextDay: updateUnits()
+		case .nextDay: nodes?.updateUnits(state)
 		case .shop: processShop()
 		case .build: processBuild()
 		case .menu: processMenu()
@@ -16,7 +16,7 @@ extension GameScene {
 	}
 }
 
-private extension GameScene {
+private extension Scene where State == TacticalState, Nodes == TacticalNodes {
 
 	func processSpawn(uid: UID) {
 		guard let nodes else { return }
@@ -127,7 +127,7 @@ private extension GameScene {
 
 	private func restartGame() {
 		view?.presentScene(
-			GameScene(state: .random(), size: size),
+			Scene(mode: .tactical, state: .random()),
 			transition: .moveIn(with: .up, duration: 0.47)
 		)
 	}
