@@ -34,26 +34,22 @@ extension Scene where State: ~Copyable {
 		}
 	}
 
-//	func processMouseEvent(_ event: NSEvent) {
-//		guard let nodes else { return }
-//		if menuState == nil {
-//			let location = event.location(in: nodes.map.layers[0])
-//			apply(.tile(
-//				XY(
-//					nodes.map.layers[0].tileColumnIndex(fromPosition: location),
-//					nodes.map.layers[0].tileRowIndex(fromPosition: location)
-//				)
-//			))
-//		} else {
-//			guard self.nodes(at: event.location(in: self))
-//				.contains(where: { n in n == nodes.menu })
-//			else { return apply(.action(.b)) }
-//
-//			nodes.menu.nodes(at: event.location(in: nodes.menu))
-//				.compactMap { n in n as? SKShapeNode }.first
-//				.flatMap { n in n.name == nil ? n : nil }
-//				.flatMap(nodes.menu.children.firstIndex)
-//				.map { idx in apply(.tile(XY(idx, 0))) }
-//		}
-//	}
+	func processMouseEvent(_ event: NSEvent) {
+		guard let nodes, let baseNodes else { return }
+		if menuState == nil {
+			if let input = mode.mouse(nodes, event) {
+				apply(input)
+			}
+		} else {
+			guard self.nodes(at: event.location(in: self))
+				.contains(where: { n in n == baseNodes.menu })
+			else { return apply(.action(.b)) }
+
+			baseNodes.menu.nodes(at: event.location(in: baseNodes.menu))
+				.compactMap { n in n as? SKShapeNode }.first
+				.flatMap { n in n.name == nil ? n : nil }
+				.flatMap(baseNodes.menu.children.firstIndex)
+				.map { idx in apply(.tile(XY(idx, 0))) }
+		}
+	}
 }

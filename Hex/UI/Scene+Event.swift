@@ -2,7 +2,7 @@ import SpriteKit
 
 extension TacticalScene {
 
-	func process(_ events: [TacticalEvent]) async {
+	func process(events: [TacticalEvent]) async {
 		for e in events { await process(e) }
 	}
 }

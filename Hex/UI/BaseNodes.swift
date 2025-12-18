@@ -62,7 +62,7 @@ extension BaseNodes {
 		)
 	}
 
-	func showMenu(_ menuState: MenuState) {
+	func showMenu<State: ~Copyable>(_ menuState: MenuState<State>) {
 		menu.isHidden = false
 		addMenuItems(menuState)
 		if menuState.layout == .inspector { addMenuInspector() }
@@ -74,7 +74,7 @@ extension BaseNodes {
 		menu.removeAllChildren()
 	}
 
-	private func addMenuItems(_ menuState: MenuState) {
+	private func addMenuItems<State: ~Copyable>(_ menuState: MenuState<State>) {
 		menuState.items.enumerated().map { idx, item in
 			let frame = SKShapeNode(rectOf: Self.itemSize, cornerRadius: Self.innerR)
 
@@ -118,7 +118,7 @@ extension BaseNodes {
 		frame.addChild(label)
 	}
 
-	func updateMenu(_ menuState: MenuState) {
+	func updateMenu<State: ~Copyable>(_ menuState: MenuState<State>) {
 		menu.children.enumerated().forEach { idx, item in
 			if let frame = item as? SKShapeNode, frame.name == nil {
 				frame.fillColor = menuState.cursor == idx ? .gray : .darkGray

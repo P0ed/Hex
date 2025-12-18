@@ -62,7 +62,7 @@ extension TacticalState {
 	}
 }
 
-extension MenuState {
+extension MenuState where State: ~Copyable {
 
 	var statusText: String { items[cursor].text }
 }

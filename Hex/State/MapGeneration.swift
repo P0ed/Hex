@@ -75,7 +75,6 @@ extension Map<Terrain> {
 					break
 				}
 			}
-//			river.forEach { xy in self[xy] = .river }
 		}
 	}
 

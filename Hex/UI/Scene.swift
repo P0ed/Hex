@@ -2,8 +2,8 @@ import SpriteKit
 import GameplayKit
 
 final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
-	private let mode: SceneMode<State, Event, Nodes>
-	private(set) var menuState: MenuState? { didSet { didSetMenu() } }
+	let mode: SceneMode<State, Event, Nodes>
+	private(set) var menuState: MenuState<State>? { didSet { didSetMenu() } }
 	private(set) var state: State { didSet { didSetState() } }
 
 	private(set) var baseNodes: BaseNodes?
@@ -50,7 +50,7 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 	}
 
 	override func mouseDown(with event: NSEvent) {
-		
+		processMouseEvent(event)
 	}
 
 	func apply(_ input: Input) {
@@ -61,7 +61,7 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 		}
 	}
 
-	func show(_ menu: MenuState?) {
+	func show(_ menu: MenuState<State>?) {
 		menuState = menu.flatMap { m in m.items.isEmpty ? .none : m }
 	}
 
@@ -80,17 +80,17 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 	}
 
 	private func didSetMenu() {
-//		if let action = menuState?.action {
-//			if let menuState, case let .apply(idx) = action {
-//				menuState.items[idx].action(&state)
-//			}
-//			return menuState = .none
-//		} else if (menuState == nil) != (nodes?.menu.isHidden == true) {
-//			if let menuState { nodes?.showMenu(menuState) }
-//			else { nodes?.hideMenu() }
-//		} else if let menuState {
-//			nodes?.updateMenu(menuState)
-//		}
+		if let action = menuState?.action {
+			if let menuState, case let .apply(idx) = action {
+				menuState.items[idx].action(&state)
+			}
+			return menuState = .none
+		} else if (menuState == nil) != (baseNodes?.menu.isHidden == true) {
+			if let menuState { baseNodes?.showMenu(menuState) }
+			else { baseNodes?.hideMenu() }
+		} else if let menuState {
+			baseNodes?.updateMenu(menuState)
+		}
 		updateStatus()
 	}
 
