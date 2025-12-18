@@ -6,7 +6,7 @@ struct SceneMode<State: ~Copyable, Event, Nodes> {
 	var input: (inout State, Input) -> Void
 	var update: (borrowing State, Nodes) -> Void
 	var reducible: (borrowing State) -> Bool
-	var reduce: (inout State, Nodes) -> [Event]
+	var reduce: (inout State) -> [Event]
 	var process: (Scene<State, Event, Nodes>, [Event]) async -> Void
 	var status: (borrowing State) -> String
 	var mouse: (Nodes, NSEvent) -> Input?
@@ -26,7 +26,7 @@ extension TacticalMode {
 			input: { state, input in state.apply(input) },
 			update: { state, nodes in nodes.update(state: state) },
 			reducible: { state in state.reducible },
-			reduce: { state, nodes in state.reduce(nodes: nodes) },
+			reduce: { state in state.reduce() },
 			process: { scene, events in await scene.process(events: events) },
 			status: { state in state.statusText },
 			mouse: { nodes, event in nodes.mouse(event: event) }

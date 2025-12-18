@@ -84,7 +84,7 @@ extension TacticalState {
 		}
 	}
 
-	mutating func reduce(nodes: TacticalNodes) -> [TacticalEvent] {
+	mutating func reduce() -> [TacticalEvent] {
 		if isCursorTooFar {
 			alignCamera()
 			return []

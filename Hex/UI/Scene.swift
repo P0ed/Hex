@@ -74,7 +74,7 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 
 		if mode.reducible(state) {
 			processing = true
-			let events = mode.reduce(&state, nodes)
+			let events = mode.reduce(&state)
 			if !events.isEmpty {
 				Task {
 					await mode.process(self, events)
