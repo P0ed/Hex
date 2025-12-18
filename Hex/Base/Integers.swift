@@ -31,4 +31,3 @@ extension UInt16 {
 		return old - self
 	}
 }
-

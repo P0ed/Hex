@@ -6,6 +6,7 @@ struct TacticalNodes {
 	var map: MapNodes
 	var sounds: SoundNodes
 	var units: [UID: SKNode] = [:]
+	@IO var fog: SetXY = .empty
 }
 
 struct SoundNodes {
@@ -112,23 +113,24 @@ extension TacticalNodes {
 		if camera.xScale != cameraScale {
 			camera.run(.scale(to: cameraScale, duration: 0.15))
 		}
+
+		updateFogIfNeeded(state: state)
 	}
 
-//	func updateFogIfNeeded() -> SetXY {
-//		guard let nodes else { return .empty }
-//
-//		let visible = state.player.visible
-//		let fog = state.selectable ?? visible
-//		if self.fog != fog {
-//			state.map.indices.forEach { xy in
-//				nodes.map.setTileGroup(state.map[xy].tileGroup(fog: fog[xy]), at: xy)
-//			}
-//			state.units.forEach { i, u in
-//				nodes.units[i]?.isHidden = !visible[u.position]
-//			}
-//		}
-//		return fog
-//	}
+	func updateFogIfNeeded(state: borrowing TacticalState) {
+		let visible = state.player.visible
+		let fog = state.selectable ?? visible
+
+		guard self.fog != fog else { return }
+
+		state.map.indices.forEach { xy in
+			map.setTileGroup(state.map[xy].tileGroup(fog: fog[xy]), at: xy)
+		}
+		state.units.forEach { i, u in
+			units[i]?.isHidden = !visible[u.position]
+		}
+		self.fog = fog
+	}
 }
 
 extension MapNodes {

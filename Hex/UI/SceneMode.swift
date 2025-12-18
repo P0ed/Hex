@@ -55,7 +55,3 @@ extension SceneMode<TacticalState, TacticalEvent, TacticalNodes> {
 
 	}
 }
-
-struct IO<A: ~Copyable> {
-
-}

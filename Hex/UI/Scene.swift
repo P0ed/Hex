@@ -69,7 +69,6 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 	private func didSetState() {
 		guard let nodes else { return }
 
-//		fog = updateFogIfNeeded()
 		updateStatus()
 		mode.update(state, nodes)
 
