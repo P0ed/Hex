@@ -19,6 +19,7 @@ private extension TacticalScene {
 		case .build: processBuild()
 		case .menu: processMenu()
 		case .gameOver: processGameOver()
+		case .none: break
 		}
 	}
 

@@ -12,19 +12,6 @@ extension SKTileGroup {
 		)
 	}
 
-	private static func make(_ images: [SKTileAdjacencyMask: NSImage]) -> SKTileGroup {
-		SKTileGroup(
-			rules: images.map { adjacency, image in
-				.init(adjacency: adjacency, tileDefinitions: [
-					SKTileDefinition(
-						texture: .init(image: image),
-						size: image.size
-					)
-				])
-			}
-		)
-	}
-
 	static let ukr = make(.UKR)
 	static let usa = make(.USA)
 	static let rus = make(.RUS)
@@ -99,13 +86,6 @@ extension Country {
 		case .ukr: .ukr
 		case .usa: .usa
 		}
-	}
-}
-
-extension SKTileAdjacencyMask: @retroactive Hashable {
-
-	public func hash(into hasher: inout Hasher) {
-		hasher.combine(rawValue)
 	}
 }
 

@@ -2,14 +2,13 @@ import SpriteKit
 
 final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 	let mode: SceneMode<State, Event, Nodes>
+	private let hid = HIDController()
+
+	private var processing = false
 	private(set) var menuState: MenuState<State>? { didSet { didSetMenu() } }
 	private(set) var state: State { didSet { didSetState() } }
-
 	private(set) var baseNodes: BaseNodes?
 	private(set) var nodes: Nodes?
-	private var processing = false
-
-	private let hid = HIDController()
 
 	init(mode: SceneMode<State, Event, Nodes>, state: consuming State, size: CGSize = .scene) {
 		self.state = state
@@ -35,7 +34,7 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 		baseNodes = makeBaseNodes()
 		baseNodes?.layout(size: size)
 
-		hid.inputStream = { [weak self] input in self?.apply(input) }
+		hid.send = { [weak self] input in self?.apply(input) }
 
 		didSetState()
 	}
@@ -66,24 +65,24 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 	}
 
 	private func didSetState() {
-		guard !processing, let nodes else { return }
+		guard let nodes else { return }
 
 		updateStatus()
 		mode.update(state, nodes)
 
-		if mode.reducible(state) {
-			processing = true
-			let events = mode.reduce(&state)
-			if !events.isEmpty {
-				Task {
-					await mode.process(self, events)
-					processing = false
-					if mode.reducible(state) { didSetState() }
-				}
-			} else {
+		guard !processing, mode.reducible(state) else { return }
+
+		processing = true
+		let events = mode.reduce(&state)
+		if !events.isEmpty {
+			Task {
+				await mode.process(self, events)
 				processing = false
 				if mode.reducible(state) { didSetState() }
 			}
+		} else {
+			processing = false
+			if mode.reducible(state) { didSetState() }
 		}
 	}
 

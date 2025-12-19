@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>Hex</string>
+	<string>PG</string>
 	<key>CFBundleIdentifier</key>
-	<string>poed.hex</string>
+	<string>p0.pg</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundlePackageType</key>

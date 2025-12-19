@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5F919D2B2EA9564A0037A208"
-               BuildableName = "Hex.app"
-               BlueprintName = "Hex"
-               ReferencedContainer = "container:Hex.xcodeproj">
+               BuildableName = "PG.app"
+               BlueprintName = "PG"
+               ReferencedContainer = "container:PG.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5F919D2B2EA9564A0037A208"
-            BuildableName = "Hex.app"
-            BlueprintName = "Hex"
-            ReferencedContainer = "container:Hex.xcodeproj">
+            BuildableName = "PG.app"
+            BlueprintName = "PG"
+            ReferencedContainer = "container:PG.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5F919D2B2EA9564A0037A208"
-            BuildableName = "Hex.app"
-            BlueprintName = "Hex"
-            ReferencedContainer = "container:Hex.xcodeproj">
+            BuildableName = "PG.app"
+            BlueprintName = "PG"
+            ReferencedContainer = "container:PG.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

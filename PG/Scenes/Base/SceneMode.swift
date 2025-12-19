@@ -1,0 +1,14 @@
+import SpriteKit
+
+struct SceneMode<State: ~Copyable, Event, Nodes> {
+	var make: (SKNode, borrowing State) -> Nodes
+	var inputable: (borrowing State) -> Bool
+	var input: (inout State, Input) -> Void
+	var update: (borrowing State, Nodes) -> Void
+	var reducible: (borrowing State) -> Bool
+	var reduce: (inout State) -> [Event]
+	var process: (Scene<State, Event, Nodes>, [Event]) async -> Void
+	var status: (borrowing State) -> String
+	var mouse: (Nodes, NSEvent) -> Input?
+	var layout: (CGSize, Nodes) -> Void = ø
+}
