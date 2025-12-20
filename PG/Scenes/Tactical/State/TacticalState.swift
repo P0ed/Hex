@@ -55,7 +55,6 @@ enum TacticalEvent: Hashable {
 	case attack(UID, UID, Unit)
 	case nextDay
 	case shop
-	case build
 	case menu
 	case gameOver
 	case none

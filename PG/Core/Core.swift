@@ -17,17 +17,14 @@ final class Core {
 	private(set) var state = State()
 
 	func new() {
-		let units = Speicher<32, Unit>(head: defaultUnits, tail: .dead)
-		let events = Speicher<32, HQEvent>(
-			head: units.map { i, u in .spawn(i) },
-			tail: .none
-		)
-
 		state = State(
 			hq: HQState(
 				player: Player(country: .ukr),
-				units: units,
-				events: events
+				units: .init(head: defaultUnits, tail: .dead),
+				events: .init(
+					head: defaultUnits.indices.map { i in .spawn(i) },
+					tail: .none
+				)
 			)
 		)
 	}

@@ -16,7 +16,6 @@ private extension TacticalScene {
 		case let .attack(src, dst, unit): await processAttack(src: src, dst: dst, unit: unit)
 		case .nextDay: nodes?.updateUnits(state)
 		case .shop: processShop()
-		case .build: processBuild()
 		case .menu: processMenu()
 		case .gameOver: processGameOver()
 		case .none: break
@@ -78,25 +77,6 @@ private extension TacticalScene {
 					description: template.description + " / \(state.player.prestige)",
 					action: { [xy = state.cursor] state in
 						state.buy(template, at: xy)
-					}
-				)
-			}
-		))
-	}
-
-	func processBuild() {
-		guard let (i, u) = state.units[state.cursor], u.stats.unitType == .engineer
-		else { return }
-
-		show(MenuState(
-			layout: .inspector,
-			items: state.buildingTemplates.map { template in
-				MenuItem(
-					icon: template.type.imageName,
-					text: template.type.imageName,
-					description: "\(template.description)" + " / \(state.player.prestige)",
-					action: { state in
-						state.build(template, by: i)
 					}
 				)
 			}

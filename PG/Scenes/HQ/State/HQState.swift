@@ -1,7 +1,7 @@
 struct HQState: ~Copyable {
 	var player: Player
-	var units: Speicher<32, Unit>
-	var events: Speicher<32, HQEvent>
+	var units: Speicher<16, Unit>
+	var events: Speicher<16, HQEvent>
 	var cursor: XY = .zero
 	var camera: XY = .zero
 	var selected: UID?

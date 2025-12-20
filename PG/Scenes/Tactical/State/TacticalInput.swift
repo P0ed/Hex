@@ -39,8 +39,6 @@ private extension TacticalState {
 			if let (dstID, dst) = units[cursor] {
 				if dst.country.team != unit.country.team {
 					attack(src: selectedID, dst: dstID)
-				} else if dstID == selectedID, unit.stats.unitType == .engineer, unit.untouched {
-					events.add(.build)
 				} else {
 					selectUnit(dst == unit ? .none : dstID)
 				}

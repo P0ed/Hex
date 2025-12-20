@@ -11,13 +11,6 @@ extension TacticalState {
 		]
 	}
 
-	var buildingTemplates: [Building] {
-		[
-//			Building(country: country, position: .zero, type: .barracks),
-//			Building(country: country, position: .zero, type: .factory),
-		]
-	}
-
 	mutating func buy(_ template: Unit, at position: XY) {
 		guard player.prestige >= template.cost, units[position] == nil else { return }
 
@@ -26,19 +19,5 @@ extension TacticalState {
 		}
 		player.prestige.decrement(by: unit.cost)
 		events.add(.spawn(units.add(unit)))
-	}
-
-	mutating func build(_ template: Building, by engineer: UID) {
-		guard units[engineer].alive, units[engineer].stats.unitType == .engineer,
-			  units[engineer].untouched, buildings[units[engineer].position] == nil
-		else { return }
-
-		let building = modifying(template) { b in
-			b.position = units[engineer].position
-		}
-		buildings.add(building)
-		units[engineer].stats.mp = 0
-		units[engineer].stats.ap = 0
-		selectUnit(.none)
 	}
 }
