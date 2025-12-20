@@ -37,7 +37,7 @@
 		5F919D662EA9596E0037A208 /* TacticalShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33AD2EA93AC3008A0A95 /* TacticalShop.swift */; };
 		5F919D672EA9596E0037A208 /* Terrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33B12EA93AC3008A0A95 /* Terrain.swift */; };
 		5F919D682EA9596E0037A208 /* TacticalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33A92EA93AC3008A0A95 /* TacticalState.swift */; };
-		5F919D692EA9596E0037A208 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33AF2EA93AC3008A0A95 /* Math.swift */; };
+		5F919D692EA9596E0037A208 /* XY.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33AF2EA93AC3008A0A95 /* XY.swift */; };
 		5F919D6A2EA9596E0037A208 /* TacticalActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33AA2EA93AC3008A0A95 /* TacticalActions.swift */; };
 		5F919D6B2EA9596E0037A208 /* TacticalInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A33AC2EA93AC3008A0A95 /* TacticalInput.swift */; };
 		5F919D6C2EA959FA0037A208 /* boom-l.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5F2A33A42EA93AC3008A0A95 /* boom-l.wav */; };
@@ -49,6 +49,9 @@
 		5FB4D0D52EAE26240010E702 /* TacticalAttack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB4D0D42EAE261E0010E702 /* TacticalAttack.swift */; };
 		5FB4D1262EAFABCB0010E702 /* TacticalTurns.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB4D1252EAFABCB0010E702 /* TacticalTurns.swift */; };
 		5FBA4D7B2EF6DB7900D7C1B0 /* AppKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBA4D7A2EF6DB7700D7C1B0 /* AppKit.swift */; };
+		5FBA4D7E2EF6E26800D7C1B0 /* StrategicState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBA4D7D2EF6E26200D7C1B0 /* StrategicState.swift */; };
+		5FBA4D802EF6FD8900D7C1B0 /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBA4D7F2EF6FD8800D7C1B0 /* Core.swift */; };
+		5FBA4D832EF7016F00D7C1B0 /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBA4D822EF7016D00D7C1B0 /* Input.swift */; };
 		5FCABBC82EAA701D008EE894 /* mov.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5FCABBC72EAA701D008EE894 /* mov.wav */; };
 		5FCABBCA2EAA787D008EE894 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FCABBC92EAA787B008EE894 /* Strings.swift */; };
 		5FF200772EF44FC500B659E7 /* SceneMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF200762EF44FC500B659E7 /* SceneMode.swift */; };
@@ -67,7 +70,7 @@
 		5F2A33AC2EA93AC3008A0A95 /* TacticalInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TacticalInput.swift; sourceTree = "<group>"; };
 		5F2A33AD2EA93AC3008A0A95 /* TacticalShop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TacticalShop.swift; sourceTree = "<group>"; };
 		5F2A33AE2EA93AC3008A0A95 /* TacticalStateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TacticalStateFactory.swift; sourceTree = "<group>"; };
-		5F2A33AF2EA93AC3008A0A95 /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		5F2A33AF2EA93AC3008A0A95 /* XY.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XY.swift; sourceTree = "<group>"; };
 		5F2A33B12EA93AC3008A0A95 /* Terrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Terrain.swift; sourceTree = "<group>"; };
 		5F2A33B22EA93AC3008A0A95 /* MenuState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuState.swift; sourceTree = "<group>"; };
 		5F2A33B32EA93AC3008A0A95 /* Monoid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Monoid.swift; sourceTree = "<group>"; };
@@ -101,6 +104,9 @@
 		5FB4D0D42EAE261E0010E702 /* TacticalAttack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TacticalAttack.swift; sourceTree = "<group>"; };
 		5FB4D1252EAFABCB0010E702 /* TacticalTurns.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TacticalTurns.swift; sourceTree = "<group>"; };
 		5FBA4D7A2EF6DB7700D7C1B0 /* AppKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppKit.swift; sourceTree = "<group>"; };
+		5FBA4D7D2EF6E26200D7C1B0 /* StrategicState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrategicState.swift; sourceTree = "<group>"; };
+		5FBA4D7F2EF6FD8800D7C1B0 /* Core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; };
+		5FBA4D822EF7016D00D7C1B0 /* Input.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Input.swift; sourceTree = "<group>"; };
 		5FCABBC72EAA701D008EE894 /* mov.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = mov.wav; sourceTree = "<group>"; };
 		5FCABBC92EAA787B008EE894 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		5FF200762EF44FC500B659E7 /* SceneMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneMode.swift; sourceTree = "<group>"; };
@@ -134,6 +140,7 @@
 			children = (
 				5F5560F42EF5ADC500C08E14 /* Base */,
 				5F5560F82EF5B04C00C08E14 /* HQ */,
+				5FBA4D7C2EF6E24F00D7C1B0 /* Strategic */,
 				5F5560F52EF5ADDB00C08E14 /* Tactical */,
 			);
 			path = Scenes;
@@ -216,17 +223,10 @@
 		5F8E87342EB3E1F20023B28F /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				5F51E5BD2EF308B200A711DF /* Swift.swift */,
-				5FBA4D7A2EF6DB7700D7C1B0 /* AppKit.swift */,
-				5F2A33BE2EA93AC3008A0A95 /* SpriteKit.swift */,
-				5F8E87322EB3E1DA0023B28F /* Integers.swift */,
-				5F2A33B32EA93AC3008A0A95 /* Monoid.swift */,
-				5F2A33A82EA93AC3008A0A95 /* Arrays.swift */,
-				5F8E87302EB3BEEC0023B28F /* Speicher.swift */,
-				5F41DDD42EE32744008FBF17 /* Map.swift */,
-				5FA0F0962EF21C3A0022EC68 /* SetXY.swift */,
-				5FA0F0982EF2255B0022EC68 /* D20.swift */,
-				5F2A33AF2EA93AC3008A0A95 /* Math.swift */,
+				5FBA4D852EF7048E00D7C1B0 /* Containers */,
+				5FBA4D862EF704A400D7C1B0 /* Types */,
+				5FBA4D842EF7047600D7C1B0 /* Extensions */,
+				5FBA4D7F2EF6FD8800D7C1B0 /* Core.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -242,6 +242,55 @@
 				5F919D702EA95ADF0037A208 /* Info.plist */,
 			);
 			path = PG;
+			sourceTree = "<group>";
+		};
+		5FBA4D7C2EF6E24F00D7C1B0 /* Strategic */ = {
+			isa = PBXGroup;
+			children = (
+				5FBA4D812EF6FF0D00D7C1B0 /* State */,
+			);
+			path = Strategic;
+			sourceTree = "<group>";
+		};
+		5FBA4D812EF6FF0D00D7C1B0 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				5FBA4D7D2EF6E26200D7C1B0 /* StrategicState.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		5FBA4D842EF7047600D7C1B0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5F51E5BD2EF308B200A711DF /* Swift.swift */,
+				5FBA4D7A2EF6DB7700D7C1B0 /* AppKit.swift */,
+				5F2A33BE2EA93AC3008A0A95 /* SpriteKit.swift */,
+				5F8E87322EB3E1DA0023B28F /* Integers.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		5FBA4D852EF7048E00D7C1B0 /* Containers */ = {
+			isa = PBXGroup;
+			children = (
+				5F2A33B32EA93AC3008A0A95 /* Monoid.swift */,
+				5F2A33A82EA93AC3008A0A95 /* Arrays.swift */,
+				5F8E87302EB3BEEC0023B28F /* Speicher.swift */,
+				5F41DDD42EE32744008FBF17 /* Map.swift */,
+				5FA0F0962EF21C3A0022EC68 /* SetXY.swift */,
+			);
+			path = Containers;
+			sourceTree = "<group>";
+		};
+		5FBA4D862EF704A400D7C1B0 /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				5FBA4D822EF7016D00D7C1B0 /* Input.swift */,
+				5F2A33AF2EA93AC3008A0A95 /* XY.swift */,
+				5FA0F0982EF2255B0022EC68 /* D20.swift */,
+			);
+			path = Types;
 			sourceTree = "<group>";
 		};
 		5FCB86272E77041300C2C69E = {
@@ -351,6 +400,8 @@
 				5F919D642EA9596E0037A208 /* MenuState.swift in Sources */,
 				5F5560FA2EF5B05D00C08E14 /* HQMode.swift in Sources */,
 				5F919D652EA9596E0037A208 /* TacticalStateFactory.swift in Sources */,
+				5FBA4D832EF7016F00D7C1B0 /* Input.swift in Sources */,
+				5FBA4D7E2EF6E26800D7C1B0 /* StrategicState.swift in Sources */,
 				5F41DDD52EE32745008FBF17 /* Map.swift in Sources */,
 				5F919D662EA9596E0037A208 /* TacticalShop.swift in Sources */,
 				5F8E87312EB3BEEC0023B28F /* Speicher.swift in Sources */,
@@ -358,7 +409,7 @@
 				5F24DC332EA95FE60085FDDC /* main.swift in Sources */,
 				5F919D672EA9596E0037A208 /* Terrain.swift in Sources */,
 				5F919D682EA9596E0037A208 /* TacticalState.swift in Sources */,
-				5F919D692EA9596E0037A208 /* Math.swift in Sources */,
+				5F919D692EA9596E0037A208 /* XY.swift in Sources */,
 				5FA0F0992EF2255B0022EC68 /* D20.swift in Sources */,
 				5F5560FC2EF5B0CF00C08E14 /* HQNodes.swift in Sources */,
 				5FF7EB3D2EB6428F00E287FF /* MapGeneration.swift in Sources */,
@@ -372,6 +423,7 @@
 				5FB4D0D52EAE26240010E702 /* TacticalAttack.swift in Sources */,
 				5F51E5BE2EF308B400A711DF /* Swift.swift in Sources */,
 				5F919D582EA959670037A208 /* SceneInput.swift in Sources */,
+				5FBA4D802EF6FD8900D7C1B0 /* Core.swift in Sources */,
 				5F919D5A2EA959670037A208 /* TileSprites.swift in Sources */,
 				5F919D5B2EA959670037A208 /* TacticalEvents.swift in Sources */,
 				5F919D5C2EA959670037A208 /* SpriteKit.swift in Sources */,

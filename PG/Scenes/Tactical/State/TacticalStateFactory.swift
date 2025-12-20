@@ -1,8 +1,8 @@
 extension TacticalState {
 
-	static func random(size: Int = .random(in: 8...32), seed: Int = 0) -> TacticalState {
+	static func random(size: Int = .random(in: 12...32), seed: Int = .random(in: 0...1023)) -> TacticalState {
 		TacticalState(
-			map: Map(size: size, seed: .random(in: 0...1023)),
+			map: Map(size: size, seed: seed),
 			players: [
 				Player(country: .ukr),
 				Player(country: .usa, ai: true),

@@ -1,5 +1,7 @@
 import AppKit
 
+let app = NSApplication.shared
+
 extension NSWindow {
 
 	static func make(_ content: (NSWindow) -> NSView) -> NSWindow {
@@ -9,13 +11,11 @@ extension NSWindow {
 			backing: .buffered,
 			defer: false
 		)
+		window.contentView = content(window)
 		window.titlebarAppearsTransparent = true
-		let view = content(window)
-		window.contentView = view
-
 		window.center()
 		window.makeKeyAndOrderFront(nil)
-		window.makeFirstResponder(view)
+		window.makeFirstResponder(window.contentView)
 
 		return window
 	}

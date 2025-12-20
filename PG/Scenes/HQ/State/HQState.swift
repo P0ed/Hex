@@ -1,5 +1,7 @@
 struct HQState: ~Copyable {
-
+	var player: Player
+	var units: Speicher<32, Unit>
+	var event: HQEvent
 }
 
 extension HQState {
@@ -9,5 +11,5 @@ extension HQState {
 	var statusText: String { "" }
 
 	mutating func apply(_ input: Input) {}
-	mutating func reduce() -> [Never] { [] }
+	mutating func reduce() -> [HQEvent] { [] }
 }

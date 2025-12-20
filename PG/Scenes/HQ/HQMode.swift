@@ -1,5 +1,5 @@
-typealias HQMode = SceneMode<HQState, Never, HQNodes>
-typealias HQScene = Scene<HQState, Never, HQNodes>
+typealias HQMode = SceneMode<HQState, HQEvent, HQNodes>
+typealias HQScene = Scene<HQState, HQEvent, HQNodes>
 
 extension HQMode {
 
