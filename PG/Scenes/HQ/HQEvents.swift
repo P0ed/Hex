@@ -1,7 +1,7 @@
 import SpriteKit
 
 enum HQEvent {
-	case move(XY, XY)
+	case move(UID, XY)
 	case spawn(UID)
 	case scenario(Scenario)
 	case none
@@ -25,15 +25,16 @@ extension HQScene {
 
 	private func process(_ event: Event) async {
 		switch event {
-		case .move(let src, let dst): processMove(src: src, dst: dst)
+		case .move(let uid, let xy): processMove(uid: uid, xy: xy)
 		case .spawn(let uid): processSpawn(uid: uid)
 		case .scenario(let scenario): processScenario(scenario)
 		case .none: break
 		}
 	}
 
-	private func processMove(src: XY, dst: XY) {
-
+	private func processMove(uid: UID, xy: XY) {
+		nodes?.units[uid]?.position = xy.point
+		nodes?.units[uid]?.zPosition = nodes?.map.zPosition(at: xy) ?? 0.0
 	}
 
 	func processSpawn(uid: UID) {
