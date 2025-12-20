@@ -2,6 +2,17 @@ import SpriteKit
 
 extension Unit {
 
+	var hqSprite: SKNode {
+		let node = SKNode()
+
+		let sprite = SKSpriteNode(imageNamed: imageName)
+		sprite.zPosition = 0.2
+		sprite.texture?.filteringMode = .nearest
+		node.addChild(sprite)
+
+		return node
+	}
+
 	var sprite: SKNode {
 		let node = SKNode()
 

@@ -4,15 +4,30 @@ struct State: ~Copyable {
 	var tactical: TacticalState?
 }
 
+private let defaultUnits: [Unit] = [
+	Unit(country: .ukr, position: XY(0, 0), stats: .base >< .truck),
+	Unit(country: .ukr, position: XY(0, 1), stats: .base >< .inf >< .veteran),
+	Unit(country: .ukr, position: XY(0, 2), stats: .base >< .strv122 >< .elite),
+	Unit(country: .ukr, position: XY(0, 3), stats: .base >< .strv122 >< .elite),
+	Unit(country: .ukr, position: XY(1, 0), stats: .base >< .recon >< .elite),
+	Unit(country: .ukr, position: XY(1, 1), stats: .base >< .art >< .veteran),
+]
+
 final class Core {
 	private(set) var state = State()
 
 	func new() {
+		let units = Speicher<32, Unit>(head: defaultUnits, tail: .dead)
+		let events = Speicher<32, HQEvent>(
+			head: units.map { i, u in .spawn(i) },
+			tail: .none
+		)
+
 		state = State(
 			hq: HQState(
 				player: Player(country: .ukr),
-				units: .init(head: [], tail: .dead),
-				event: .none
+				units: units,
+				events: events
 			)
 		)
 	}

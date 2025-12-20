@@ -2,7 +2,7 @@ import SpriteKit
 
 let core = Core()
 core.new()
-core.store(tactical: .random())
+//core.store(tactical: .random())
 
 private let window: NSWindow = .make { window in
 	let view = SKView(frame: window.contentLayoutRect)

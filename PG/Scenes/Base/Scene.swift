@@ -119,6 +119,14 @@ extension TacticalScene {
 	}
 }
 
+extension HQScene {
+
+	func addUnit(_ uid: UID, node: SKNode) {
+		addChild(node)
+		nodes?.units[uid] = node
+	}
+}
+
 extension Core {
 
 	func makeScene() -> SKScene {
