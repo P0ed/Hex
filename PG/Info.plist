@@ -2,16 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleName</key>
-	<string>PG</string>
-	<key>CFBundleIdentifier</key>
-	<string>p0.pg</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleName</key>
+	<string>PG</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
 	<key>GCSupportedGameControllers</key>
 	<array>
 		<dict>
@@ -19,5 +17,7 @@
 			<string>ExtendedGamepad</string>
 		</dict>
 	</array>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
 </dict>
 </plist>
