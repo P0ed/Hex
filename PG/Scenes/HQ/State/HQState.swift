@@ -3,7 +3,6 @@ struct HQState: ~Copyable {
 	var units: Speicher<16, Unit>
 	var events: Speicher<16, HQEvent>
 	var cursor: XY = .zero
-	var camera: XY = .zero
 	var selected: UID?
 }
 
@@ -11,12 +10,18 @@ extension HQState {
 
 	var inputable: Bool { true }
 	var reducible: Bool { !events.isEmpty }
-	var statusText: String { "" }
+
+	var statusText: String {
+		.makeStatus { add in
+			add("prestige: \(player.prestige)")
+		}
+	}
 
 	mutating func apply(_ input: Input) {
 		switch input {
 		case .direction(let direction): moveCursor(direction)
 		case .action(.a): processMainAction()
+		case .action(.c): processScenario()
 		default: break
 		}
 	}
@@ -43,13 +48,32 @@ extension HQState {
 			if let (i, _) = units[cursor] {
 				selected = i
 			} else {
-
+				events.add(.shop)
 			}
 		}
+	}
+
+	mutating func processScenario() {
+		events.add(.scenario(Scenario()))
 	}
 
 	mutating func reduce() -> [HQEvent] {
 		defer { events.erase() }
 		return events.map { $1 }
+	}
+}
+
+extension HQState {
+
+	var country: Country { player.country }
+
+	mutating func buy(_ template: Unit, at position: XY) {
+		guard player.prestige >= template.cost, units[position] == nil else { return }
+
+		let unit = modifying(template) { u in
+			u.position = position
+		}
+		player.prestige.decrement(by: unit.cost)
+		events.add(.spawn(units.add(unit)))
 	}
 }

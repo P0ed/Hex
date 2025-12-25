@@ -3,8 +3,9 @@ extension Unit {
 	var status: String {
 		.makeStatus { add in
 			add("\(stats.unitType)")
-			add(stats.atk > 0 ? "ammo: \(stats.ammo)" : "")
-			add(stats.moveType != .leg ? "fuel: \(stats.fuel)" : "")
+			add("ammo: \(stats.atk > 0 ? stats.ammo : 0)")
+			add("atk: \(stats.atk)")
+			add("def: \(stats.def)")
 			add("ent: \(stats.ent)")
 			add("exp: \(stats.starsString)")
 		}

@@ -127,17 +127,14 @@ extension HQScene {
 	}
 }
 
-extension Core {
+extension SKScene {
 
-	func makeScene() -> SKScene {
+	static func make(_ state: borrowing State) -> SKScene {
 		if state.tactical != nil {
 			return Scene(mode: .tactical, state: clone(state.tactical!))
 		} else if state.strategic != nil {
 			fatalError()
 		} else {
-			if state.hq == nil {
-				new()
-			}
 			return Scene(mode: .hq, state: clone(state.hq!))
 		}
 	}

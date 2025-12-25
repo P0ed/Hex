@@ -4,7 +4,7 @@ extension TacticalState {
 
 	func vision(for unit: Unit) -> SetXY {
 		let range = switch unit.stats.unitType {
-		case .recon: 3
+		case .ifv: 3
 		case .inf, .tank, .air: 2
 		default: 1
 		}
@@ -33,6 +33,10 @@ extension TacticalState {
 
 	func moves(for unit: Unit) -> SetXY {
 		!unit.canMove ? .empty : .make { xys in
+			if unit.stats.moveType == .air {
+				xys = .init(unit.position.circle(Int(unit.stats.mov) * 2))
+				return
+			}
 			var front = [(unit.position, unit.stats.mov)]
 			repeat {
 				front = front.flatMap { xy, mp in

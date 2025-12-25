@@ -4,25 +4,17 @@ struct State: ~Copyable {
 	var tactical: TacticalState?
 }
 
-private let defaultUnits: [Unit] = [
-	Unit(country: .ukr, position: XY(0, 0), stats: .base >< .truck),
-	Unit(country: .ukr, position: XY(0, 1), stats: .base >< .inf >< .veteran),
-	Unit(country: .ukr, position: XY(0, 2), stats: .base >< .strv122 >< .elite),
-	Unit(country: .ukr, position: XY(0, 3), stats: .base >< .strv122 >< .elite),
-	Unit(country: .ukr, position: XY(1, 0), stats: .base >< .recon >< .elite),
-	Unit(country: .ukr, position: XY(1, 1), stats: .base >< .art >< .veteran),
-]
-
 final class Core {
 	private(set) var state = State()
 
-	func new() {
+	func new(country: Country = .ukr) {
+		let units: [Unit] = .base(country)
 		state = State(
 			hq: HQState(
-				player: Player(country: .ukr),
-				units: .init(head: defaultUnits, tail: .dead),
+				player: Player(country: country),
+				units: .init(head: units, tail: .dead),
 				events: .init(
-					head: defaultUnits.indices.map { i in .spawn(i) },
+					head: units.indices.map { i in .spawn(i) },
 					tail: .none
 				)
 			)
@@ -45,14 +37,71 @@ final class Core {
 	}
 
 	func complete(tactical: borrowing TacticalState) {
-		guard let player = state.hq?.player else { return }
+		guard let c = state.hq?.player.country else { return }
 
-		let units = tactical.units.compactMap { _, u in
-			u.country == player.country ? u : nil
+		let units = tactical.units
+		.compactMap { _, u in u.country == c ? u : nil }
+		.enumerated().map { i, u in
+			modifying(u, { u in
+				u.position = XY(i % 4, i / 4)
+				u.stats.ammo = 0xF
+				u.stats.ap = 1
+				u.stats.mp = 1
+			})
 		}
 		state.hq?.units = .init(head: units, tail: .dead)
+		state.hq?.events = .init(
+			head: units.indices.map { i in .spawn(i) },
+			tail: .none
+		)
+		state.hq?.player.prestige = tactical.players.firstMap {
+			$1.country == c ? $1.prestige : nil
+		} ?? 0
 
 		state.tactical = nil
 		save()
+	}
+}
+
+extension [Unit] {
+
+	static func template(_ country: Country) -> [Unit] {
+		[
+			Unit(country: country, position: .zero, stats: .base >< .inf),
+			Unit(country: country, position: .zero, stats: .base >< .ifv(country)),
+			Unit(country: country, position: .zero, stats: .base >< .tank(country)),
+			Unit(country: country, position: .zero, stats: .base >< .art),
+			Unit(country: country, position: .zero, stats: .base >< .heli(country)),
+		]
+	}
+
+	static func base(_ country: Country) -> [Unit] {
+		[
+			Unit(country: country, position: XY(0, 0), stats: .base >< .truck),
+			Unit(country: country, position: XY(0, 1), stats: .base >< .inf >< .veteran),
+			Unit(country: country, position: XY(3, 0), stats: .base >< .inf >< .veteran),
+			Unit(country: country, position: XY(2, 1), stats: .base >< .inf >< .veteran),
+			Unit(country: country, position: XY(0, 2), stats: .base >< .tank(country) >< .elite),
+			Unit(country: country, position: XY(0, 3), stats: .base >< .tank(country) >< .veteran),
+			Unit(country: country, position: XY(1, 0), stats: .base >< .ifv(country) >< .veteran),
+			Unit(country: country, position: XY(2, 0), stats: .base >< .ifv(country) >< .elite),
+			Unit(country: country, position: XY(1, 1), stats: .base >< .art >< .veteran),
+			Unit(country: country, position: XY(1, 2), stats: .base >< .art >< .veteran),
+		]
+	}
+
+	static func enemy(_ country: Country) -> [Unit] {
+		[
+			Unit(country: .usa, position: XY(5, 7), stats: .base >< .inf),
+			Unit(country: .usa, position: XY(4, 6), stats: .base >< .inf),
+			Unit(country: .usa, position: XY(4, 5), stats: .base >< .m1A2),
+			Unit(country: .usa, position: XY(5, 5), stats: .base >< .art),
+			Unit(country: .usa, position: XY(5, 4), stats: .base >< .art),
+
+			Unit(country: .rus, position: XY(10, 0), stats: .base >< .t72),
+			Unit(country: .rus, position: XY(10, 1), stats: .base >< .t72),
+			Unit(country: .rus, position: XY(11, 1), stats: .base >< .t72),
+			Unit(country: .rus, position: XY(11, 3), stats: .base >< .t72),
+		]
 	}
 }

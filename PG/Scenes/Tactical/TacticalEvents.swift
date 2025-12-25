@@ -94,7 +94,7 @@ private extension TacticalScene {
 				}),
 				.init(
 					icon: "Restart", text: "Restart",
-					action: { [weak self] _ in self?.restartGame() }
+					action: { [weak self] state in self?.restartGame(state: state) }
 				)
 			]
 		))
@@ -105,15 +105,18 @@ private extension TacticalScene {
 			layout: .compact,
 			items: [.init(
 				icon: "Restart", text: "Restart",
-				action: { [weak self] _ in self?.restartGame() }
+				action: { [weak self] state in self?.restartGame(state: state) }
 			)]
 		))
 	}
 
-	private func restartGame() {
-		view?.presentScene(
-			Scene(mode: .tactical, state: .random()),
-			transition: .moveIn(with: .up, duration: 0.47)
-		)
+	private func restartGame(state: borrowing TacticalState) {
+		core.complete(tactical: state)
+		if let state = clone(core.state.hq) {
+			view?.presentScene(
+				HQScene(mode: .hq, state: state),
+				transition: .moveIn(with: .up, duration: 0.47)
+			)
+		}
 	}
 }

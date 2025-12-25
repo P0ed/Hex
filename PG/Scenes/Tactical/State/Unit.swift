@@ -46,50 +46,46 @@ extension Stats {
 		get { get(width: 4, offset: 6) }
 		set { set(newValue, width: 4, offset: 6) }
 	}
-	var fuel: UInt8 {
-		get { get(width: 4, offset: 10) }
-		set { set(newValue, width: 4, offset: 10) }
-	}
 	var exp: UInt8 {
-		get { get(width: 8, offset: 14) }
-		set { set(newValue, width: 8, offset: 14) }
+		get { get(width: 8, offset: 10) }
+		set { set(newValue, width: 8, offset: 10) }
 	}
 	var ent: UInt8 {
-		get { get(width: 3, offset: 22) }
-		set { set(newValue, width: 3, offset: 22) }
+		get { get(width: 3, offset: 18) }
+		set { set(newValue, width: 3, offset: 18) }
 	}
 
 	var moveType: MoveType {
-		get { MoveType(rawValue: get(width: 2, offset: 25)) ?? .leg }
-		set { set(newValue.rawValue, width: 2, offset: 25) }
+		get { MoveType(rawValue: get(width: 2, offset: 21)) ?? .leg }
+		set { set(newValue.rawValue, width: 2, offset: 21) }
 	}
 	var armor: UInt8 {
-		get { get(width: 2, offset: 27) }
-		set { set(newValue, width: 2, offset: 27) }
+		get { get(width: 2, offset: 23) }
+		set { set(newValue, width: 2, offset: 23) }
 	}
 	var hardAttack: UInt8 {
-		get { get(width: 2, offset: 29) }
-		set { set(newValue, width: 2, offset: 29) }
+		get { get(width: 2, offset: 25) }
+		set { set(newValue, width: 2, offset: 25) }
 	}
 	var unitType: UnitType {
-		get { UnitType(rawValue: get(width: 3, offset: 31)) ?? .inf }
-		set { set(newValue.rawValue, width: 3, offset: 31) }
+		get { UnitType(rawValue: get(width: 3, offset: 27)) ?? .inf }
+		set { set(newValue.rawValue, width: 3, offset: 27) }
 	}
 	var atk: UInt8 {
-		get { get(width: 5, offset: 34) }
-		set { set(newValue, width: 5, offset: 34) }
+		get { get(width: 5, offset: 30) }
+		set { set(newValue, width: 5, offset: 30) }
 	}
 	var def: UInt8 {
-		get { get(width: 5, offset: 39) }
-		set { set(newValue, width: 5, offset: 39) }
+		get { get(width: 5, offset: 35) }
+		set { set(newValue, width: 5, offset: 35) }
 	}
 	var mov: UInt8 {
-		get { get(width: 4, offset: 44) }
-		set { set(newValue, width: 4, offset: 44) }
+		get { get(width: 4, offset: 40) }
+		set { set(newValue, width: 4, offset: 40) }
 	}
 	var rng: UInt8 {
-		get { get(width: 3, offset: 48) }
-		set { set(newValue, width: 3, offset: 48) }
+		get { get(width: 3, offset: 44) }
+		set { set(newValue, width: 3, offset: 44) }
 	}
 }
 
@@ -105,7 +101,7 @@ enum MoveType: UInt8, Hashable, Codable {
 }
 
 enum UnitType: UInt8, Hashable, Codable {
-	case inf, recon, tank, art, antiAir, air, engineer, supply
+	case inf, ifv, tank, art, antiAir, air, engineer, supply
 }
 
 extension Unit: DeadOrAlive {
@@ -125,13 +121,13 @@ extension Unit {
 	var canAttack: Bool { stats.ap != 0 && stats.ammo != 0 }
 
 	func canHit(unit: Unit) -> Bool {
-		position.distance(to: unit.position) <= stats.rng * 2
+		position.distance(to: unit.position) <= stats.rng * 2 + 1
 	}
 
 	var cost: UInt16 {
 		switch stats.unitType {
 		case .inf: 80
-		case .recon: 180
+		case .ifv: 180
 		case .tank: 240
 		case .art: 160
 		default: 120

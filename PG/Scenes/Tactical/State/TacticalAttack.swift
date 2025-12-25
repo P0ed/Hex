@@ -26,7 +26,22 @@ extension TacticalState {
 		let atk = Int(units[src].stats.atk + units[src].stats.stars)
 		let def = Int(units[dst].stats.def + units[dst].stats.stars + defBonus)
 
-		let dmg = UInt8(atk - def > 0 ? atk : atk / 2)
+		let dif = atk - def
+		let t1 = max(1, 6 - dif)
+		let t2 = t1 + 2
+		let t3 = t2 + 3
+		let t4 = t3 + 4
+		let rounds = units[src].stats.hp / 2 + 1
+
+		let dmg = UInt8((0 ..< rounds).reduce(into: 0) { r, _ in
+			let d = d20(.min(2))
+			r +=
+			d > t4 ? 4 :
+			d > t3 ? 3 :
+			d > t2 ? 2 :
+			d > t1 ? 1 :
+			0
+		})
 
 		let hpLeft = units[dst].stats.hp.decrement(by: dmg)
 		units[dst].stats.ent.decrement()

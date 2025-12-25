@@ -3,7 +3,6 @@ struct D20: Hashable {
 }
 
 extension D20: RandomNumberGenerator {
-
 	// SplitMix64
 	mutating func next() -> UInt64 {
 		seed &+= 0x9e3779b97f4a7c15
@@ -16,4 +15,21 @@ extension D20: RandomNumberGenerator {
 	mutating func callAsFunction() -> Int {
 		.random(in: 0..<20, using: &self)
 	}
+
+	mutating func callAsFunction(_ `throw`: Throw) -> Int {
+		switch `throw` {
+		case .min(let int):
+			(0 ..< int)
+				.map { _ in self() }
+				.min() ?? 0
+		case .max(let int):
+			(0 ..< int)
+				.map { _ in self() }
+				.max() ?? 0
+		}
+	}
+}
+
+extension D20 {
+	enum Throw { case min(Int), max(Int) }
 }

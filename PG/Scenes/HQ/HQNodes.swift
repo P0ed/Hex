@@ -46,6 +46,7 @@ extension HQNodes {
 
 	private static func addCamera(parent: SKNode) -> SKCameraNode {
 		let camera = SKCameraNode()
+		camera.position = XY(map.size / 2, map.size / 2).point
 		parent.addChild(camera)
 		(parent as? SKScene)?.camera = camera
 		return camera
@@ -70,10 +71,6 @@ extension HQNodes {
 		if cursor.position != cursorPosition {
 			cursor.position = cursorPosition
 			cursor.zPosition = map.zPosition(at: state.cursor)
-		}
-		let cameraPosition = state.camera.point
-		if camera.position != cameraPosition {
-			camera.run(.move(to: cameraPosition, duration: 0.15))
 		}
 	}
 
