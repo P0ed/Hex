@@ -4,18 +4,14 @@ enum HQEvent {
 	case move(UID, XY)
 	case spawn(UID)
 	case shop
-	case scenario(Scenario)
+	case scenario
+	case new
 	case none
 }
 
 extension HQEvent: DeadOrAlive {
 
 	var alive: Bool { if case .none = self { false } else { true } }
-}
-
-struct Scenario {
-	var mapSize: Int = 16
-	var seed: Int = 0
 }
 
 extension HQScene {
@@ -29,7 +25,8 @@ extension HQScene {
 		case .move(let uid, let xy): processMove(uid: uid, xy: xy)
 		case .spawn(let uid): processSpawn(uid: uid)
 		case .shop: processShop()
-		case .scenario(let scenario): processScenario(scenario)
+		case .scenario: processScenario()
+		case .new: processNew()
 		case .none: break
 		}
 	}
@@ -60,15 +57,17 @@ extension HQScene {
 		))
 	}
 
-	private func processScenario(_ scenario: Scenario) {
+	private func processScenario() {
 		let state = TacticalState.random(
 			player: state.player,
-			units: state.units.map { $1 },
-			size: scenario.mapSize,
-			seed: scenario.seed
+			units: state.units.map { $1 }
 		)
 		core.store(tactical: state)
-		let scene = TacticalScene(mode: .tactical, state: state)
-		view?.presentScene(scene)
+		view?.present(core.state)
+	}
+
+	private func processNew() {
+		core.new()
+		view?.present(core.state)
 	}
 }

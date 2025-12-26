@@ -3,7 +3,7 @@ struct TacticalState: ~Copyable {
 	var players: Speicher<4, Player>
 	var buildings: Speicher<32, Building>
 	var units: Speicher<128, Unit>
-	var events: Speicher<128, TacticalEvent>
+	var events: Speicher<128, TacticalEvent> = .init(head: [], tail: .none)
 	var d20: D20 = .init(seed: 0)
 	var turn: UInt32 = 0
 	var cursor: XY = .zero
@@ -23,8 +23,6 @@ extension TacticalState {
 			tail: .init(country: .dnr, position: .zero, type: .city)
 		)
 		self.units = .init(head: units, tail: .dead)
-
-		events = .init(head: self.units.map { i, _ in .spawn(i) }, tail: .none)
 
 		buildings.forEach { b in
 			switch b.type {

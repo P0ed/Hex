@@ -54,38 +54,45 @@ extension Stats {
 		get { get(width: 3, offset: 18) }
 		set { set(newValue, width: 3, offset: 18) }
 	}
-
-	var moveType: MoveType {
-		get { MoveType(rawValue: get(width: 2, offset: 21)) ?? .leg }
-		set { set(newValue.rawValue, width: 2, offset: 21) }
-	}
-	var armor: UInt8 {
-		get { get(width: 2, offset: 23) }
-		set { set(newValue, width: 2, offset: 23) }
-	}
-	var hardAttack: UInt8 {
-		get { get(width: 2, offset: 25) }
-		set { set(newValue, width: 2, offset: 25) }
-	}
 	var unitType: UnitType {
-		get { UnitType(rawValue: get(width: 3, offset: 27)) ?? .inf }
-		set { set(newValue.rawValue, width: 3, offset: 27) }
+		get { UnitType(rawValue: get(width: 3, offset: 21)) ?? .inf }
+		set { set(newValue.rawValue, width: 3, offset: 21) }
 	}
-	var atk: UInt8 {
-		get { get(width: 5, offset: 30) }
-		set { set(newValue, width: 5, offset: 30) }
+	var moveType: MoveType {
+		get { MoveType(rawValue: get(width: 2, offset: 24)) ?? .leg }
+		set { set(newValue.rawValue, width: 2, offset: 24) }
 	}
-	var def: UInt8 {
-		get { get(width: 5, offset: 35) }
-		set { set(newValue, width: 5, offset: 35) }
+	var ini: UInt8 {
+		get { get(width: 4, offset: 26) }
+		set { set(newValue, width: 4, offset: 26) }
+	}
+	var softAtk: UInt8 {
+		get { get(width: 4, offset: 30) }
+		set { set(newValue, width: 4, offset: 30) }
+	}
+	var hardAtk: UInt8 {
+		get { get(width: 4, offset: 34) }
+		set { set(newValue, width: 4, offset: 34) }
+	}
+	var airAtk: UInt8 {
+		get { get(width: 4, offset: 38) }
+		set { set(newValue, width: 4, offset: 38) }
+	}
+	var groundDef: UInt8 {
+		get { get(width: 4, offset: 42) }
+		set { set(newValue, width: 4, offset: 42) }
+	}
+	var airDef: UInt8 {
+		get { get(width: 4, offset: 46) }
+		set { set(newValue, width: 4, offset: 46) }
 	}
 	var mov: UInt8 {
-		get { get(width: 4, offset: 40) }
-		set { set(newValue, width: 4, offset: 40) }
+		get { get(width: 4, offset: 50) }
+		set { set(newValue, width: 4, offset: 50) }
 	}
 	var rng: UInt8 {
-		get { get(width: 3, offset: 44) }
-		set { set(newValue, width: 3, offset: 44) }
+		get { get(width: 3, offset: 54) }
+		set { set(newValue, width: 3, offset: 54) }
 	}
 }
 
@@ -93,6 +100,18 @@ extension Stats {
 
 	var stars: UInt8 {
 		modifying(4) { stars in stars.decrement(by: UInt8(exp.leadingZeroBitCount)) }
+	}
+
+	func atk(_ dst: Stats) -> UInt8 {
+		switch dst.moveType {
+		case .leg, .wheel: softAtk
+		case .track: hardAtk
+		case .air: airAtk
+		}
+	}
+
+	func def(_ src: Stats) -> UInt8 {
+		src.moveType == .air ? airDef : groundDef
 	}
 }
 
@@ -130,6 +149,8 @@ extension Unit {
 		case .ifv: 180
 		case .tank: 240
 		case .art: 160
+		case .antiAir: 220
+		case .air: 320
 		default: 120
 		}
 	}

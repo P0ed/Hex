@@ -23,12 +23,14 @@ extension NSWindow {
 
 extension NotificationCenter {
 
-	func willClose(window: NSWindow, _ body: @escaping () -> Void) -> any NSObjectProtocol {
+	func willCloseWindow(_ body: @escaping (NSWindow) -> Void) -> any NSObjectProtocol {
 		addObserver(
 			forName: NSWindow.willCloseNotification,
-			object: window,
+			object: nil,
 			queue: .main,
-			using: { _ in body() }
+			using: { n in
+				if let w = n.object as? NSWindow { body(w) }
+			}
 		)
 	}
 }

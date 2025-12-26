@@ -10,5 +10,6 @@ struct SceneMode<State: ~Copyable, Event, Nodes> {
 	var process: (Scene<State, Event, Nodes>, [Event]) async -> Void
 	var status: (borrowing State) -> String
 	var mouse: (Nodes, NSEvent) -> Input?
+	var save: (borrowing State) -> Void
 	var layout: (CGSize, Nodes) -> Void = ø
 }

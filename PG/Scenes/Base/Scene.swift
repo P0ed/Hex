@@ -9,6 +9,7 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 	private(set) var state: State { didSet { didSetState() } }
 	private(set) var baseNodes: BaseNodes?
 	private(set) var nodes: Nodes?
+	private var willCloseWindow: Any?
 
 	init(mode: SceneMode<State, Event, Nodes>, state: consuming State, size: CGSize = .scene) {
 		self.state = state
@@ -26,6 +27,11 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 	override func sceneDidLoad() {
 		backgroundColor = .black
 		scaleMode = .aspectFit
+
+		willCloseWindow = NotificationCenter.default.willCloseWindow { [weak self] window in
+			guard self?.view?.window == window else { return }
+			self?.saveAndExit()
+		}
 
 		let nodes = mode.make(self, state)
 		mode.layout(size, nodes)
@@ -104,6 +110,11 @@ final class Scene<State: ~Copyable, Event, Nodes>: SKScene {
 	private func updateStatus() {
 		baseNodes?.status.text = menuState?.statusText ?? mode.status(state)
 	}
+
+	func saveAndExit() {
+		mode.save(state)
+		exit(0)
+	}
 }
 
 extension TacticalScene {
@@ -127,15 +138,29 @@ extension HQScene {
 	}
 }
 
-extension SKScene {
+private extension SKScene {
 
 	static func make(_ state: borrowing State) -> SKScene {
 		if state.tactical != nil {
-			return Scene(mode: .tactical, state: clone(state.tactical!))
+			var state = clone(state.tactical!)
+			state.events = .init(head: state.units.map { i, _ in .spawn(i) } , tail: .none)
+			return Scene(mode: .tactical, state: state)
 		} else if state.strategic != nil {
 			fatalError()
 		} else {
-			return Scene(mode: .hq, state: clone(state.hq!))
+			var state = clone(state.hq!)
+			state.events = .init(head: state.units.map { i, _ in .spawn(i) } , tail: .none)
+			return Scene(mode: .hq, state: state)
 		}
+	}
+}
+
+extension SKView {
+
+	func present(_ state: borrowing State) {
+		presentScene(
+			.make(state),
+			transition: .moveIn(with: .up, duration: 0.47)
+		)
 	}
 }

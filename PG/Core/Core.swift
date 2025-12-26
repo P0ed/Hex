@@ -1,3 +1,5 @@
+import Foundation
+
 struct State: ~Copyable {
 	var hq: HQState?
 	var strategic: StrategicState?
@@ -12,18 +14,23 @@ final class Core {
 		state = State(
 			hq: HQState(
 				player: Player(country: country),
-				units: .init(head: units, tail: .dead),
-				events: .init(
-					head: units.indices.map { i in .spawn(i) },
-					tail: .none
-				)
+				units: .init(head: units, tail: .dead)
 			)
 		)
 	}
 
-	func load() {}
+	func load() {
+		if let data = UserDefaults.standard.data(forKey: "state") {
+			let decoded: State? = decode(data)
+			if decoded != nil { state = decoded! }
+		} else {
+			new()
+		}
+	}
 
-	func save() {}
+	func save() {
+		UserDefaults.standard.set(encode(state), forKey: "state")
+	}
 
 	func store(hq: borrowing HQState) {
 		state.hq = clone(hq)
@@ -44,16 +51,14 @@ final class Core {
 		.enumerated().map { i, u in
 			modifying(u, { u in
 				u.position = XY(i % 4, i / 4)
+				u.stats.hp = 0xF
 				u.stats.ammo = 0xF
 				u.stats.ap = 1
 				u.stats.mp = 1
 			})
 		}
 		state.hq?.units = .init(head: units, tail: .dead)
-		state.hq?.events = .init(
-			head: units.indices.map { i in .spawn(i) },
-			tail: .none
-		)
+		state.hq?.cursor = .zero
 		state.hq?.player.prestige = tactical.players.firstMap {
 			$1.country == c ? $1.prestige : nil
 		} ?? 0
@@ -71,6 +76,7 @@ extension [Unit] {
 			Unit(country: country, position: .zero, stats: .base >< .ifv(country)),
 			Unit(country: country, position: .zero, stats: .base >< .tank(country)),
 			Unit(country: country, position: .zero, stats: .base >< .art),
+			Unit(country: country, position: .zero, stats: .base >< .aa(country)),
 			Unit(country: country, position: .zero, stats: .base >< .heli(country)),
 		]
 	}

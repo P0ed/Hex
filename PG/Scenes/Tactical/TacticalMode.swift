@@ -13,7 +13,8 @@ extension TacticalMode {
 			reduce: { state in state.reduce() },
 			process: { scene, events in await scene.process(events: events) },
 			status: { state in state.statusText },
-			mouse: { nodes, event in nodes.mouse(event: event) }
+			mouse: { nodes, event in nodes.mouse(event: event) },
+			save: { state in core.store(tactical: state) }
 		)
 	}
 }

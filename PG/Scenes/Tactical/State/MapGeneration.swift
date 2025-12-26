@@ -6,6 +6,7 @@ extension Map<Terrain> {
 		self = Map(size: size, zero: .none)
 
 		let size = SIMD2<Int32>(Int32(size), Int32(size))
+		let seed = Int32(bitPattern: UInt32(seed & Int(UInt32.max)))
 		let height = GKNoiseMap.height(size: size, seed: seed)
 		let humidity = GKNoiseMap.humidity(size: size, seed: seed + 1)
 
@@ -144,22 +145,22 @@ extension GKNoiseMap {
 		)
 	}
 
-	static func height(size: SIMD2<Int32>, seed: Int) -> GKNoiseMap {
+	static func height(size: SIMD2<Int32>, seed: Int32) -> GKNoiseMap {
 		.map(size: size, source: GKPerlinNoiseSource(
 			frequency: 12.0,
 			octaveCount: 6,
 			persistence: 0.47,
 			lacunarity: 1.5,
-			seed: Int32(bitPattern: UInt32(seed & Int(UInt32.max)))
+			seed: seed
 		))
 	}
 
-	static func humidity(size: SIMD2<Int32>, seed: Int) -> GKNoiseMap {
+	static func humidity(size: SIMD2<Int32>, seed: Int32) -> GKNoiseMap {
 		.map(size: size, source: GKVoronoiNoiseSource(
 			frequency: 6.8,
 			displacement: 1.0,
 			distanceEnabled: false,
-			seed: Int32(bitPattern: UInt32(seed & Int(UInt32.max)))
+			seed: seed
 		))
 	}
 }

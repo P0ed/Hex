@@ -1,3 +1,5 @@
+import Foundation
+
 func id<A>(_ x: A) -> A { x }
 func ø<each A>(_ x: repeat each A) {}
 
@@ -19,6 +21,25 @@ func clone<A: ~Copyable>(_ x: borrowing A) -> A {
 			)
 		}
 		return raw.baseAddress!
+			.assumingMemoryBound(to: A.self)
+			.move()
+	}
+}
+
+func encode<A: ~Copyable>(_ x: borrowing A) -> Data {
+	withUnsafePointer(to: x) { p in Data(bytes: p, count: MemoryLayout<A>.size) }
+}
+
+func decode<A: ~Copyable>(_ data: Data) -> A? {
+	guard data.count == MemoryLayout<A>.size else { return nil }
+	return withUnsafeTemporaryAllocation(
+		byteCount: MemoryLayout<A>.size,
+		alignment: MemoryLayout<A>.alignment
+	) { ap in
+		data.withUnsafeBytes { (p: UnsafeRawBufferPointer) in
+			ap.baseAddress!.copyMemory(from: p.baseAddress!, byteCount: MemoryLayout<A>.size)
+		}
+		return ap.baseAddress!
 			.assumingMemoryBound(to: A.self)
 			.move()
 	}

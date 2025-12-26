@@ -101,22 +101,11 @@ private extension TacticalScene {
 	}
 
 	func processGameOver() {
-		show(MenuState(
-			layout: .compact,
-			items: [.init(
-				icon: "Restart", text: "Restart",
-				action: { [weak self] state in self?.restartGame(state: state) }
-			)]
-		))
+		restartGame(state: state)
 	}
 
 	private func restartGame(state: borrowing TacticalState) {
 		core.complete(tactical: state)
-		if let state = clone(core.state.hq) {
-			view?.presentScene(
-				HQScene(mode: .hq, state: state),
-				transition: .moveIn(with: .up, duration: 0.47)
-			)
-		}
+		view?.present(core.state)
 	}
 }

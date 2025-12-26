@@ -1,7 +1,7 @@
 struct HQState: ~Copyable {
 	var player: Player
 	var units: Speicher<16, Unit>
-	var events: Speicher<16, HQEvent>
+	var events: Speicher<16, HQEvent> = .init(head: [], tail: .none)
 	var cursor: XY = .zero
 	var selected: UID?
 }
@@ -22,6 +22,7 @@ extension HQState {
 		case .direction(let direction): moveCursor(direction)
 		case .action(.a): processMainAction()
 		case .action(.c): processScenario()
+		case .action(.d): events.add(.new)
 		default: break
 		}
 	}
@@ -54,7 +55,7 @@ extension HQState {
 	}
 
 	mutating func processScenario() {
-		events.add(.scenario(Scenario()))
+		events.add(.scenario)
 	}
 
 	mutating func reduce() -> [HQEvent] {

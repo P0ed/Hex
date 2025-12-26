@@ -46,7 +46,7 @@ extension HQNodes {
 
 	private static func addCamera(parent: SKNode) -> SKCameraNode {
 		let camera = SKCameraNode()
-		camera.position = XY(map.size / 2, map.size / 2).point
+		camera.position = XY(map.size - 1, map.size - 1).point * 0.5
 		parent.addChild(camera)
 		(parent as? SKScene)?.camera = camera
 		return camera

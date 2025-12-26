@@ -1,13 +1,18 @@
 extension Unit {
 
 	var status: String {
-		.makeStatus { add in
+		.makeStatus(pad: 10) { add in
 			add("\(stats.unitType)")
-			add("ammo: \(stats.atk > 0 ? stats.ammo : 0)")
-			add("atk: \(stats.atk)")
-			add("def: \(stats.def)")
-			add("ent: \(stats.ent)")
-			add("exp: \(stats.starsString)")
+			add("\(stats.starsString)")
+			add("Ammo: \(stats.softAtk > 0 ? stats.ammo : 0)")
+			add("Ini: \(stats.ini)")
+			add("SA: \(stats.softAtk)")
+			add("HA: \(stats.hardAtk)")
+			add("AA: \(stats.airAtk)")
+			add("GD: \(stats.groundDef)")
+			add("AD: \(stats.airDef)")
+			add("Mov: \(stats.mov)")
+			add("Ent: \(stats.ent)")
 		}
 	}
 
@@ -15,9 +20,9 @@ extension Unit {
 		"""
 		\(stats.unitType)
 		
-		ATK: \(stats.atk) - \(stats.hardAttack)
-		DEF: \(stats.def) - \(stats.armor)
-		MOV: \(stats.mov) - \(stats.moveType)
+		ATK: \(stats.softAtk) / \(stats.hardAtk) / \(stats.airAtk)
+		DEF: \(stats.groundDef) / \(stats.airDef)
+		MOV: \(stats.mov) \(stats.moveType)
 		RNG: \(stats.rng)
 		
 		
@@ -37,13 +42,6 @@ extension Stats {
 		case 1: "★☆☆☆"
 		default: "☆☆☆☆"
 		}
-	}
-}
-
-extension Building {
-
-	var description: String {
-		"\(type)\n\(cost)"
 	}
 }
 
